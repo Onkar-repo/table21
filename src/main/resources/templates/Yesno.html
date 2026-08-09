@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom Dialog</title>
+    <style>
+        /* Modern Reset & Professional Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Demo Trigger Button Styling */
+        .btn-trigger {
+            padding: 14px 28px;
+            background: #65407D;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(101, 64, 125, 0.3);
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-trigger:hover {
+            background: #4338ca;
+        }
+
+        .btn-trigger:active {
+            transform: scale(0.98);
+        }
+
+        /* Modal Overlay */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(31, 41, 55, 0.5); /* Semi-transparent dark backdrop */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            z-index: 1000;
+        }
+
+        .dialog-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive Dialog Container */
+        .dialog-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px;
+            padding: 32px 24px;
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            transform: scale(0.92);
+            transition: transform 0.25s ease;
+        }
+
+        .dialog-overlay.active .dialog-card {
+            transform: scale(1);
+        }
+
+        /* Icon Badge ("?") */
+        .dialog-icon-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .dialog-icon-badge {
+            background: #65407D;
+            color: #ffffff;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Dialog Header Text */
+        .dialog-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .dialog-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        /* Button Group (Side-by-side) */
+        .dialog-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-dialog {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        /* Secondary Button (No) */
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+
+        /* Primary Button (Yes) */
+        .btn-primary {
+            background: #65407D;
+            color: #ffffff;
+            border: 1px solid #65407D;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            border-color: #4338ca;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            .dialog-card {
+                padding: 24px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Trigger Button for Demo -->
+    <button class="btn-trigger" onclick="showDialog()">Open Confirmation Dialog</button>
+
+    <!-- Custom Dialog Modal Container -->
+    <div class="dialog-overlay" id="customDialogOverlay">
+        <div class="dialog-card">
+            <div class="dialog-icon-container">
+                <div class="dialog-icon-badge">?</div>
+            </div>
+
+            <h2 class="dialog-title">Are you sure?</h2>
+            <p class="dialog-subtitle">Do you really want to perform this action? This step cannot be undone.</p>
+
+            <div class="dialog-actions">
+                <button class="btn-dialog btn-secondary" onclick="handleResponse(false)">No</button>
+                <button class="btn-dialog btn-primary" id="dialogYesBtn" onclick="handleResponse(true)">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showDialog() {
+            const overlay = document.getElementById('customDialogOverlay');
+            overlay.classList.add('active');
+            // Auto-focus primary action for accessibility
+            document.getElementById('dialogYesBtn').focus();
+        }
+
+        function closeDialog() {
+            const overlay = document.getElementById('customDialogOverlay');
+            overlay.classList.remove('active');
+        }
+
+        function handleResponse(isYes) {
+            closeDialog();
+            if (isYes) {
+                console.log("User clicked: YES");
+                // Add positive action callback here
+            } else {
+                console.log("User clicked: NO");
+                // Add cancel action callback here
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forgot Password</title>
+    <style>
+        /* Modern Reset & Professional Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Responsive Card Container */
+        .login-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 400px; /* Perfect desktop width */
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
+            text-align: center;
+        }
+
+        /* Logo Icon ("T") styling */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-badge {
+            background: #65407D; /* Modern corporate indigo/blue */
+            color: #ffffff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Form Header Text */
+        .form-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        input[type="email"] {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px; /* Prevents iOS auto-zoom on focus */
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="email"]:focus {
+            border-color: #65407D;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Primary Action Button (Send Link) */
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: #65407D;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Redirection Footer Link */
+        .login-redirect {
+            display: inline-block;
+            margin-top: 24px;
+            color: #6b7280;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .login-redirect a {
+            color: #65407D;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .login-redirect a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+                background: #ffffff; /* Seamless full-bleed on mobile screens */
+            }
+            .login-card {
+                box-shadow: none;
+                padding: 20px 10px;
+            }
+        }
+    </style>
+</head>
+<body onLoad="document.getElementById('reset_email').focus()">
+
+    <div class="login-card">
+        <!-- Brand/Logo Header -->
+        <div class="logo-container">
+            <div class="logo-badge">T</div>
+        </div>
+
+        <h1 class="form-title">Recover</h1>
+        <p class="form-subtitle">Enter code received on your registered email address</p>
+
+        <!-- Inputs Wrap -->
+        <div class="form-group">
+            <input type="email" placeholder="Code" id="reset_email" name="Email" autocomplete="email" required>
+        </div>
+
+        <!-- Action Button -->
+        <button class="btn-primary" onclick="handlePasswordReset()">Recover</button>
+
+        <!-- Footer Link back to login -->
+        <div class="login-redirect">
+            Remember your password? <a href="index.html">Log In</a>
+        </div>
+    </div>
+
+    <!-- UI Logic Scripts -->
+    <script>
+        function handlePasswordReset() {
+            const emailInput = document.getElementById('reset_email').value;
+            if (!emailInput) {
+                alert("Please enter a valid email address.");
+                return;
+            }
+            console.log("Sending recovery link to: " + emailInput);
+            // Connect this hook to your backend script.js file
+        }
+    </script>
+</body>
+</html>

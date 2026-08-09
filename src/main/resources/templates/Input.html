@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom Input Dialog</title>
+    <style>
+        /* Modern Reset & Professional Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Demo Trigger Button Styling */
+        .btn-trigger {
+            padding: 14px 28px;
+            background: #65407D;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(101, 64, 125, 0.3);
+            transition: background 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn-trigger:hover {
+            background: #4338ca;
+        }
+
+        .btn-trigger:active {
+            transform: scale(0.98);
+        }
+
+        /* Modal Overlay */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(31, 41, 55, 0.5); /* Semi-transparent dark backdrop */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+            z-index: 1000;
+        }
+
+        .dialog-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive Dialog Container */
+        .dialog-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 420px;
+            padding: 32px 24px;
+            border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            transform: scale(0.92);
+            transition: transform 0.25s ease;
+        }
+
+        .dialog-overlay.active .dialog-card {
+            transform: scale(1);
+        }
+
+        /* Logo Badge Icon */
+        .dialog-icon-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .dialog-icon-badge {
+            background: #65407D;
+            color: #ffffff;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(101, 64, 125, 0.3);
+        }
+
+        /* Dialog Header Text */
+        .dialog-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .dialog-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* ==========================================================
+           REPLACEABLE INPUT SLOT & CONTROL STYLES
+           ========================================================== */
+        .dialog-input-slot {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        /* 1. Universal Input Field & Dropdown Base */
+        .dialog-input-slot input[type="text"],
+        .dialog-input-slot input[type="email"],
+        .dialog-input-slot input[type="password"],
+        .dialog-input-slot select {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            color: #1f2937;
+            transition: all 0.2s ease;
+            outline: none;
+            appearance: none;
+        }
+
+        /* Custom Dropdown Arrow */
+        .dialog-input-slot select {
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%3c6b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+
+        .dialog-input-slot input:focus,
+        .dialog-input-slot select:focus {
+            border-color: #65407D;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(101, 64, 125, 0.1);
+        }
+
+        /* 2. Grouped Layout for Radio Buttons and Checkboxes */
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .option-item:hover {
+            border-color: #65407D;
+            background-color: #ffffff;
+        }
+
+        .option-item input[type="radio"],
+        .option-item input[type="checkbox"] {
+            accent-color: #65407D;
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .option-item label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2937;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Highlight card state when checked */
+        .option-item:has(input:checked) {
+            border-color: #65407D;
+            background-color: rgba(101, 64, 125, 0.04);
+        }
+
+        /* ========================================================== */
+
+        /* Button Group (Side-by-side) */
+        .dialog-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-dialog {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        /* Secondary Button (Cancel) */
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #4b5563;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+
+        /* Primary Button (Submit) */
+        .btn-primary {
+            background: #65407D;
+            color: #ffffff;
+            border: 1px solid #65407D;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            border-color: #4338ca;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            .dialog-card {
+                padding: 24px 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Trigger Button for Demo -->
+    <button class="btn-trigger" onclick="showInputDialog()">Open Input Dialog</button>
+
+    <!-- Custom Dialog Modal Container -->
+    <div class="dialog-overlay" id="inputDialogOverlay">
+        <div class="dialog-card">
+            <div class="dialog-icon-container">
+                <div class="dialog-icon-badge">✍️</div>
+            </div>
+
+            <h2 class="dialog-title" id="dialogTitle">Enter Details</h2>
+            <p class="dialog-subtitle" id="dialogSubtitle">Please provide the required information below to proceed.</p>
+
+            <!-- =======================================================
+                 MODULAR INPUT SLOT (SWAP CONTENT INSIDE THIS DIV)
+                 ======================================================= -->
+            <div class="dialog-input-slot" id="dialogInputSlot">
+                
+                <!-- OPTION A: Text Input Field (Active Default) -->
+                <input type="text" id="dialogInputField" placeholder="Type here..." autocomplete="off">
+
+                <!-- 
+                ========================================================
+                SWAP EXAMPLES (Uncomment any of these to test alternative inputs):
+                ========================================================
+
+                OPTION B: Select Dropdown
+                <select id="dialogSelectField">
+                    <option value="" disabled selected>Select an option...</option>
+                    <option value="option1">Option 1 - Standard</option>
+                    <option value="option2">Option 2 - Premium</option>
+                    <option value="option3">Option 3 - Enterprise</option>
+                </select>
+
+                OPTION C: 3 Radio Buttons
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="radio" id="radio1" name="dialogRadioGroup" value="low" checked>
+                        <label for="radio1">Low Priority</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="radio2" name="dialogRadioGroup" value="medium">
+                        <label for="radio2">Medium Priority</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="radio" id="radio3" name="dialogRadioGroup" value="high">
+                        <label for="radio3">High Priority</label>
+                    </div>
+                </div>
+
+                OPTION D: Checkboxes
+                <div class="option-group">
+                    <div class="option-item">
+                        <input type="checkbox" id="check1" value="email_notifications">
+                        <label for="check1">Email Notifications</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="check2" value="sms_alerts">
+                        <label for="check2">SMS Alerts</label>
+                    </div>
+                </div>
+                ======================================================== 
+                -->
+
+            </div>
+            <!-- ======================================================= -->
+
+            <div class="dialog-actions">
+                <button class="btn-dialog btn-secondary" onclick="closeInputDialog()">Cancel</button>
+                <button class="btn-dialog btn-primary" id="dialogSubmitBtn" onclick="handleSubmit()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showInputDialog() {
+            const overlay = document.getElementById('inputDialogOverlay');
+            overlay.classList.add('active');
+            
+            // Auto-focus input if available
+            const inputField = document.getElementById('dialogInputField');
+            if (inputField) inputField.focus();
+        }
+
+        function closeInputDialog() {
+            const overlay = document.getElementById('inputDialogOverlay');
+            overlay.classList.remove('active');
+        }
+
+        function handleSubmit() {
+            const inputField = document.getElementById('dialogInputField');
+            const value = inputField ? inputField.value : null;
+
+            console.log("Submitted Value:", value);
+            closeInputDialog();
+        }
+    </script>
+</body>
+</html>

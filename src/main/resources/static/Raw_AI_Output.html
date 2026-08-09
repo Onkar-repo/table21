@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Professional POS System</title>
+    <style>
+	
+	/* --- Modal Styles --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Higher than everything else */
+}
+
+.modal-form {
+    background: #ffffff;
+    width: 450px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    background-color: var(--primary);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body { padding: 25px; }
+
+.form-group { margin-bottom: 18px; display: flex; flex-direction: column; gap: 8px; }
+
+.modal-footer {
+    padding: 20px;
+    background: #f9f9f9;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+/* --- End Modal Styles --- */
+	
+        :root {
+            --primary: #65407D;
+            --primary-light: #9169AC;
+            --secondary: #e2e2e9;
+            --bg-body: #f4f4f7;
+            --text-dark: #2d2d2d;
+            --text-light: #ffffff;
+            --border-color: #d1cfc0;
+            --success: #27ae60;
+            --danger: #c0392b;
+        }
+
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-body); 
+            margin: 0; 
+            display: flex; 
+            height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Sidebar - Table Selection */
+        .sidebar {
+            width: 380px;
+            background-color: var(--secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        }
+
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .table-btn {
+            aspect-ratio: 1;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+        }
+
+        .table-btn:hover { background-color: var(--primary-light); }
+        /*.table-btn:active { transform: scale(0.95); }*/
+       /* .table-btn.active { outline: 4px solid var(--primary-light); box-shadow: 0 0 10px rgba(0,0,0,0.2); }*/
+
+        .admin-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .action-btn {
+            padding: 12px 5px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .action-btn:hover { background-color: var(--primary-light); }
+
+        /* Main Content - Order Entry */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            background: #eee;
+        }
+        .badge-occupied { background: #ffeaa7; color: #d35400; }
+
+        .input-section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 0.85rem; font-weight: 600; color: #666; }
+        
+        input, select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        /* Billing Area */
+        .bill-container {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+        }
+
+        .bill-header {
+            background: #f9f9f9;
+            padding: 10px 20px;
+            display: grid;
+            grid-template-columns: 60px 1fr 100px;
+            font-weight: bold;
+            border-bottom: 2px solid #eee;
+        }
+
+        .bill-items {
+            flex: 1;
+            padding: 10px 0;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .bill-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 100px;
+            padding: 8px 20px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .bill-footer {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-amount { font-size: 1.8rem; font-weight: bold; }
+
+        .footer-actions {
+            display: flex;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .btn-lg {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-print { background: #34495e; color: white; }
+        .btn-clear { background: var(--danger); color: white; }
+        .btn-complete { background: var(--success); color: white; }
+
+        .user-info { margin-top: 15px; font-size: 0.8rem; color: #888; text-align: center; }
+    </style>
+	<script>
+    function toggleModal() {
+        const modal = document.getElementById('registerModal');
+        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function saveItem() {
+        // Your logic to add item to database/list
+        const name = document.getElementById('newItemName').value;
+        if(name) {
+            alert(name + " added!");
+            toggleModal();
+        }
+    }
+	</script>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h3 style="margin-top:0; color: var(--primary);">Table Map</h3>
+        <div class="table-grid">
+            <button class="table-btn active">1</button>
+            <button class="table-btn">2</button>
+            <button class="table-btn">3</button>
+            <button class="table-btn">4</button>
+            <button class="table-btn">5</button>
+            <button class="table-btn">6</button>
+            <button class="table-btn">7</button>
+            <button class="table-btn">8</button>
+            <button class="table-btn">9</button>
+        </div>
+
+        <div class="admin-actions">
+            <button class="action-btn" onclick="toggleModal();">Register Item</button>
+            <button class="action-btn">Delete Item</button>
+            <button class="action-btn">Edit Item</button>
+            <button class="action-btn">Delete All</button>
+            <button class="action-btn">Item List</button>
+            <button class="action-btn">Update Stock</button>
+            <button class="action-btn" style="grid-column: span 2; background: #95a5a6;" onclick="location.reload()">Log Out</button>
+        </div>
+        
+        <div class="user-info">
+            <strong>Ramchandra123</strong> • Status: Online
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="order-header">
+            <div>
+                <span style="color:#888">Date:</span> <strong>01.10.2025</strong>
+                <span style="margin-left:20px; color:#888">INV:</span> <strong>123456789</strong>
+            </div>
+            <div>
+                <span>Table: <strong style="font-size: 1.2rem;">10</strong></span>
+                <span class="badge badge-occupied" style="margin-left:15px;">Occupied</span>
+                <span class="badge" style="margin-left:5px; background:#fab1a0; color:#c0392b;">Payment Pending</span>
+            </div>
+        </header>
+
+        <section class="input-section">
+            <div class="form-group">
+                <label>Item Code</label>
+                <input type="text" placeholder="9999">
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Item Name</label>
+                <select>
+                    <option>Select an item...</option>
+                    <option selected>Paneer Tikka Butter Masala</option>
+                    <option>Butter Naan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" value="1">
+            </div>
+            <div class="form-group">
+                <label>Remove Serial</label>
+                <input type="text" placeholder="Sr. No">
+            </div>
+        </section>
+
+        <section class="bill-container">
+            <div class="bill-header">
+                <span>Qty</span>
+                <span>Description</span>
+                <span style="text-align:right">Amount</span>
+            </div>
+            <div class="bill-items">
+                <!-- Example Row -->
+                <div class="bill-row">
+                    <span>02</span>
+                    <span>Paneer Tikka Butter Masala</span>
+                    <span style="text-align:right">540.00</span>
+                </div>
+                <div class="bill-row">
+                    <span>04</span>
+                    <span>Butter Naan (Garlic)</span>
+                    <span style="text-align:right">180.00</span>
+                </div>
+				
+				
+				<div class="bill-row">
+                    <span>06</span>
+                    <span>Matki Usal</span>
+                    <span style="text-align:right">540.00</span>
+                </div>
+				<div class="bill-row">
+                    <span>03</span>
+                    <span>Maka Poha</span>
+                    <span style="text-align:right">540.00</span>
+                </div>
+                <!-- Add more rows dynamically -->
+            </div>
+            <div class="bill-footer">
+                <span>Grand Total</span>
+                <span class="total-amount">₹ 720.00</span>
+            </div>
+        </section>
+
+        <div class="footer-actions">
+            <button class="btn-lg btn-print">Print KOT</button>
+            <button class="btn-lg btn-clear">Clear Table</button>
+            <button class="btn-lg btn-complete">Complete Billing</button>
+        </div>
+    </main>
+<!-- Register Item Pop-up -->
+<div class="modal-overlay" id="registerModal">
+    <div class="modal-form">
+        <div class="modal-header">
+            <span>Register New Item</span>
+            <button class="close-btn" style="background:none; border:none; color:white; cursor:pointer;" onclick="toggleModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>Item Name</label>
+                <input type="text" id="newItemName">
+            </div>
+            <div style="display: flex; gap: 10px; flex-direction: column; gap: 15px; grid-row: span 2;">
+                <div class="form-group" style="flex:1">
+                    <label>Code</label>
+                    <input type="text" id="newItemCode">
+                </div>
+                <div class="form-group" style="flex:1">
+                    <label>Price</label>
+                    <input type="number" id="newItemPrice">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-clear" style="padding: 10px 20px;" onclick="toggleModal()">Cancel</button>
+            <button class="btn btn-complete" style="padding: 10px 20px;" onclick="saveItem()">Save</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
