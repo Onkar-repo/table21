@@ -1,0 +1,72 @@
+package info.ogkapps.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+//Class Definition begins here...
+@Entity
+public class Tables {
+
+//  Fields begins here...
+//  Unnecessary column, added only to fulfill mapping requirement based on (primary key field required)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long tablePK;
+	
+//  This tableUser is a foreign key reference (Users.userId)
+	Long tableUser;
+	
+	Short tableNumber;
+	
+	String tableStatus;
+	
+//  Constructors begins here...
+	public Tables(Long tableUser, Short tableNumber, String tableStatus) {
+		super();
+		this.tableUser = tableUser;
+		this.tableNumber = tableNumber;
+		this.tableStatus = tableStatus;
+	}
+	
+//  Getters Setters begins here...
+	public Long getTableUser() {
+		return tableUser;
+	}
+
+	public void setTableUser(Long tableUser) {
+		this.tableUser = tableUser;
+	}
+
+	public Short getTableNumber() {
+		return tableNumber;
+	}
+
+	public void setTableNumber(Short tableNumber) {
+		this.tableNumber = tableNumber;
+	}
+
+	public String getTableStatus() {
+		return tableStatus;
+	}
+
+	public void setTableStatus(String tableStatus) {
+		this.tableStatus = tableStatus;
+	}
+
+	public Long getTablePK() {
+		return tablePK;
+	}
+
+	public void setTablePK(Long tablePK) {
+		this.tablePK = tablePK;
+	}
+
+	//  To String begins here...
+	@Override
+	public String toString() {
+		return "Tables [tableUser=" + tableUser + ", tableNumber=" + tableNumber + ", tableStatus=" + tableStatus + "]";
+	}
+	
+}
