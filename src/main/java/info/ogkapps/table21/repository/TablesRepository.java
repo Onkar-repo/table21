@@ -1,14 +1,14 @@
-package info.ogkapps.repository;
+package info.ogkapps.table21.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import info.ogkapps.entity.BilledItems;
+import info.ogkapps.table21.entity.Tables;
 
 //Interface Definition begins here...
-public interface BilledItemsRepository extends JpaRepository<BilledItems, Long>{
+public interface TablesRepository extends JpaRepository<Tables, Long> {
 
 //Derived query methods begins here...
 	
 //Custom query methods begins here...
-	
+
 }

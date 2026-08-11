@@ -1,11 +1,11 @@
-package info.ogkapps.repository;
+package info.ogkapps.table21.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import info.ogkapps.entity.Bills;
+import info.ogkapps.table21.entity.Stocks;
 
 //Interface Definition begins here...
-public interface BillsRepository extends JpaRepository<Bills, Long>{
+public interface StocksRepository extends JpaRepository<Stocks, Long>{
 
 //Derived query methods begins here...
 	

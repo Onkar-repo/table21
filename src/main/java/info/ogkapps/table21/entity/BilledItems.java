@@ -1,4 +1,4 @@
-package info.ogkapps.entity;
+package info.ogkapps.table21.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

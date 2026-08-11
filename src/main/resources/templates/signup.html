@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en" xmlns:th="http://thymeleaf.org"> 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -160,34 +160,82 @@
 
         <h1 class="form-title">Sign Up</h1>
         <p class="form-subtitle">Register to get started</p>
-
         <div class="form-group">
-            <input type="text" placeholder="Name" id="reg_username" name="Username" autocomplete="username">
+            <input type="text" placeholder="Name" id="reg_username" name="Username" autocomplete="username" />
         </div>
 
         <div class="form-group">
-            <input type="email" placeholder="Email" id="reg_email" name="Email" autocomplete="email">
+            <input type="email" placeholder="Email" id="reg_email" name="Email" autocomplete="email" />
         </div>
         
         <div class="form-group">
-            <input type="password" placeholder="Password" id="reg_password" name="Password" autocomplete="new-password">
+            <input type="password" placeholder="Password" id="reg_password" name="Password" autocomplete="new-password" />
         </div>
 
         <div class="form-group">
-            <input type="password" placeholder="Confirm Password" id="reg_confirm_password" name="ConfirmPassword" autocomplete="new-password">
+            <input type="password" placeholder="Confirm Password" id="reg_confirm_password" name="ConfirmPassword" autocomplete="new-password" />
         </div>
 
-        <button class="btn-primary" onclick="validateSignUp()">Sign Up</button>
-
+        <button class="btn-primary" onClick="validateSignUp();">Sign Up</button>
         <div class="login-redirect">
             Already have an account? <a href="index.html">Log In</a>
         </div>
     </div>
 
     <script>
+		async function SendData()
+		{
+			try
+			{
+			const userObject = {
+									
+									userName: document.getElementById('reg_username').value,
+									userEmail: document.getElementById('reg_email').value,
+									userPassword: document.getElementById('reg_password').value,
+								};
+								const userObjectJSON = JSON.stringify(userObject);
+								const mhb = {
+									method: 'POST',
+									headers: {'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*'},
+									body: userObjectJSON
+								};
+								const signupResponse = await fetch("http://localhost:8080/signup",mhb);
+								if(!signupResponse.ok)
+								throw new Error(signupResponse.status + " occured.");
+								const textResponse = await signupResponse.text();
+								alert(textResponse);
+			}
+			catch(error)
+			{
+				console.log(error);
+			}
+									
+		}
+		
         function validateSignUp() {
-            console.log("Validating sign up details...");
-            // Custom registration check or validation can be added here
+			
+			const un = document.getElementById('reg_username').value;
+			const ue = document.getElementById('reg_email').value;
+			const up = document.getElementById('reg_password').value;
+			const ucp = document.getElementById('reg_confirm_password').value;
+			
+			if(un==="" || ue==="" || up==="" || ucp==="")
+				{
+					alert("All fields are compulsory. Fill up all.");
+					document.getElementById('reg_username').focus();
+				}
+				else if(up!==ucp)
+				{
+					alert("Password confirmation does not match. Re-enter.");
+					document.getElementById('reg_password').value="";
+					document.getElementById('reg_confirm_password').value="";
+					document.getElementById('reg_password').focus();			
+				}
+				else
+				{
+					SendData();
+				}
+           
         }
     </script>
 </body>
