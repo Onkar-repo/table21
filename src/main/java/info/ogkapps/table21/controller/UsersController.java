@@ -1,6 +1,10 @@
 package info.ogkapps.table21.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,5 +42,11 @@ public class UsersController {
 			return "unknown";
 		}
 	}
+	
+	  @ExceptionHandler(HttpMessageNotReadableException.class)
+	    public ResponseEntity<String> handleInvalidJson(HttpMessageNotReadableException ex) {
+	        // Returns the string "unknown" with a 400 Bad Request status code
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unknown");
+	    }
 
 }

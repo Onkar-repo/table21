@@ -17,7 +17,7 @@ public class UsersService {
 	
 	public boolean saveIfNotExist(String userName, String userEmail, String userPassword) {
 		
-		if(usersRepository.existsByEmail(userEmail)) {
+		if(usersRepository.existsByUserEmail(userEmail)) {
 			return false;
 		}
 			
