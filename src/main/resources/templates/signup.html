@@ -367,7 +367,7 @@
 	</div>
 
 	<script>
-
+	let errName;
 		function clean() {
 			document.getElementById("reg_username").value = "";
 			document.getElementById("reg_email").value = "";
@@ -398,9 +398,11 @@
 				{
 					case "saved":
 					showAlert("Success","User registered successfully. Click login link to begin.");
+					errName = 1;
 					break;
 					case "exists":
 					showAlert("Failure","User with " + userObject.userEmail + " already exists.");
+					errName = 2;
 				}
 				
 			}
@@ -419,14 +421,17 @@
 
 			if (un === "" || ue === "" || up === "" || ucp === "") {
 				showAlert("Validation","All fields are compulsory. Fill up all.");
-				document.getElementById('reg_username').focus();
+				errName = 3;
+				//document.getElementById('reg_username').focus();
 			}
-			else if(!document.getElementById('reg_email').checkValidity()){
+			else if(!(document.getElementById('reg_email').checkValidity() && ue.split("@")[1].includes("."))){
 				showAlert("Validation","Email id format is incorrect.");
+				errName = 4;
 			}
 			else if (up !== ucp) {
 			
 				showAlert("Validation","Password confirmation does not match.");
+				errName = 5;
 			}
 			else {
 				SendData();
@@ -449,8 +454,28 @@
 		function closeAlert() {
 			const overlay = document.getElementById('customAlertOverlay');
 			overlay.classList.remove('active');
-			clean();
+			switch(errName)
+			{
+				case 1:
+					clean();
+					break;
+				case 2:
+					document.getElementById('reg_email').focus();
+					break;
+				case 3:
+					document.getElementById('reg_username').focus();
+					break;
+				case 4:
+					document.getElementById('reg_email').focus();
+					break;
+				case 5:
+					document.getElementById('reg_confirm_password').focus();
+			}
+			errName = 0;
 		}
+		
+		"abc@pqr".slice
+		
 	</script>
 </body>
 
