@@ -24,6 +24,9 @@ public class UsersController {
 		this.usersService = usersService;
 	}
 
+	
+	/*Sign Up Page Section*/
+	
 	@GetMapping("/signup")
 	public String signupGet() {
 		return "signup";
@@ -36,17 +39,24 @@ public class UsersController {
 			String userName = jsonNode.get("userName").stringValue();
 			String userEmail = jsonNode.get("userEmail").stringValue();
 			String userPassword = jsonNode.get("userPassword").stringValue();
-			return  usersService.saveIfNotExist(userName, userEmail, userPassword) ? "saved" : "exists";
-			
+			return usersService.saveIfNotExist(userName, userEmail, userPassword) ? "saved" : "exists";
+
 		} catch (Exception e) {
 			return "unknown";
 		}
 	}
 	
-	  @ExceptionHandler(HttpMessageNotReadableException.class)
-	    public ResponseEntity<String> handleInvalidJson(HttpMessageNotReadableException ex) {
-	        // Returns the string "unknown" with a 400 Bad Request status code
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unknown");
-	    }
+	/*Log In Page Section*/
+	
+	@GetMapping("/login")
+	public String loginGet() {
+		return "login";
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<String> handleInvalidJson(HttpMessageNotReadableException ex) {
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("unknown");
+	}
 
 }

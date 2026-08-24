@@ -1,0 +1,154 @@
+/* Alert Box Dialog */
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+	background: #f4f4f7;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	padding: 20px;
+}
+
+/* Demo Trigger Button Styling */
+.btn-trigger {
+	padding: 14px 28px;
+	background: #65407D;
+	color: #ffffff;
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	box-shadow: 0 4px 12px rgba(101, 64, 125, 0.3);
+	transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn-trigger:hover {
+	background: #523366;
+}
+
+.btn-trigger:active {
+	transform: scale(0.98);
+}
+
+/* Modal Overlay */
+.dialog-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(31, 41, 55, 0.5);
+	/* Semi-transparent dark backdrop */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.25s ease, visibility 0.25s ease;
+	z-index: 1000;
+}
+
+.dialog-overlay.active {
+	opacity: 1;
+	visibility: visible;
+}
+
+/* Responsive Dialog Container */
+.dialog-card {
+	background: #ffffff;
+	width: 100%;
+	max-width: 400px;
+	padding: 32px 24px;
+	border-radius: 12px;
+	box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+	text-align: center;
+	transform: scale(0.92);
+	transition: transform 0.25s ease;
+}
+
+.dialog-overlay.active .dialog-card {
+	transform: scale(1);
+}
+
+/* Alert Icon Badge ("!") */
+.dialog-icon-container {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+
+.dialog-icon-badge {
+	background: #65407D;
+	color: #ffffff;
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 26px;
+	font-weight: bold;
+	box-shadow: 0 4px 12px rgba(101, 64, 125, 0.3);
+}
+
+/* Dialog Header Text */
+.dialog-title {
+	font-size: 20px;
+	font-weight: 700;
+	color: #1f2937;
+	margin-bottom: 8px;
+}
+
+.dialog-subtitle {
+	font-size: 14px;
+	color: #6b7280;
+	line-height: 1.5;
+	margin-bottom: 24px;
+}
+
+/* Alert Action (Full-width single button) */
+.dialog-actions {
+	display: flex;
+}
+
+.btn-dialog {
+	width: 100%;
+	padding: 12px;
+	border-radius: 8px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	outline: none;
+}
+
+/* Primary Alert Button */
+.btn-primary {
+	background: #65407D;
+	color: #ffffff;
+	border: 1px solid #65407D;
+}
+
+.btn-primary:hover {
+	background: #523366;
+	border-color: #523366;
+}
+
+.btn-primary:active {
+	transform: scale(0.98);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 480px) {
+	.dialog-card {
+		padding: 24px 18px;
+	}
+}

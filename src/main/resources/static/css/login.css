@@ -1,0 +1,160 @@
+       /* Modern Reset & Professional Base Styles */
+       * {
+           box-sizing: border-box;
+           margin: 0;
+           padding: 0;
+           font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+       }
+
+       body {
+           background: #f4f4f7;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           min-height: 100vh;
+           padding: 20px;
+       }
+
+       /* Responsive Card Container */
+       .login-card {
+           background: #ffffff;
+           width: 100%;
+           max-width: 400px; /* Perfect desktop width */
+           padding: 40px 30px;
+           border-radius: 12px;
+           box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
+           text-align: center;
+       }
+
+       /* Logo Icon ("T") styling */
+       .logo-container {
+           display: flex;
+           justify-content: center;
+           margin-bottom: 30px;
+       }
+
+
+/* Form Header Text */
+       .form-title {
+           font-size: 22px;
+           font-weight: 700;
+           color: #1f2937;
+           margin-bottom: 8px;
+       }
+
+       .form-subtitle {
+           font-size: 14px;
+           color: #6b7280;
+           margin-bottom: 24px;
+       }
+	
+	
+       .logo-badge {
+           background: #65407D; /* Modern corporate indigo/blue changed to violet */
+           color: #ffffff;
+           width: 60px;
+           height: 60px;
+           border-radius: 50%;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           font-size: 28px;
+           font-weight: bold;
+           box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+       }
+
+       /* Form Controls */
+       .form-group {
+           margin-bottom: 20px;
+           text-align: left;
+       }
+	
+	input[type="text"],
+       input[type="email"],
+       input[type="password"] {
+           width: 100%;
+           padding: 14px 16px;
+           font-size: 16px; /* Prevents iOS auto-zoom on focus */
+           border: 1px solid #d1d5db;
+           border-radius: 8px;
+           background-color: #f9fafb;
+           transition: all 0.3s ease;
+           outline: none;
+       }
+
+       input[type="text"]:focus,
+       input[type="password"]:focus {
+           border-color: #65407D;
+           background-color: #ffffff;
+           box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+       }
+
+       /* Primary Action Button (Log In) */
+       .btn-primary {
+           width: 100%;
+           padding: 14px;
+           background: #65407D;
+           color: white;
+           border: none;
+           border-radius: 8px;
+           font-size: 16px;
+           font-weight: 600;
+           cursor: pointer;
+           transition: background 0.2s ease, transform 0.1s ease;
+           margin-top: 10px;
+       }
+
+       .btn-primary:hover {
+           background: #523366;
+       }
+
+       .btn-primary:active {
+           transform: scale(0.98);
+       }
+
+       /* Secondary Action Button (Sign Up) */
+       .btn-secondary {
+           width: 100%;
+           padding: 12px;
+           background: transparent;
+           color: #65407D;
+           border: 2px solid #65407D;
+           border-radius: 8px;
+           font-size: 15px;
+           font-weight: 600;
+           cursor: pointer;
+           transition: all 0.2s ease;
+           margin-top: 12px;
+       }
+
+       .btn-secondary:hover {
+           background: rgba(79, 70, 229, 0.05);
+       }
+
+       /* Links and Footer Elements */
+       .forgot-password {
+           display: inline-block;
+           margin-top: 20px;
+           color: #6b7280;
+           font-size: 14px;
+           text-decoration: none;
+           cursor: pointer;
+           transition: color 0.2s ease;
+       }
+
+       .forgot-password:hover {
+           color: #65407D;
+           text-decoration: underline;
+       }
+
+       /* Mobile specific adjustments */
+       @media (max-width: 480px) {
+           body {
+               padding: 15px;
+               background: #ffffff; /* Seamless full-bleed on small mobile devices */
+           }
+           .login-card {
+               box-shadow: none;
+               padding: 20px 10px;
+           }
+       }

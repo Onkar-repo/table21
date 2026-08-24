@@ -4,170 +4,28 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Log In</title>
-    <style>
-        /* Modern Reset & Professional Base Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background: #f4f4f7;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        /* Responsive Card Container */
-        .login-card {
-            background: #ffffff;
-            width: 100%;
-            max-width: 400px; /* Perfect desktop width */
-            padding: 40px 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
-            text-align: center;
-        }
-
-        /* Logo Icon ("T") styling */
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-
- /* Form Header Text */
-        .form-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 8px;
-        }
-
-        .form-subtitle {
-            font-size: 14px;
-            color: #6b7280;
-            margin-bottom: 24px;
-        }
-		
-		
-        .logo-badge {
-            background: #65407D; /* Modern corporate indigo/blue changed to violet */
-            color: #ffffff;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 28px;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-        }
-
-        /* Form Controls */
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 16px; /* Prevents iOS auto-zoom on focus */
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            background-color: #f9fafb;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        input[type="text"]:focus,
-        input[type="password"]:focus {
-            border-color: #65407D;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-        }
-
-        /* Primary Action Button (Log In) */
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            background: #65407D;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease;
-            margin-top: 10px;
-        }
-
-        .btn-primary:hover {
-            background: #4338ca;
-        }
-
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
-
-        /* Secondary Action Button (Sign Up) */
-        .btn-secondary {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            color: #65407D;
-            border: 2px solid #65407D;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 12px;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(79, 70, 229, 0.05);
-        }
-
-        /* Links and Footer Elements */
-        .forgot-password {
-            display: inline-block;
-            margin-top: 20px;
-            color: #6b7280;
-            font-size: 14px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .forgot-password:hover {
-            color: #65407D;
-            text-decoration: underline;
-        }
-
-        /* Mobile specific adjustments */
-        @media (max-width: 480px) {
-            body {
-                padding: 15px;
-                background: #ffffff; /* Seamless full-bleed on small mobile devices */
-            }
-            .login-card {
-                box-shadow: none;
-                padding: 20px 10px;
-            }
-        }
-    </style>
+	<link rel="stylesheet" href="/css/login.css">
+	<link rel="stylesheet" href="/css/alert.css">
 </head>
-<body onLoad="document.getElementById('edit_65637dac').focus()">
+<body onLoad="document.getElementById('reg_email').focus()">
 
+	<!-- Custom Alert Modal Container -->
+		<div class="dialog-overlay" id="customAlertOverlay">
+			<div class="dialog-card">
+				<div class="dialog-icon-container">
+					<div class="dialog-icon-badge">!</div>
+				</div>
+
+				<h2 class="dialog-title" id="alertTitle">Alert Title</h2>
+				<p class="dialog-subtitle" id="alertMessage">This is an important alert notification message.</p>
+
+				<div class="dialog-actions">
+					<button class="btn-dialog btn-primary" id="alertOkBtn" onclick="closeAlert()">OK</button>
+				</div>
+			</div>
+		</div>
+
+	
     <div class="login-card">
         <div class="logo-container">
             <div class="logo-badge">T</div>
@@ -178,14 +36,14 @@
 
 
         <div class="form-group">
-            <input type="text" value="" placeholder="Username" id="edit_65637dac" name="Username" autocomplete="username">
+            <input type="email" value="" placeholder="Email" id="reg_email" name="Username" autocomplete="username">
         </div>
         
         <div class="form-group">
-            <input type="password" value="" placeholder="Password" id="edit_5ddaa22c" name="Password" autocomplete="current-password">
+            <input type="password" value="" placeholder="Password" id="reg_password" name="Password" autocomplete="current-password">
         </div>
 
-        <button class="btn-primary" onclick="validateInput()">Log In</button>
+        <button class="btn-primary" onclick="validateLogIn()">Log In</button>
         <button class="btn-secondary">Sign Up</button>
 
         <div>
@@ -193,13 +51,8 @@
         </div>
     </div>
 
-    <script>
-        // Placeholder function to ensure your click handler doesn't crash before script.js loads
-        function validateInput() {
-            console.log("Validating inputs...");
-            // Your custom logic or external script.js will handle this.
-        }
+    <script type="text/javascript" src="/js/login.js">
+       
     </script>
-    <script src="script.js"></script>
 </body>
 </html>
