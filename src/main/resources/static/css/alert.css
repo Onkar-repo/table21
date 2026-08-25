@@ -1,4 +1,5 @@
 /* Alert Box Dialog */
+/*
 * {
 	box-sizing: border-box;
 	margin: 0;
@@ -13,7 +14,7 @@ body {
 	align-items: center;
 	min-height: 100vh;
 	padding: 20px;
-}
+}*/
 
 /* Demo Trigger Button Styling */
 .btn-trigger {
@@ -131,18 +132,18 @@ body {
 }
 
 /* Primary Alert Button */
-.btn-primary {
+.dialog-card .btn-primary {
 	background: #65407D;
 	color: #ffffff;
 	border: 1px solid #65407D;
 }
 
-.btn-primary:hover {
+.dialog-card .btn-primary:hover {
 	background: #523366;
 	border-color: #523366;
 }
 
-.btn-primary:active {
+.dialog-card .btn-primary:active {
 	transform: scale(0.98);
 }
 

@@ -69,7 +69,8 @@
            text-align: left;
        }
 	
-	input[type="text"],
+
+	   input[type="text"],
        input[type="email"],
        input[type="password"] {
            width: 100%;
@@ -82,11 +83,13 @@
            outline: none;
        }
 
-       input[type="text"]:focus,
+	   
+	   input[type="text"]:focus,
+       input[type="email"]:focus,
        input[type="password"]:focus {
            border-color: #65407D;
            background-color: #ffffff;
-           box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+           box-shadow: 0 0 0 4px rgba(101, 64, 125, 0.25);
        }
 
        /* Primary Action Button (Log In) */

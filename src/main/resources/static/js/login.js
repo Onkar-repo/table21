@@ -23,7 +23,8 @@ async function SendData() {
 					showAlert("Authentication","Invalid email or password. Sign up if not registered yet.");
 					break;
 				case "sessionStarted":
-					window.location.href = "/dashboard";
+					console.log("/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString());
+					window.location.href = "/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString();
 					break;
 				case "error":
 					showAlert("Error","Could not authenticate right now. Try after some time.");
