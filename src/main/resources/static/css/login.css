@@ -89,7 +89,7 @@
        input[type="password"]:focus {
            border-color: #65407D;
            background-color: #ffffff;
-           box-shadow: 0 0 0 4px rgba(101, 64, 125, 0.25);
+           box-shadow: 0 0 0 4px rgba(101, 64, 125, 0.1);
        }
 
        /* Primary Action Button (Log In) */
