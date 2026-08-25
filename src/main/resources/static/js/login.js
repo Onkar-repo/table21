@@ -12,9 +12,25 @@ async function SendData() {
             body: userObjectJSON
         };
         const loginResponse = await fetch("http://localhost:8080/login", mhb);
-        if (!loginResponse.ok)
-            throw new Error(loginResponse.status + " occured.");
-      //  const textResponse = await loginResponse.text();
+        if (!loginResponse.ok){
+			console.log(loginResponse.status + " : " + loginResponse.statusText); // temporary message
+		}
+		else{
+			const textResponse = await loginResponse.text();
+			console.log(textResponse);
+			switch(textResponse){
+				case "wrongCred":
+					showAlert("Authentication","Invalid email or password. Sign up if not registered yet.");
+					break;
+				case "sessionStarted":
+					window.location.href = "/dashboard";
+					break;
+				case "error":
+					showAlert("Error","Could not authenticate right now. Try after some time.");
+			}
+		}
+     
+      
 
     }
     catch (error) {

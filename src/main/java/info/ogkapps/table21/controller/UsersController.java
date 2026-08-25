@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import info.ogkapps.table21.service.UsersService;
+import jakarta.servlet.http.HttpSession;
 import tools.jackson.databind.JsonNode;
 
 //  Class Definition begins here...
@@ -42,7 +43,7 @@ public class UsersController {
 			return usersService.saveIfNotExist(userName, userEmail, userPassword) ? "saved" : "exists";
 
 		} catch (Exception e) {
-			return "unknown";
+			return "error";
 		}
 	}
 	
@@ -52,7 +53,36 @@ public class UsersController {
 	public String loginGet() {
 		return "login";
 	}
-
+	
+	@PostMapping("/login")
+	@ResponseBody
+	public String loginPost(@RequestBody JsonNode jsonNode, HttpSession session){
+		try {
+			System.out.println("entered loginPost()");
+			
+			String userEmail = jsonNode.get("userEmail").stringValue();
+			String userPassword = jsonNode.get("userPassword").stringValue();
+			
+			if (usersService.userAuthenticated(userEmail, userPassword)) {
+				session.setAttribute(userEmail, userEmail);
+				session.setMaxInactiveInterval(1200);
+				System.out.println("entered true auth");
+				return "sessionStarted";
+			}
+			else {
+				System.out.println("entered false auth");
+				return "wrongCred";
+			}
+			
+		} catch (Exception e) {
+			System.out.println("entered error");
+			return "error";
+		}
+		
+		
+		
+	}
+	
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<String> handleInvalidJson(HttpMessageNotReadableException ex) {
 
