@@ -1,0 +1,219 @@
+:root {
+    --primary: #65407D;
+    --primary-light: #9169AC;
+    --secondary: #f4f4f7;
+    --bg-body: #f4f4f7;
+    --text-dark: #2d2d2d;
+    --text-light: #ffffff;
+    --border-color: #d1cfc0;
+    --success: #27ae60;
+    --danger: #c0392b;
+}
+
+* { box-sizing: border-box; }
+
+body { 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    background-color: var(--bg-body); 
+    margin: 0; 
+    display: flex; 
+    flex-direction: column; /* Stack vertically on small screens */
+    min-height: 100vh;
+    color: var(--text-dark);
+}
+
+/* --- Sidebar - Table Selection --- */
+.sidebar {
+    width: 100%; /* Spans full width on mobile */
+    background-color: var(--secondary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.table-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.table-btn {
+    aspect-ratio: 1;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+}
+
+.table-btn:hover { background-color: var(--primary-light); }
+
+.admin-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.action-btn {
+    padding: 10px 5px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.action-btn:hover { background-color: var(--primary-light); }
+
+/* --- Main Content - Order Entry --- */
+.main-content {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-header {
+    display: flex;
+    flex-direction: column; /* Split header items onto mobile rows */
+    gap: 8px;
+    background: white;
+    padding: 12px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+}
+
+.order-header div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.75rem;
+    background: #eee;
+}
+.badge-occupied { background: #ffeaa7; color: #d35400; }
+
+.input-section {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 Column layout on small widths */
+    gap: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group label { font-size: 0.8rem; font-weight: 600; color: #666; }
+
+input, select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    color: var(--primary);
+    width: 100%;
+}
+
+/* --- Billing Area --- */
+.bill-container {
+    background: white;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+
+.bill-header {
+    background: #f9f9f9;
+    padding: 8px 10px;
+    display: grid;
+    grid-template-columns: 32px 32px 1fr 70px; /* 4 columns tailored for mobile viewport */
+    font-weight: bold;
+    font-size: 0.85rem;
+    border-bottom: 2px solid #eee;
+}
+
+.bill-items {
+    max-height: 250px; /* Limit height with dynamic scrolling on mobile */
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+}
+
+.bill-row {
+    display: grid;
+    grid-template-columns: 32px 32px 1fr 70px; /* Matches header perfectly */
+    padding: 10px 10px;
+    border-bottom: 1px dashed #eee;
+    align-items: center;
+}
+
+/* Fixed structural breakage from the prior layout setup */
+.bill-footer {
+    background: var(--primary);
+    color: white;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-amount { font-size: 1.4rem; font-weight: bold; }
+
+.footer-actions {
+    display: flex;
+    flex-direction: column; /* Stack action system buttons vertically */
+    gap: 8px;
+    padding: 5px 0 15px 0;
+}
+
+.btn-lg {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+.btn-print { background: #34495e; color: white; }
+.btn-clear { background: var(--danger); color: white; }
+.btn-complete { background: var(--success); color: white; }
+
+.user-info { margin-top: 10px; font-size: 0.75rem; color: #888; text-align: center; }
+
+
+
+
+
+
+
+
+/* --- Media Query for Larger Displays --- */
+@media (min-width: 768px) {
+    body { flex-direction: row; }
+    .sidebar { width: 380px; border-bottom: none; border-right: 1px solid var(--border-color); }
+    .order-header { flex-direction: row; }
+    .input-section { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+    .footer-actions { flex-direction: row; }
+    .bill-header, .bill-row { grid-template-columns: 60px 60px 1fr 100px; }
+}

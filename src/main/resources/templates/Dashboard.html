@@ -4,322 +4,50 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Professional POS System</title>
-    <style>
-        :root {
-            --primary: #65407D;
-            --primary-light: #9169AC;
-            --secondary: #f4f4f7;
-            --bg-body: #f4f4f7;
-            --text-dark: #2d2d2d;
-            --text-light: #ffffff;
-            --border-color: #d1cfc0;
-            --success: #27ae60;
-            --danger: #c0392b;
-        }
-
-        * { box-sizing: border-box; }
-        
-        body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            background-color: var(--bg-body); 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; /* Stack vertically on small screens */
-            min-height: 100vh;
-            color: var(--text-dark);
-        }
-
-        /* --- Sidebar - Table Selection --- */
-        .sidebar {
-            width: 100%; /* Spans full width on mobile */
-            background-color: var(--secondary);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .table-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-
-        .table-btn {
-            aspect-ratio: 1;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.1s, background 0.2s;
-        }
-
-        .table-btn:hover { background-color: var(--primary-light); }
-
-        .admin-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .action-btn {
-            padding: 10px 5px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .action-btn:hover { background-color: var(--primary-light); }
-
-        /* --- Main Content - Order Entry --- */
-        .main-content {
-            flex: 1;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .order-header {
-            display: flex;
-            flex-direction: column; /* Split header items onto mobile rows */
-            gap: 8px;
-            background: white;
-            padding: 12px 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            font-size: 0.9rem;
-        }
-
-        .order-header div {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.75rem;
-            background: #eee;
-        }
-        .badge-occupied { background: #ffeaa7; color: #d35400; }
-
-        .input-section {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* 2 Column layout on small widths */
-            gap: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .form-group { display: flex; flex-direction: column; gap: 5px; }
-        .form-group label { font-size: 0.8rem; font-weight: 600; color: #666; }
-        
-        input, select {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            color: var(--primary);
-            width: 100%;
-        }
-
-        /* --- Billing Area --- */
-        .bill-container {
-            background: white;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
-        }
-
-        .bill-header {
-            background: #f9f9f9;
-            padding: 8px 10px;
-            display: grid;
-            grid-template-columns: 32px 32px 1fr 70px; /* 4 columns tailored for mobile viewport */
-            font-weight: bold;
-            font-size: 0.85rem;
-            border-bottom: 2px solid #eee;
-        }
-
-        .bill-items {
-            max-height: 250px; /* Limit height with dynamic scrolling on mobile */
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.85rem;
-        }
-
-        .bill-row {
-            display: grid;
-            grid-template-columns: 32px 32px 1fr 70px; /* Matches header perfectly */
-            padding: 10px 10px;
-            border-bottom: 1px dashed #eee;
-            align-items: center;
-        }
-
-        /* Fixed structural breakage from the prior layout setup */
-        .bill-footer {
-            background: var(--primary);
-            color: white;
-            padding: 12px 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .total-amount { font-size: 1.4rem; font-weight: bold; }
-
-        .footer-actions {
-            display: flex;
-            flex-direction: column; /* Stack action system buttons vertically */
-            gap: 8px;
-            padding: 5px 0 15px 0;
-        }
-
-        .btn-lg {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
-        .btn-print { background: #34495e; color: white; }
-        .btn-clear { background: var(--danger); color: white; }
-        .btn-complete { background: var(--success); color: white; }
-
-        .user-info { margin-top: 10px; font-size: 0.75rem; color: #888; text-align: center; }
-
-        /* --- Modal Styles --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            padding: 10px;
-        }
-
-        .modal-form {
-            background: #ffffff;
-            width: 100%;
-            max-width: 400px; /* Responsive boundaries */
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-header {
-            background-color: var(--primary);
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-body { padding: 15px; }
-
-        .modal-footer {
-            padding: 15px;
-            background: #f9f9f9;
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
-        /* --- Media Query for Larger Displays --- */
-        @media (min-width: 768px) {
-            body { flex-direction: row; }
-            .sidebar { width: 380px; border-bottom: none; border-right: 1px solid var(--border-color); }
-            .order-header { flex-direction: row; }
-            .input-section { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-            .footer-actions { flex-direction: row; }
-            .bill-header, .bill-row { grid-template-columns: 60px 60px 1fr 100px; }
-        }
-    </style>
-    <script>
-    function toggleModal() {
-        const modal = document.getElementById('registerModal');
-        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-    }
-
-    function saveItem() {
-        const name = document.getElementById('newItemName').value;
-        if(name) {
-            alert(name + " added!");
-            toggleModal();
-        }
-    }
-    </script>
+	<link rel="stylesheet" href="/css/newitem.css">
+	<link rel="stylesheet" href="/css/dashboard.css">
+    <script type="text/javascript" src="/js/dashboard.js"></script>
 </head>
-<body>
+<body onload="loadUserName();">
 
     <!-- Sidebar -->
     <aside class="sidebar">
         <h3 style="margin-top:0; color: var(--primary); font-size: 1.1rem; margin-bottom: 10px;">Table Map</h3>
         <div class="table-grid">
-            <button class="table-btn active">1</button>
-            <button class="table-btn">2</button>
-            <button class="table-btn">3</button>
-            <button class="table-btn">4</button>
-            <button class="table-btn">5</button>
-            <button class="table-btn">6</button>
-            <button class="table-btn">7</button>
-            <button class="table-btn">8</button>
-            <button class="table-btn">9</button>
-            <button class="table-btn">10</button>
-            <button class="table-btn">11</button>
-            <button class="table-btn">12</button>
-            <button class="table-btn">13</button>
-            <button class="table-btn">14</button>
-            <button class="table-btn">15</button>
-            <button class="table-btn">16</button>
-            <button class="table-btn">17</button>
-            <button class="table-btn">18</button>
-            <button class="table-btn">19</button>
-            <button class="table-btn">20</button>
+            <button type="button" class="table-btn active">1</button>
+            <button type="button" class="table-btn">2</button>
+            <button type="button" class="table-btn">3</button>
+            <button type="button" class="table-btn">4</button>
+            <button type="button" class="table-btn">5</button>
+            <button type="button" class="table-btn">6</button>
+            <button type="button" class="table-btn">7</button>
+            <button type="button" class="table-btn">8</button>
+            <button type="button" class="table-btn">9</button>
+            <button type="button" class="table-btn">10</button>
+            <button type="button" class="table-btn">11</button>
+            <button type="button" class="table-btn">12</button>
+            <button type="button" class="table-btn">13</button>
+            <button type="button" class="table-btn">14</button>
+            <button type="button" class="table-btn">15</button>
+            <button type="button" class="table-btn">16</button>
+            <button type="button" class="table-btn">17</button>
+            <button type="button" class="table-btn">18</button>
+            <button type="button" class="table-btn">19</button>
+            <button type="button" class="table-btn">20</button>
         </div>
 
         <div class="admin-actions">
             <button class="action-btn" onclick="toggleModal();">Register Item</button>
             <button class="action-btn">Delete Item</button>
             <button class="action-btn">Edit Item</button>
-            <button class="action-btn">Delete All</button>
             <button class="action-btn">Item List</button>
             <button class="action-btn">Update Stock</button>
+            <button class="action-btn" onclick="closeTable();">Close Table</button>
             <button class="action-btn" style="grid-column: span 2; background: #95a5a6;" onclick="location.reload()">Log Out</button>
         </div>
         
         <div class="user-info">
-            <strong>Ramchandra123</strong> • Status: Online
+            <strong id="ue">Ramchandra123</strong> • Status: Online
         </div>
     </aside>
 
@@ -327,24 +55,24 @@
     <main class="main-content">
         <header class="order-header">
             <div>
-                <span><span style="color:#888">Date:</span> <strong>01.10.2025</strong></span>
-                <span><span style="color:#888">INV:</span> <strong>123456789</strong></span>
+                <span><span style="color:#888">Date:</span> <strong id="dt">01.10.2025</strong></span>
+                <span><span style="color:#888">INV:</span> <strong id="num">123456789</strong></span>
             </div>
             <div>
-                <span>Table: <strong style="font-size: 1.1rem;">10</strong></span>
-                <span class="badge badge-occupied">Occupied</span>
-                <span class="badge" style="background:#fab1a0; color:#c0392b;">Pending</span>
+                <span>Table: <strong style="font-size: 1.1rem;" id="tab">10</strong></span>
+                <span class="badge badge-occupied" id="stat">Occupied</span>
+                <span class="badge" style="background:#fab1a0; color:#c0392b;" id="pmt">Pending</span>
             </div>
         </header>
 
         <section class="input-section">
             <div class="form-group">
                 <label>Item Code</label>
-                <input type="text" placeholder="9999">
+                <input type="text" placeholder="9999" id="itmcode">
             </div>
             <div class="form-group" style="grid-column: span 2;">
                 <label>Item Name</label>
-                <select>
+                <select  id="itmlist">
                     <option>Select an item...</option>
                     <option selected>Paneer Tikka Butter Masala</option>
                     <option>Butter Naan</option>
@@ -352,11 +80,11 @@
             </div>
             <div class="form-group">
                 <label>Quantity</label>
-                <input type="number" value="1">
+                <input type="number" value="1"  id="qty">
             </div>
             <div class="form-group">
                 <label>Remove Sr.</label>
-                <input type="text" placeholder="Sr. No">
+                <input type="text" placeholder="Sr. No"  id="srno">
             </div>
         </section>
 
@@ -367,8 +95,8 @@
                 <span>Description</span>
                 <span style="text-align:right">Amount</span>
             </div>
-            <div class="bill-items">
-                <div class="bill-row">
+            <div class="bill-items"  id="itemlist">
+                <div class="bill-row"  id="1">
                     <span>01</span>
                     <span>02</span>
                     <span>Paneer Tikka Butter Masala</span>
@@ -380,48 +108,14 @@
                     <span>Butter Naan (Garlic)</span>
                     <span style="text-align:right">180.00</span>
                 </div>
+				<!-- Row Entry Started-->
                 <div class="bill-row">
                     <span>03</span>
                     <span>06</span>
                     <span>Matki Usal</span>
                     <span style="text-align:right">540.00</span>
                 </div>
-                <div class="bill-row">
-                    <span>04</span>
-                    <span>03</span>
-                    <span>Maka Poha</span>
-                    <span style="text-align:right">540.00</span>
-                </div>
-				 <div class="bill-row">
-                    <span>04</span>
-                    <span>03</span>
-                    <span>Maka Poha</span>
-                    <span style="text-align:right">540.00</span>
-                </div>
-				 <div class="bill-row">
-                    <span>04</span>
-                    <span>03</span>
-                    <span>Maka Poha</span>
-                    <span style="text-align:right">540.00</span>
-                </div>
-				 <div class="bill-row">
-                    <span>04</span>
-                    <span>03</span>
-                    <span>Maka Poha</span>
-                    <span style="text-align:right">540.00</span>
-                </div>
-				 <div class="bill-row">
-                    <span>04</span>
-                    <span>03</span>
-                    <span>Maka Poha</span>
-                    <span style="text-align:right">540.00</span>
-                </div>
-				 <div id="rtd" class="bill-row">
-                    <span>04</span>
-                    <span>03</span>
-                    <span>Maka Poha</span>
-                    <span style="text-align:right">590.00</span>
-                </div>
+				<!-- Row Entry Finished-->
             </div>
             <div class="bill-footer">
                 <span>Grand Total</span>
