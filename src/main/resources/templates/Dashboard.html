@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Professional POS System</title>
+    <title>Table21</title>
 	<link rel="stylesheet" href="/css/newitem.css">
 	<link rel="stylesheet" href="/css/dashboard.css">
     <script type="text/javascript" src="/js/dashboard.js"></script>
@@ -14,7 +14,7 @@
     <aside class="sidebar">
         <h3 style="margin-top:0; color: var(--primary); font-size: 1.1rem; margin-bottom: 10px;">Table Map</h3>
         <div class="table-grid">
-            <button type="button" class="table-btn active">1</button>
+            <button type="button" class="table-btn active" id="t1" onblur="">1</button>
             <button type="button" class="table-btn">2</button>
             <button type="button" class="table-btn">3</button>
             <button type="button" class="table-btn">4</button>
@@ -102,31 +102,31 @@
                     <span>Paneer Tikka Butter Masala</span>
                     <span style="text-align:right">540.00</span>
                 </div>
-                <div class="bill-row">
+                <div class="bill-row" id="2">
                     <span>02</span>
                     <span>04</span>
                     <span>Butter Naan (Garlic)</span>
                     <span style="text-align:right">180.00</span>
                 </div>
 				<!-- Row Entry Started-->
-                <div class="bill-row">
+                <div class="bill-row" id="3">
                     <span>03</span>
                     <span>06</span>
-                    <span>Matki Usal</span>
+                    <span>Matki Usal spicy</span>
                     <span style="text-align:right">540.00</span>
                 </div>
 				<!-- Row Entry Finished-->
             </div>
             <div class="bill-footer">
                 <span>Grand Total</span>
-                <span class="total-amount">₹ 720.00</span>
+                <span class="total-amount" id="total">₹ 720.00</span>
             </div>
         </section>
 
         <div class="footer-actions">
-            <button class="btn-lg btn-print">Print</button>
-            <button class="btn-lg btn-clear">Clear</button>
-            <button class="btn-lg btn-complete">Complete</button>
+            <button type="button" class="btn-lg btn-print" id="printButton">Print</button>
+            <button type="button" class="btn-lg btn-clear" id="clearButton">Clear</button>
+            <button type="button" class="btn-lg btn-complete" id="completeButton">Complete</button>
         </div>
     </main>
 

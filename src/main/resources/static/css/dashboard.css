@@ -49,7 +49,11 @@ body {
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.1s, background 0.2s;
+    transition: transform 0.1s, background-color 0.2s ease;
+}
+
+.table-btn:focus{
+	background-color: var(--primary-light);
 }
 
 .table-btn:hover { background-color: var(--primary-light); }
