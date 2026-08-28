@@ -1,9 +1,40 @@
 console.log("hello");
-
 function loadUserName(){
 	const querryString = window.location.search;
 	const querryParams =  new URLSearchParams(querryString);
 	document.getElementById('ue').innerText = querryParams.get('userEmail');
+}
+
+
+
+async function createEmptyBill(){
+	
+	try{
+	const newEmptyBillRequest = {
+		billUser: document.getElementById('ue').innerText,
+		billTable: document.getElementById("t1").value,
+		billStatus:	"Pending"
+	};
+const mhb = {
+	method : 'POST',
+	headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
+	body: JSON.stringify(newEmptyBillRequest)
+};
+newEmptyBillResponse = await fetch("http://localhost:8080/dashboard", mhb);
+if(!newEmptyBillResponse.ok){
+	console.log(newEmptyBillResponse.status + ": " + newEmptyBillResponse.statusText);
+}
+else{
+	jsonResponse = await newEmptyBillResponse.JSON();
+// retrive table bill and items data and populate on screen	
+	
+}
+
+
+}
+catch(err){
+	console.log(err);
+}
 }
 
 

@@ -10,6 +10,7 @@ public class Table21Application {
 	public static void main(String[] args) {
 	
 		SpringApplication.run(Table21Application.class, args);
+		//System.out.println(System.currentTimeMillis());
 	}
 
 }
