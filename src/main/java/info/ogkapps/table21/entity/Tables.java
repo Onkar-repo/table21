@@ -22,13 +22,17 @@ public class Tables {
 	
 	String tableStatus;
 	
+	Long tableBillId;
+	
 //  Constructors begins here...
-	public Tables(Long tableUser, Short tableNumber, String tableStatus) {
+	
+public Tables(Long tableUser, Short tableNumber, String tableStatus, Long tableBillId) {
 		super();
 		this.tableUser = tableUser;
 		this.tableNumber = tableNumber;
 		this.tableStatus = tableStatus;
-	}
+		this.tableBillId = tableBillId;
+	}	
 	
 //  Getters Setters begins here...
 	public Long getTableUser() {

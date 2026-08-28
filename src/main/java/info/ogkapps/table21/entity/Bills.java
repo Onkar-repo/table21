@@ -3,8 +3,6 @@ package info.ogkapps.table21.entity;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 //Class Definition begins here...
@@ -13,7 +11,7 @@ public class Bills {
 
 //  Fields begins here...
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long billId;
 
 //  This billUser is a foreign key reference (Users.userId)
@@ -30,8 +28,9 @@ public class Bills {
 
 	}
 
-	public Bills(Long billUser, Short billTable, String billStatus) {
+	public Bills(Long billId, Long billUser, Short billTable, String billStatus) {
 		super();
+		this.billId = billId;
 		this.billUser = billUser;
 		this.billTable = billTable;
 		this.billStatus = billStatus;

@@ -8,6 +8,7 @@ import info.ogkapps.table21.entity.Items;
 public interface ItemsRepository extends JpaRepository<Items, Long>{
 
 //  Derived query methods begins here...
+
 	
 //  Custom query methods begins here...
 	

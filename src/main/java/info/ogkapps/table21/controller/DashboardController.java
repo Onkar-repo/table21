@@ -9,12 +9,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import info.ogkapps.table21.dto.DashboardDTO;
 import info.ogkapps.table21.dto.LoadBilledItemsDTO;
+import info.ogkapps.table21.service.TablesService;
 import jakarta.servlet.http.HttpSession;
 
 
 // Class definition begins here...
 @Controller
 public class DashboardController {
+	
+	private final TablesService tablesService;
+	
+	public DashboardController(TablesService tablesService) {
+		super();
+		this.tablesService = tablesService;
+	}
 
 	@GetMapping("/dashboard")
 	public String dashboardGet(@RequestParam("userEmail") String userEmail ,HttpSession session) {
@@ -31,7 +39,7 @@ public class DashboardController {
 	@PostMapping("/dashboard/load")
 	public LoadBilledItemsDTO dashboardPost(@RequestBody DashboardDTO dashboardDTO, HttpSession session){
 		if (session.getAttribute(dashboardDTO.billUser)!=null && session.getAttribute(dashboardDTO.billUser).equals(dashboardDTO.billUser)) {
-			return null; // temp returning null	
+			return tablesService.loadItems(dashboardDTO.billUser, dashboardDTO.billTable);	
 		}
 		else {
 			return null; // temp returning null

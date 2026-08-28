@@ -8,6 +8,7 @@ import info.ogkapps.table21.entity.BilledItems;
 public interface BilledItemsRepository extends JpaRepository<BilledItems, Long>{
 
 //Derived query methods begins here...
+BilledItems[] findByBilledItemParent(Long billedItemParent);
 	
 //Custom query methods begins here...
 	
