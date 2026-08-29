@@ -14,7 +14,7 @@ public class BilledItems {
 //  Unnecessary column, added only to fulfill mapping requirement based on (primary key field required)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long BilledItemPK;
+	Long billedItemPk;
 	
 //  This billedItemParent is a foreign key reference (Bills.billId)
 	Long billedItemParent;
@@ -70,11 +70,11 @@ public class BilledItems {
 	}
 
 	public Long getBilledItemPK() {
-		return BilledItemPK;
+		return billedItemPk;
 	}
 
 	public void setBilledItemPK(Long billedItemPK) {
-		BilledItemPK = billedItemPK;
+		billedItemPk = billedItemPK;
 	}
 
 	//  To String begins here...

@@ -13,7 +13,7 @@ public class Tables {
 //  Unnecessary column, added only to fulfill mapping requirement based on (primary key field required)
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long tablePK;
+	Long tablePk;
 	
 //  This tableUser is a foreign key reference (Users.userId)
 	Long tableUser;
@@ -34,9 +34,21 @@ public Tables(Long tableUser, Short tableNumber, String tableStatus, Long tableB
 		this.tableBillId = tableBillId;
 	}	
 	
-//  Getters Setters begins here...
+public Tables() {
+	super();
+}
+
+	//  Getters Setters begins here...
 	public Long getTableUser() {
 		return tableUser;
+	}
+
+	public Long getTableBillId() {
+		return tableBillId;
+	}
+
+	public void setTableBillId(Long tableBillId) {
+		this.tableBillId = tableBillId;
 	}
 
 	public void setTableUser(Long tableUser) {
@@ -60,11 +72,11 @@ public Tables(Long tableUser, Short tableNumber, String tableStatus, Long tableB
 	}
 
 	public Long getTablePK() {
-		return tablePK;
+		return tablePk;
 	}
 
 	public void setTablePK(Long tablePK) {
-		this.tablePK = tablePK;
+		this.tablePk = tablePK;
 	}
 
 	//  To String begins here...
