@@ -20,7 +20,7 @@ public class Items {
 	
 	Integer itemCost;
 	
-	Short itemGST;
+	Short itemGst=0;
 	
 //  This itemUser is a foreign key reference (Users.userId)
 	Long itemUser;
@@ -37,7 +37,15 @@ public class Items {
 		this.itemUser = itemUser;
 	}
 
-//  Getters Setters begins here...
+public Items(String itemCode, String itemName, Integer itemCost, Long itemUser) {
+		super();
+		this.itemCode = itemCode;
+		this.itemName = itemName;
+		this.itemCost = itemCost;
+		this.itemUser = itemUser;
+	}
+
+	//  Getters Setters begins here...
 	public Long getItemId() {
 		return itemId;
 	}
@@ -71,11 +79,11 @@ public class Items {
 	}
 
 	public Short getItemGST() {
-		return itemGST;
+		return itemGst;
 	}
 
-	public void setItemGST(Short itemGST) {
-		this.itemGST = itemGST;
+	public void setItemGST(Short itemGst) {
+		this.itemGst = itemGst;
 	}
 
 	public Long getItemUser() {
