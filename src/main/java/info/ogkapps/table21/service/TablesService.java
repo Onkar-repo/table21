@@ -87,7 +87,7 @@ public class TablesService {
 							long itemid =  tbi.getBilledItemIdentity();
 							Items oit = itemsRepository.findById(itemid).get();
 							
-							String nesti1 =   tbi.getBilledItemSerial().toString();
+							String nesti1 =   tbi.getBilledItemPk().toString();// tbi.getBilledItemSerial().toString(); 
 							String nesti2 =   tbi.getBilledItemQuantity().toString();
 							String nesti3 =  oit.getItemName();
 							String nesti4 =  String.valueOf(oit.getItemCost()+oit.getItemGST());

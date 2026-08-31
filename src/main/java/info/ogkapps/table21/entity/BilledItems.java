@@ -73,7 +73,7 @@ public BilledItems() {
 		this.billedItemIdentity = billedItemIdentity;
 	}
 
-	public Long getBilledItemPK() {
+	public Long getBilledItemPk() {
 		return billedItemPk;
 	}
 

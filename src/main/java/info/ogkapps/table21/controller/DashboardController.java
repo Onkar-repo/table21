@@ -15,6 +15,7 @@ import info.ogkapps.table21.dto.DashboardDTO;
 import info.ogkapps.table21.dto.ItemsDTO;
 import info.ogkapps.table21.dto.LoadBilledItemsDTO;
 import info.ogkapps.table21.dto.RegisterItemsDTO;
+import info.ogkapps.table21.dto.RemoveItemDTO;
 import info.ogkapps.table21.service.ItemsService;
 import info.ogkapps.table21.service.TablesService;
 import jakarta.servlet.http.HttpSession;
@@ -97,5 +98,17 @@ public class DashboardController {
 		}
 	}
 	
+	@ResponseBody
+	@GetMapping("/dashboard/removeitem")
+	public List<BilledItemsDTO> dashboardGetForRemoveItem(@RequestBody RemoveItemDTO removeItemDTO,HttpSession session){
+		
+if (session.getAttribute(removeItemDTO.billUser)!=null && session.getAttribute(removeItemDTO.billUser).equals(removeItemDTO.billUser)) {
+			
+			return itemsService.removeItemAndReturnAll(removeItemDTO);
+		}
+		else {
+			return null;	
+		}
+	}
 	
 }
