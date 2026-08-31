@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import info.ogkapps.table21.dto.AddItemDTO;
+import info.ogkapps.table21.dto.BilledItemsDTO;
 import info.ogkapps.table21.dto.DashboardDTO;
 import info.ogkapps.table21.dto.ItemsDTO;
 import info.ogkapps.table21.dto.LoadBilledItemsDTO;
@@ -72,7 +74,28 @@ public class DashboardController {
 	@GetMapping("/dashboard/loaditems")
 	public List<ItemsDTO> dashboardGetforItems(@RequestParam("billUser") String billUser, HttpSession session){
 		
-		return itemsService.getAllItems(billUser);
+		if (session.getAttribute(billUser)!=null && session.getAttribute(billUser).equals(billUser)) {
+		
+			return itemsService.getAllItems(billUser);
+		}
+		else {
+			return null;
+		}
+		
 	}
+	
+	@ResponseBody
+	@PostMapping("/dashboard/additem")
+	public List<BilledItemsDTO> dashboardPost(@RequestBody AddItemDTO addItemDTO, HttpSession session){
+		
+		if (session.getAttribute(addItemDTO.billUser)!=null && session.getAttribute(addItemDTO.billUser).equals(addItemDTO.billUser)) {
+			
+			return itemsService.addItemAndReturnAll(addItemDTO);
+		}
+		else {
+			return null;	
+		}
+	}
+	
 	
 }

@@ -14,7 +14,9 @@ public interface ItemsRepository extends JpaRepository<Items, Long>{
 //  Derived query methods begins here...
 boolean existsByItemCode(String itemCode);
 boolean existsByItemName(String itemName);
+boolean existsByItemUser(Long itemUser);
 List<Items> findByItemUser(Long itemUser);
+List<Items> findByItemUserAndItemCodeAndItemName(Long itemUser, String itemCode, String itemName);
 	
 //  Custom query methods begins here...
 	
