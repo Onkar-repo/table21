@@ -36,7 +36,11 @@ public class BilledItems {
 		this.billedItemIdentity = billedItemIdentity;
 	}
 
-//  Getters Setters begins here...
+public BilledItems() {
+		super();
+	}
+
+	//  Getters Setters begins here...
 	public Long getBilledItemParent() {
 		return billedItemParent;
 	}

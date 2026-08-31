@@ -1,5 +1,6 @@
 package info.ogkapps.table21.service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class TablesService {
 			uid = usersRepository.findByUserEmail(userEmail).orElse(new Users("", "", "")).getUserId();
 			status = tablesRepository.findTableStatusByTableUserAndTableNumber(uid, Short.parseShort(tableNumber)).map(Tables::getTableStatus).orElse(null);
 			LoadBilledItemsDTO lbidto = new LoadBilledItemsDTO();
+			lbidto.itemList = new LinkedList<>();
 			if (uid!=null) {
 			
 				if (status==null) {
@@ -63,6 +65,7 @@ public class TablesService {
 					return lbidto;
 				}
 				else {
+					System.out.println("entered inside  else  of loaditems");
 					Long bn = tablesRepository.findTableBillIdByTableUserAndTableNumberAndTableStatus(uid, Short.parseShort(tableNumber), "Occupied").map(Tables::getTableBillId).orElse(null);
 					List<BilledItems> bi = billedItemsRepository.findByBilledItemParent(bn);
 					
@@ -77,8 +80,10 @@ public class TablesService {
 					int t=0;
 					
 					if (bi!=null) {
+						System.out.println("entered inside  if bi!=null");
 						for (BilledItems tbi : bi) 
 						 {
+							System.out.println("entered inside  loop");
 							long itemid =  tbi.getBilledItemIdentity();
 							Items oit = itemsRepository.findById(itemid).get();
 							
@@ -102,15 +107,19 @@ public class TablesService {
 			
 						
 		} catch (NullPointerException npe) {
+			System.out.println("entered inside  null pointer exception");
+			npe.printStackTrace();
 
 		}
 		catch(NumberFormatException nfe) {
+			System.out.println("entered inside  number format exception");
+			nfe.printStackTrace();
 			
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
+		System.out.println("reached eom");
 		return null;
 	}
 }
