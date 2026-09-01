@@ -79,7 +79,7 @@ public class ItemsService {
 			List<BilledItemsDTO> oidto = new LinkedList<>();
 			for (BilledItems i : billedItems) {
 				Items tItem = itemsRepository.findById(i.getBilledItemIdentity()).get();
-				String p1 = "0";
+				String p1 = i.getBilledItemPk().toString();
 				String p2 = i.getBilledItemQuantity().toString();
 				String p3 = tItem.getItemName();
 				String p4 = String.valueOf(tItem.getItemCost() + tItem.getItemGST());
@@ -93,9 +93,35 @@ public class ItemsService {
 		}
 
 	}
-	
-	public List<BilledItemsDTO> removeItemAndReturnAll(RemoveItemDTO removeItemDTO){
-		
-		return null; //temp
+
+	public List<BilledItemsDTO> removeItemAndReturnAll(RemoveItemDTO removeItemDTO) {
+		try {
+			Long bid = billedItemsRepository.findById(Long.valueOf(removeItemDTO.itemPk)).get().getBilledItemParent();
+			billedItemsRepository.deleteById(Long.valueOf(removeItemDTO.itemPk));
+			List<BilledItems> billedItems = billedItemsRepository.findByBilledItemParent(bid);
+
+			List<BilledItemsDTO> oidto = new LinkedList<>();
+
+			if (!billedItems.isEmpty()) {
+
+				for (BilledItems i : billedItems) {
+					Items tItem = itemsRepository.findById(i.getBilledItemIdentity()).get();
+					String p1 = i.getBilledItemPk().toString();
+					String p2 = i.getBilledItemQuantity().toString();
+					String p3 = tItem.getItemName();
+					String p4 = String.valueOf(tItem.getItemCost() + tItem.getItemGST());
+					oidto.add(new BilledItemsDTO(p1, p2, p3, p4));
+				}
+			}
+			else {
+				tablesRepository.deleteByTableBillId(bid);
+			}
+			return oidto;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; // temp
+		}
+
 	}
 }

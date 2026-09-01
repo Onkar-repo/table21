@@ -99,7 +99,7 @@ public class DashboardController {
 	}
 	
 	@ResponseBody
-	@GetMapping("/dashboard/removeitem")
+	@PostMapping("/dashboard/removeitem")
 	public List<BilledItemsDTO> dashboardGetForRemoveItem(@RequestBody RemoveItemDTO removeItemDTO,HttpSession session){
 		
 if (session.getAttribute(removeItemDTO.billUser)!=null && session.getAttribute(removeItemDTO.billUser).equals(removeItemDTO.billUser)) {

@@ -14,6 +14,7 @@ public interface TablesRepository extends JpaRepository<Tables, Long> {
 //Derived query methods begins here...
  Optional<Tables> findTableStatusByTableUserAndTableNumber(Long tableUser, Short tableNumber);
  Optional<Tables> findTableBillIdByTableUserAndTableNumberAndTableStatus(Long tableUser,Short tableNumber,String tableStatus);
+ void deleteByTableBillId(Long tableBillId);
 //Custom query methods begins here...
 
 }
