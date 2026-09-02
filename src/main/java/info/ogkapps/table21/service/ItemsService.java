@@ -131,12 +131,13 @@ public class ItemsService {
 	
 	public String clearItems(ClearItemsDTO clearItemsDTO) {
 		try {
-			
-			return null;
+			Long bid = Long.valueOf(clearItemsDTO.billNumber);  
+			billedItemsRepository.deleteByBilledItemParent(bid);
+			return "done";
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; // temp
+			return "failed"; // temp
 		}
 	}
 }

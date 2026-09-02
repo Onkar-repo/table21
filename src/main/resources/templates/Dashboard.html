@@ -37,17 +37,17 @@
         </div>
 
         <div class="admin-actions">
-            <button class="action-btn" onclick="toggleModal();">Register Item</button>
-            <button class="action-btn">Delete Item</button>
-            <button class="action-btn">Edit Item</button>
-            <button class="action-btn">Item List</button>
+            <button class="action-btn" onclick="toggleModal();">Register Items</button>
+            <button class="action-btn">Delete Items</button>
+            <button class="action-btn">Edit Items</button>
+            <button class="action-btn">Enlist Items</button>
             <button class="action-btn">Update Stock</button>
             <button class="action-btn" onclick="closeTable();">Close Table</button>
             <button class="action-btn" style="grid-column: span 2; background: #95a5a6;" onclick="location.reload()">Log Out</button>
         </div>
         
         <div class="user-info">
-            <strong id="ue">Ramchandra123</strong> • Status: Online
+            <strong id="ue">Ramchandra123</strong> • Status: Ready
         </div>
     </aside>
 
@@ -56,10 +56,10 @@
         <header class="order-header">
             <div>
                 <span><span style="color:#888">Date:</span> <strong id="dt">01.10.2025</strong></span>
-                <span><span style="color:#888">INV:</span> <strong id="num">123456789</strong></span>
+                <span><span style="color:#888">Inv:</span> <strong id="num">123456789</strong></span>
             </div>
             <div>
-                <span>Table: <strong style="font-size: 1.1rem;" id="tab">10</strong></span>
+                <span><span style="color:#888">Table:</span><strong style="font-size: 1.1rem;" id="tab">10</strong></span>
                 <span class="badge badge-occupied" id="stat">Occupied</span>
                 <span class="badge" style="background:#fab1a0; color:#c0392b;" id="pmt">Pending</span>
             </div>
@@ -154,8 +154,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="action-btn" style="background:#7f8c8d; padding: 8px 15px;" onclick="toggleModal()">Cancel</button>
-                <button class="action-btn" style="background:var(--success); padding: 8px 15px;" onclick="saveItem()">Save</button>
+                <button type="button" class="action-btn" style="background:#7f8c8d; padding: 8px 15px;" onclick="toggleModal()">Cancel</button>
+				<button type="button" class="action-btn" style="background:#7f8c8d; padding: 8px 15px;" onclick="toggleModal()">Add To Cart (0)</button>
+				<button type="button" class="action-btn" style="background:var(--success); padding: 8px 15px;" onclick="saveItem()">Send</button>
             </div>
         </div>
     </div>

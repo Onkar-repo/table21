@@ -13,6 +13,7 @@ public interface BilledItemsRepository extends JpaRepository<BilledItems, Long>{
 
 //Derived query methods begins here...
 List<BilledItems> findByBilledItemParent(Long billedItemParent);
+void deleteByBilledItemParent(Long billedItemParent);
 
 //Custom query methods begins here...
 	
