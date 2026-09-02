@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import info.ogkapps.table21.dto.AddItemDTO;
 import info.ogkapps.table21.dto.BilledItemsDTO;
+import info.ogkapps.table21.dto.ClearItemsDTO;
 import info.ogkapps.table21.dto.ItemsDTO;
 import info.ogkapps.table21.dto.RegisterItemsDTO;
 import info.ogkapps.table21.dto.RemoveItemDTO;
@@ -38,11 +39,15 @@ public class ItemsService {
 
 			for (ItemsDTO idto : registerItemsDTO.items) {
 
-				List<Items> userIdWiseTempList = itemsRepository.findByItemUser(uid);
+				if (itemsRepository.existsByItemUserAndItemCode(uid, idto.itemCode)
+						|| itemsRepository.existsByItemUserAndItemName(uid, idto.itemName)) {
+					continue;
 
-				if (!userIdWiseTempList.contains(new Items(idto.itemCode, idto.itemName, uid))) {
+				} else {
+
 					Items singleItem = new Items(idto.itemCode, idto.itemName, Integer.parseInt(idto.itemCost), uid);
 					itemsRepository.save(singleItem);
+
 				}
 
 			}
@@ -112,9 +117,8 @@ public class ItemsService {
 					String p4 = String.valueOf(tItem.getItemCost() + tItem.getItemGST());
 					oidto.add(new BilledItemsDTO(p1, p2, p3, p4));
 				}
-			}
-			else {
-				tablesRepository.deleteByTableBillId(bid);
+			} else {
+				//tablesRepository.deleteByTableBillId(bid);
 			}
 			return oidto;
 
@@ -123,5 +127,16 @@ public class ItemsService {
 			return null; // temp
 		}
 
+	}
+	
+	public String clearItems(ClearItemsDTO clearItemsDTO) {
+		try {
+			
+			return null;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; // temp
+		}
 	}
 }

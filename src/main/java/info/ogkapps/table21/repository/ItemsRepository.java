@@ -15,6 +15,10 @@ public interface ItemsRepository extends JpaRepository<Items, Long>{
 boolean existsByItemCode(String itemCode);
 boolean existsByItemName(String itemName);
 boolean existsByItemUser(Long itemUser);
+
+boolean existsByItemUserAndItemCode(Long itemUser,String itemCode);
+boolean existsByItemUserAndItemName(Long itemUser,String itemName);
+
 List<Items> findByItemUser(Long itemUser);
 List<Items> findByItemUserAndItemCodeAndItemName(Long itemUser, String itemCode, String itemName);
 	
