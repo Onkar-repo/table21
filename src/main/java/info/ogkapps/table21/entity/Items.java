@@ -47,6 +47,16 @@ public Items(String itemCode, String itemName, Integer itemCost, Long itemUser) 
 		this.itemUser = itemUser;
 	}
 
+	public Items(Long itemId, String itemCode, String itemName, Integer itemCost, Short itemGst, Long itemUser) {
+	super();
+	this.itemId = itemId;
+	this.itemCode = itemCode;
+	this.itemName = itemName;
+	this.itemCost = itemCost;
+	this.itemGst = itemGst;
+	this.itemUser = itemUser;
+}
+
 	//  Getters Setters begins here...
 	public Long getItemId() {
 		return itemId;

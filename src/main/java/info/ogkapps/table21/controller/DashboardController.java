@@ -65,6 +65,18 @@ public class DashboardController {
 			return null; // temp
 		}
 	}
+	
+	
+	@ResponseBody
+	@PostMapping("/dashboard/edititems")
+	public String dashboardPostForEditItems(@RequestBody RegisterItemsDTO registerItemsDTO, HttpSession session) {
+		if (session.getAttribute(registerItemsDTO.billUser) != null
+				&& session.getAttribute(registerItemsDTO.billUser).equals(registerItemsDTO.billUser)) {
+			return itemsService.editItems(registerItemsDTO);
+		} else {
+			return null; // temp
+		}
+	}
 
 	@ResponseBody
 	@GetMapping("/dashboard/loaditems")

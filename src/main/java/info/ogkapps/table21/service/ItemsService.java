@@ -57,6 +57,29 @@ public class ItemsService {
 		}
 	}
 
+	public String editItems(RegisterItemsDTO registerItemsDTO) {
+		try {
+			Long uid = usersRepository.findByUserEmail(registerItemsDTO.billUser).get().getUserId();
+			for (ItemsDTO idto : registerItemsDTO.items) {
+
+				if (itemsRepository.existsByItemUserAndItemCode(uid, idto.itemCode)
+						|| itemsRepository.existsByItemUserAndItemName(uid, idto.itemName)) {
+
+					Long iid = itemsRepository.findByItemUserAndItemCodeAndItemName(uid, idto.itemCode, idto.itemName)
+							.getFirst().getItemId();
+					itemsRepository.save(new Items(iid, idto.itemCode, idto.itemName, Integer.parseInt(idto.itemCost),
+							(short) 0, uid));
+				}
+			}
+
+			return "saved";
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "failed";
+		}
+	}
+
 	public List<ItemsDTO> getAllItems(String billUser) {
 		try {
 			Long uid = usersRepository.findByUserEmail(billUser).get().getUserId();
@@ -87,7 +110,7 @@ public class ItemsService {
 				String p1 = i.getBilledItemPk().toString();
 				String p2 = i.getBilledItemQuantity().toString();
 				String p3 = tItem.getItemName();
-				String p4 = String.valueOf(tItem.getItemCost() + tItem.getItemGST());
+				String p4 = String.valueOf(tItem.getItemCost() + tItem.getItemCost() * tItem.getItemGST());
 				oidto.add(new BilledItemsDTO(p1, p2, p3, p4));
 			}
 			return oidto;
@@ -114,11 +137,9 @@ public class ItemsService {
 					String p1 = i.getBilledItemPk().toString();
 					String p2 = i.getBilledItemQuantity().toString();
 					String p3 = tItem.getItemName();
-					String p4 = String.valueOf(tItem.getItemCost() + tItem.getItemGST());
+					String p4 = String.valueOf(tItem.getItemCost() + tItem.getItemCost() * tItem.getItemGST());
 					oidto.add(new BilledItemsDTO(p1, p2, p3, p4));
 				}
-			} else {
-				//tablesRepository.deleteByTableBillId(bid);
 			}
 			return oidto;
 
@@ -128,13 +149,13 @@ public class ItemsService {
 		}
 
 	}
-	
+
 	public String clearItems(ClearItemsDTO clearItemsDTO) {
 		try {
-			Long bid = Long.valueOf(clearItemsDTO.billNumber);  
+			Long bid = Long.valueOf(clearItemsDTO.billNumber);
 			billedItemsRepository.deleteByBilledItemParent(bid);
 			return "done";
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "failed"; // temp

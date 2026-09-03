@@ -5,11 +5,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-//  Class Definition begins here...
+
 @Entity
 public class BilledItems {
-
-//  Fields begins here...
 	
 //  Unnecessary column, added only to fulfill mapping requirement based on (primary key field required)
 	@Id
@@ -26,7 +24,6 @@ public class BilledItems {
 //  This billedItemIdentity is a foreign key reference (Items.itemId)
 	Long billedItemIdentity;
 
-//  Constructors begins here...
 	public BilledItems(Long billedItemParent, Short billedItemSerial, Integer billedItemQuantity,
 			Long billedItemIdentity) {
 		super();
@@ -40,7 +37,6 @@ public BilledItems() {
 		super();
 	}
 
-	//  Getters Setters begins here...
 	public Long getBilledItemParent() {
 		return billedItemParent;
 	}
@@ -81,7 +77,6 @@ public BilledItems() {
 		billedItemPk = billedItemPK;
 	}
 
-	//  To String begins here...
 	@Override
 	public String toString() {
 		return "BilledItems [billedItemParent=" + billedItemParent + ", billedItemSerial=" + billedItemSerial

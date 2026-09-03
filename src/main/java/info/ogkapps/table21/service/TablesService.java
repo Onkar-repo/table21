@@ -90,11 +90,11 @@ public class TablesService {
 							String nesti1 =   tbi.getBilledItemPk().toString();// tbi.getBilledItemSerial().toString(); 
 							String nesti2 =   tbi.getBilledItemQuantity().toString();
 							String nesti3 =  oit.getItemName();
-							String nesti4 =  String.valueOf(oit.getItemCost()+oit.getItemGST());
+							String nesti4 =  String.valueOf(oit.getItemCost()+ oit.getItemCost()* oit.getItemGST());
 														  
 							lbidto.itemList.add(new BilledItemsDTO(nesti1,nesti2,nesti3,nesti4));
 							
-							t+=(oit.getItemCost() + oit.getItemGST());
+							t+=(oit.getItemCost() + oit.getItemCost()* oit.getItemGST());
 						}
 					}
 					lbidto.billTotal = String.valueOf(t);
