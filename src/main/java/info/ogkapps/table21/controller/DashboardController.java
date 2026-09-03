@@ -130,5 +130,17 @@ public class DashboardController {
 			return null; // temp
 		}
 	}
+	
+	@ResponseBody
+	@GetMapping("/dashboard/completebill")
+	public String dashboardGetForCompleteBill(@RequestParam("billNumber") String billNumber,@RequestParam("billUser") String billUser, HttpSession session) {
+		if (session.getAttribute(billUser) != null && session.getAttribute(billUser).equals(billUser)) {
+
+			return null;
+		} else {
+			return null;// temp
+		}
+
+	}
 
 }

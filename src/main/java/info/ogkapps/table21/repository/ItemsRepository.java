@@ -21,6 +21,9 @@ boolean existsByItemUserAndItemName(Long itemUser,String itemName);
 
 List<Items> findByItemUser(Long itemUser);
 List<Items> findByItemUserAndItemCodeAndItemName(Long itemUser, String itemCode, String itemName);
+List<Items> findByItemUserAndItemCode(Long itemUser, String itemCode);
+List<Items> findByItemUserAndItemName(Long itemUser, String itemName);
+
 	
 //  Custom query methods begins here...
 	

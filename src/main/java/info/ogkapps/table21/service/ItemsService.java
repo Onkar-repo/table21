@@ -65,10 +65,30 @@ public class ItemsService {
 				if (itemsRepository.existsByItemUserAndItemCode(uid, idto.itemCode)
 						|| itemsRepository.existsByItemUserAndItemName(uid, idto.itemName)) {
 
-					Long iid = itemsRepository.findByItemUserAndItemCodeAndItemName(uid, idto.itemCode, idto.itemName)
-							.getFirst().getItemId();
-					itemsRepository.save(new Items(iid, idto.itemCode, idto.itemName, Integer.parseInt(idto.itemCost),
-							(short) 0, uid));
+					Long iid = null;
+
+					List<Items> ti = itemsRepository.findByItemUserAndItemCodeAndItemName(uid, idto.itemCode,
+							idto.itemName);
+					if (!ti.isEmpty()) {
+						iid = ti.getFirst().getItemId();
+					} else {
+						ti = itemsRepository.findByItemUserAndItemCode(uid, idto.itemCode);
+						if (!ti.isEmpty()) {
+							iid = ti.getFirst().getItemId();
+						} else {
+							ti = itemsRepository.findByItemUserAndItemName(uid, idto.itemName);
+							if (!ti.isEmpty()) {
+								iid = ti.getFirst().getItemId();
+							}
+						}
+
+					}
+
+					if (iid != null) {
+						itemsRepository.save(new Items(iid, idto.itemCode, idto.itemName,
+								Integer.parseInt(idto.itemCost), (short) 0, uid));
+					}
+
 				}
 			}
 
