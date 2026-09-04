@@ -130,7 +130,8 @@ public class ItemsService {
 				String p1 = i.getBilledItemPk().toString();
 				String p2 = i.getBilledItemQuantity().toString();
 				String p3 = tItem.getItemName();
-				String p4 = String.valueOf(tItem.getItemCost() + tItem.getItemCost() * tItem.getItemGST());
+				String p4 = String.valueOf(tItem.getItemCost() * i.getBilledItemQuantity()
+						+ tItem.getItemCost() * i.getBilledItemQuantity() * tItem.getItemGST());
 				oidto.add(new BilledItemsDTO(p1, p2, p3, p4));
 			}
 			return oidto;

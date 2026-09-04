@@ -136,7 +136,7 @@ public class DashboardController {
 	public String dashboardGetForCompleteBill(@RequestParam("billNumber") String billNumber,@RequestParam("billUser") String billUser, HttpSession session) {
 		if (session.getAttribute(billUser) != null && session.getAttribute(billUser).equals(billUser)) {
 
-			return null;
+			return tablesService.completeBill(billNumber);
 		} else {
 			return null;// temp
 		}

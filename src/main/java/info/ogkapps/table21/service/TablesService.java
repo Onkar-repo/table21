@@ -31,9 +31,6 @@ public class TablesService {
 	private final ItemsRepository itemsRepository;
 	private final CompletedBilledItemsRepository completedBilledItemsRepository;
 
-
-
-
 	public TablesService(TablesRepository tablesRepository, UsersRepository usersRepository,
 			BillsRepository billsRepository, BilledItemsRepository billedItemsRepository,
 			ItemsRepository itemsRepository, CompletedBilledItemsRepository completedBilledItemsRepository) {
@@ -46,24 +43,24 @@ public class TablesService {
 		this.completedBilledItemsRepository = completedBilledItemsRepository;
 	}
 
-
 	public LoadBilledItemsDTO loadItems(String userEmail, String tableNumber) {
 
 		Long uid;
 		String status;
 		try {
 			uid = usersRepository.findByUserEmail(userEmail).orElse(new Users("", "", "")).getUserId();
-			status = tablesRepository.findTableStatusByTableUserAndTableNumber(uid, Short.parseShort(tableNumber)).map(Tables::getTableStatus).orElse(null);
+			status = tablesRepository.findTableStatusByTableUserAndTableNumber(uid, Short.parseShort(tableNumber))
+					.map(Tables::getTableStatus).orElse(null);
 			LoadBilledItemsDTO lbidto = new LoadBilledItemsDTO();
 			lbidto.itemList = new LinkedList<>();
-			if (uid!=null) {
-			
-				if (status==null) {
+			if (uid != null) {
+
+				if (status == null) {
 					System.out.println("entered inside uid!null & status null");
 					long bn = System.currentTimeMillis();
 					tablesRepository.save(new Tables(uid, Short.parseShort(tableNumber), "Occupied", bn));
 					billsRepository.save(new Bills(bn, uid, Short.parseShort(tableNumber), "Pending"));
-					
+
 					lbidto.billNumber = String.valueOf(bn);
 					lbidto.billStatus = "Pending";
 					lbidto.billTable = tableNumber;
@@ -72,66 +69,63 @@ public class TablesService {
 					lbidto.requestType = "Load";
 					lbidto.tableStatus = "Occupied";
 					return lbidto;
-				}
-				else {
+				} else {
 					System.out.println("entered inside  else  of loaditems");
-					Long bn = tablesRepository.findTableBillIdByTableUserAndTableNumberAndTableStatus(uid, Short.parseShort(tableNumber), "Occupied").map(Tables::getTableBillId).orElse(null);
+					Long bn = tablesRepository.findTableBillIdByTableUserAndTableNumberAndTableStatus(uid,
+							Short.parseShort(tableNumber), "Occupied").map(Tables::getTableBillId).orElse(null);
 					List<BilledItems> bi = billedItemsRepository.findByBilledItemParent(bn);
-					
+
 					lbidto.billNumber = String.valueOf(bn);
 					lbidto.billStatus = "Pending";
 					lbidto.billTable = tableNumber;
-					
+
 					lbidto.billUser = userEmail;
 					lbidto.requestType = "Load";
 					lbidto.tableStatus = "Occupied";
-					
-					int t=0;
-					
-					if (bi!=null) {
+
+					int t = 0;
+
+					if (bi != null) {
 						System.out.println("entered inside  if bi!=null");
-						for (BilledItems tbi : bi) 
-						 {
+						for (BilledItems tbi : bi) {
 							System.out.println("entered inside  loop");
-							long itemid =  tbi.getBilledItemIdentity();
+							long itemid = tbi.getBilledItemIdentity();
 							Items oit = itemsRepository.findById(itemid).get();
-							
-							String nesti1 =   tbi.getBilledItemPk().toString();// tbi.getBilledItemSerial().toString(); 
-							String nesti2 =   tbi.getBilledItemQuantity().toString();
-							String nesti3 =  oit.getItemName();
-							String nesti4 =  String.valueOf(oit.getItemCost()+ oit.getItemCost()* oit.getItemGST());
-														  
-							lbidto.itemList.add(new BilledItemsDTO(nesti1,nesti2,nesti3,nesti4));
-							
-							t+=(oit.getItemCost() + oit.getItemCost()* oit.getItemGST());
+
+							String nesti1 = tbi.getBilledItemPk().toString();// tbi.getBilledItemSerial().toString();
+							String nesti2 = tbi.getBilledItemQuantity().toString();
+							String nesti3 = oit.getItemName();
+							String nesti4 = String.valueOf(oit.getItemCost() * tbi.getBilledItemQuantity()
+									+ oit.getItemCost() * tbi.getBilledItemQuantity() * oit.getItemGST());
+
+							lbidto.itemList.add(new BilledItemsDTO(nesti1, nesti2, nesti3, nesti4));
+
+							t += (oit.getItemCost() * tbi.getBilledItemQuantity()
+									+ oit.getItemCost() * tbi.getBilledItemQuantity() * oit.getItemGST());
 						}
 					}
 					lbidto.billTotal = String.valueOf(t);
 					return lbidto;
-					
+
 				}
 
 			}
-			
-			
-						
+
 		} catch (NullPointerException npe) {
 			System.out.println("entered inside  null pointer exception");
 			npe.printStackTrace();
 
-		}
-		catch(NumberFormatException nfe) {
+		} catch (NumberFormatException nfe) {
 			System.out.println("entered inside  number format exception");
 			nfe.printStackTrace();
-			
-		}
-		catch (Exception e) {
+
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		System.out.println("reached eom");
 		return null;
 	}
-	
+
 	@Transactional
 	public String completeBill(String billNumber) {
 		try {
@@ -143,13 +137,14 @@ public class TablesService {
 			for (BilledItems bi : allitems) {
 				Integer quantity = bi.getBilledItemQuantity();
 				Items ti = itemsRepository.findById(bi.getBilledItemIdentity()).get();
-				CompletedBilledItems cbi = new CompletedBilledItems(bid, ti.getItemCode(), ti.getItemName(), quantity, ti.getItemCost(), ti.getItemGST());
+				CompletedBilledItems cbi = new CompletedBilledItems(bid, ti.getItemCode(), ti.getItemName(), quantity,
+						ti.getItemCost(), ti.getItemGST());
 				completedBilledItemsRepository.save(cbi);
 			}
 			tablesRepository.deleteByTableBillId(bid);
 			return "done";
 		} catch (Exception e) {
-			return "failed"; //temp
+			return "failed"; // temp
 		}
 	}
 }
