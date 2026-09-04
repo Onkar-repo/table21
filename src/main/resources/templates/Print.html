@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print Bill</title>
+  <style>
+    /* Continuous receipt paper width (80mm standard, 72mm printable area) */
+    @page {
+      size: 80mm auto;
+      margin: 0;
+    }
+
+    body {
+      width: 72mm;
+      margin: 0 auto;
+      padding: 4mm 0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      line-height: 1.2;
+      color: #000;
+      background: #fff;
+    }
+	
+	@media screen and (max-width: 480px) {
+	      body {
+	        width: 100%;
+	        padding: 12px;
+	        box-sizing: border-box;
+	      }
+	    }
+
+    .text-center { text-align: center; }
+    .text-right { text-align: right; }
+    .bold { font-weight: bold; }
+
+    .header {
+      margin-bottom: 8px;
+    }
+    
+    .header h2 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+      text-transform: uppercase;
+    }
+
+    .meta-info {
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .divider {
+      border-top: 1px dashed #000;
+      margin: 6px 0;
+    }
+
+    /* Items Table Styling */
+    .receipt-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .receipt-table th {
+      font-size: 11px;
+      text-transform: uppercase;
+      padding-bottom: 4px;
+    }
+
+    .receipt-table td {
+      padding: 3px 0;
+      vertical-align: top;
+      word-wrap: break-word;
+    }
+
+    .col-item { width: 45%; text-align: left; }
+    .col-qty  { width: 20%; text-align: center; }
+    .col-price{ width: 35%; text-align: right; }
+
+    /* Totals Styling */
+    .totals-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+    }
+
+    .totals-table td {
+      padding: 2px 0;
+    }
+
+    .footer {
+      margin-top: 12px;
+      font-size: 11px;
+    }
+
+    /* Print settings optimization */
+    @media print {
+      body {
+        width: 100%;
+      }
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header text-center">
+    <h2>TABLE21</h2>
+    <div>Pune - 411041</div>
+    <div>Ph: +91 8766516539</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="meta-info">
+    <div>Bill#	&nbsp;:  <span th:text="${billNumber}">1004522008040</span></div>
+    <div>Date	&nbsp;&nbsp;: <span th:text="${dateTime}">2026-03-30 14:22</span></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <table class="receipt-table">
+    <thead>
+      <tr>
+        <th class="col-item">Item</th>
+        <th class="col-qty">Qty</th>
+        <th class="col-price">Amt</th>
+      </tr>
+    </thead>
+    <tbody>
+			
+		
+      <tr th:each="item : ${itemList}">
+        <td class="col-item"th:text="${item.itemName}">Tea</td>
+        <td class="col-qty" th:text="${item.itemQuantity}">2</td>
+        <td class="col-price" th:text="${item.itemCost}">50</td>
+      </tr>
+	  
+    
+    </tbody>
+  </table>
+
+  <div class="divider"></div>
+
+  <table class="totals-table">
+    <tr class="bold">
+      <td>TOTAL:</td>
+      <td class="text-right" th:text="${#aggregates.sum(itemList.![itemCost])}">190</td>
+    </tr>
+  </table>
+
+  <div class="divider"></div>
+
+  <div class="footer text-center">
+    <p class="bold">THANK YOU FOR YOUR VISIT!</p>
+  </div>
+
+</body>
+</html>

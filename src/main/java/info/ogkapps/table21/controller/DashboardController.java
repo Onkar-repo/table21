@@ -1,7 +1,9 @@
 package info.ogkapps.table21.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +20,6 @@ import info.ogkapps.table21.dto.RemoveItemDTO;
 import info.ogkapps.table21.service.ItemsService;
 import info.ogkapps.table21.service.TablesService;
 import jakarta.servlet.http.HttpSession;
-
 
 @Controller
 public class DashboardController {
@@ -40,6 +41,20 @@ public class DashboardController {
 			return "login";
 		}
 
+	}
+
+	@GetMapping("/dashboard/printbill")
+	public String dashboardGetForPrintBill(@RequestParam("billNumber") String billNumber,
+			@RequestParam("billUser") String billUser, Model model, HttpSession session) {
+
+		if (session.getAttribute(billUser) != null && session.getAttribute(billUser).equals(billUser)) {
+		
+			model.addAttribute("billNumber", billNumber);
+			model.addAttribute("dateTime", LocalDateTime.now().toString().substring(0, 19));
+			model.addAttribute("itemList", tablesService.getPrintableItems(billNumber));
+		}
+		
+		return "print";
 	}
 
 	@ResponseBody
@@ -65,8 +80,7 @@ public class DashboardController {
 			return null; // temp
 		}
 	}
-	
-	
+
 	@ResponseBody
 	@PostMapping("/dashboard/edititems")
 	public String dashboardPostForEditItems(@RequestBody RegisterItemsDTO registerItemsDTO, HttpSession session) {
@@ -130,10 +144,11 @@ public class DashboardController {
 			return null; // temp
 		}
 	}
-	
+
 	@ResponseBody
 	@GetMapping("/dashboard/completebill")
-	public String dashboardGetForCompleteBill(@RequestParam("billNumber") String billNumber,@RequestParam("billUser") String billUser, HttpSession session) {
+	public String dashboardGetForCompleteBill(@RequestParam("billNumber") String billNumber,
+			@RequestParam("billUser") String billUser, HttpSession session) {
 		if (session.getAttribute(billUser) != null && session.getAttribute(billUser).equals(billUser)) {
 
 			return tablesService.completeBill(billNumber);

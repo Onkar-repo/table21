@@ -1,5 +1,6 @@
 package info.ogkapps.table21.service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import info.ogkapps.table21.dto.BilledItemsDTO;
 import info.ogkapps.table21.dto.LoadBilledItemsDTO;
+import info.ogkapps.table21.dto.PrintDTO;
 import info.ogkapps.table21.entity.BilledItems;
 import info.ogkapps.table21.entity.Bills;
 import info.ogkapps.table21.entity.CompletedBilledItems;
@@ -145,6 +147,25 @@ public class TablesService {
 			return "done";
 		} catch (Exception e) {
 			return "failed"; // temp
+		}
+	}
+	
+	public List<PrintDTO> getPrintableItems(String billNumber){
+		try {
+			Long bid = Long.parseLong(billNumber);
+			List<PrintDTO> lpi = new ArrayList<>();
+			List<BilledItems> allitems = billedItemsRepository.findByBilledItemParent(bid);
+			for (BilledItems bi : allitems) {
+				Integer quantity = bi.getBilledItemQuantity();
+				Items ti = itemsRepository.findById(bi.getBilledItemIdentity()).get();
+				String in= ti.getItemName();
+				Integer ic=(ti.getItemCost() * quantity) + (ti.getItemGST() * ti.getItemCost() * quantity);
+				lpi.add(new PrintDTO(in, quantity.toString(), ic));
+			}
+			
+			return lpi;
+		} catch (Exception e) {
+return null; // temp
 		}
 	}
 }
