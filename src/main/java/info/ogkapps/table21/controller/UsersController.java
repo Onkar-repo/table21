@@ -78,9 +78,22 @@ public class UsersController {
 			System.out.println("entered error");
 			return "error";
 		}
-		
-		
-		
+	}
+	
+	@PostMapping("/logout")
+	public String logoutPost(@RequestBody String billUser, HttpSession session) {
+		try {
+			
+			if (session!=null && session.getAttribute(billUser) != null && session.getAttribute(billUser).equals(billUser)) {
+				session.invalidate();
+			}
+			
+			return "login";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "login";
+		}
 	}
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)
