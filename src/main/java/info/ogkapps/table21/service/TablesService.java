@@ -140,7 +140,7 @@ public class TablesService {
 				Integer quantity = bi.getBilledItemQuantity();
 				Items ti = itemsRepository.findById(bi.getBilledItemIdentity()).get();
 				CompletedBilledItems cbi = new CompletedBilledItems(bid, ti.getItemCode(), ti.getItemName(), quantity,
-						ti.getItemCost(), ti.getItemGST());
+						ti.getItemCost(), ti.getItemGST(), ti.getItemUser(), btc.getBillCreatedAt());
 				completedBilledItemsRepository.save(cbi);
 			}
 			tablesRepository.deleteByTableBillId(bid);

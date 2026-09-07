@@ -1,5 +1,7 @@
 package info.ogkapps.table21.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,9 +26,13 @@ public class CompletedBilledItems {
 	Integer cbiCost;
 
 	Short cbiGst;
+	
+	Long cbiUserId;
+	
+	LocalDateTime cbiBillCreatedAt;
 
 	public CompletedBilledItems(Long cbiBillId, String cbiCode, String cbiName, Integer cbiQuantity, Integer cbiCost,
-			Short cbiGst) {
+			Short cbiGst, Long cbiUserId, LocalDateTime cbiBillCreatedAt) {
 		super();
 		this.cbiBillId = cbiBillId;
 		this.cbiCode = cbiCode;
@@ -34,6 +40,8 @@ public class CompletedBilledItems {
 		this.cbiQuantity = cbiQuantity;
 		this.cbiCost = cbiCost;
 		this.cbiGst = cbiGst;
+		this.cbiUserId = cbiUserId;
+		this.cbiBillCreatedAt = cbiBillCreatedAt;
 	}
 
 	public Long getCbiId() {
