@@ -30,6 +30,11 @@ public class CompletedBilledItems {
 	Long cbiUserId;
 	
 	LocalDateTime cbiBillCreatedAt;
+	
+
+	public CompletedBilledItems() {
+		super();
+	}
 
 	public CompletedBilledItems(Long cbiBillId, String cbiCode, String cbiName, Integer cbiQuantity, Integer cbiCost,
 			Short cbiGst, Long cbiUserId, LocalDateTime cbiBillCreatedAt) {
