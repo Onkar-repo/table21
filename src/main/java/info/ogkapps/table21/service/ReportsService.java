@@ -39,7 +39,8 @@ public class ReportsService {
 
 			return bi.stream()
 					.map((a) -> a.getCbiQuantity() * a.getCbiCost() + a.getCbiQuantity() * a.getCbiCost() * a.getCbiGst())
-					.reduce(0, (a, b) -> a + b).toString();
+					.reduce(0, (a, b) -> a + b)
+					.toString();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,12 +68,45 @@ public class ReportsService {
 			List<CompletedBilledItems> cbiList = completedBilledItemsRepository.findByCbiUserIdAndCbiBillCreatedAtBetween(uid, from, to);
 			return cbiList.stream()
 					.map((a) -> a.getCbiQuantity() * a.getCbiCost() + a.getCbiQuantity() * a.getCbiCost() * a.getCbiGst())
-					.reduce(0, (a, b) -> a + b).toString();
+					.reduce(0, (a, b) -> a + b)
+					.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 return null; // temp
 		}
 	}
+	
+	public String getItemwiseTotalIncome(ReportsDTO reportsDTO) {
+		try {
+			Long uid = usersRepository.findByUserEmail(reportsDTO.billUser).get().getUserId();
+			List<CompletedBilledItems> cbiList = completedBilledItemsRepository.findByCbiUserIdAndCbiName(uid, reportsDTO.itemName);
+			return cbiList.stream()
+					.map((a) -> a.getCbiQuantity() * a.getCbiCost() + a.getCbiQuantity() * a.getCbiCost() * a.getCbiGst())
+					.reduce(0, (a, b) -> a + b)
+					.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+return null; // temp
+		}
+	}
+	
+	public String getItemwiseTotalDateRangedIncome(ReportsDTO reportsDTO) {
+		try {
+			Long uid = usersRepository.findByUserEmail(reportsDTO.billUser).get().getUserId();
+			LocalDateTime from = LocalDateTime.parse(reportsDTO.from, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			LocalDateTime to = LocalDateTime.parse(reportsDTO.to, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			List<CompletedBilledItems> cbiList = completedBilledItemsRepository.findByCbiUserIdAndCbiNameAndCbiBillCreatedAtBetween(uid, from, to, reportsDTO.itemName);
+			return cbiList.stream()
+					.map((a) -> a.getCbiQuantity() * a.getCbiCost() + a.getCbiQuantity() * a.getCbiCost() * a.getCbiGst())
+					.reduce(0, (a, b) -> a + b)
+					.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+return null; // temp
+		}
+	}
+	
+	
 
 	public List<Map<String, String>> getReports(ReportsDTO reportsDTO) {
 		Map<String, String> reportMap = new LinkedHashMap<>();
@@ -85,6 +119,12 @@ return null; // temp
 			break;
 		case "Custom Date Ranged Income":
 			reportMap.put("Custom Date Ranged Income", getTotalDateRangedIncome(reportsDTO));
+			break;
+		case "Itemwise Total Income":
+			reportMap.put("Itemwise Total Income", getItemwiseTotalIncome(reportsDTO));
+			break;
+		case "Itemwise Custom Date Ranged Income":
+			reportMap.put("Itemwise Custom Date Ranged Income", getItemwiseTotalDateRangedIncome(reportsDTO));
 			break;
 		case "Total Items":
 			reportMap.put("Total Items", getTotalItems(reportsDTO));

@@ -12,4 +12,6 @@ import info.ogkapps.table21.entity.CompletedBilledItems;
 public interface CompletedBilledItemsRepository extends JpaRepository<CompletedBilledItems, Long> {
 List<CompletedBilledItems> findByCbiUserId(Long cbiUserId);
 List<CompletedBilledItems> findByCbiUserIdAndCbiBillCreatedAtBetween(Long cbiUserId, LocalDateTime startDate, LocalDateTime endDate);
+List<CompletedBilledItems> findByCbiUserIdAndCbiName(Long cbiUserId, String cbiName);
+List<CompletedBilledItems> findByCbiUserIdAndCbiNameAndCbiBillCreatedAtBetween(Long cbiUserId, LocalDateTime startDate, LocalDateTime endDate, String cbiName);
 }
