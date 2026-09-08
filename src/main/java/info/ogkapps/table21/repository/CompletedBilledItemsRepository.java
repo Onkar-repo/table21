@@ -13,5 +13,5 @@ public interface CompletedBilledItemsRepository extends JpaRepository<CompletedB
 List<CompletedBilledItems> findByCbiUserId(Long cbiUserId);
 List<CompletedBilledItems> findByCbiUserIdAndCbiBillCreatedAtBetween(Long cbiUserId, LocalDateTime startDate, LocalDateTime endDate);
 List<CompletedBilledItems> findByCbiUserIdAndCbiName(Long cbiUserId, String cbiName);
-List<CompletedBilledItems> findByCbiUserIdAndCbiNameAndCbiBillCreatedAtBetween(Long cbiUserId, LocalDateTime startDate, LocalDateTime endDate, String cbiName);
+List<CompletedBilledItems> findByCbiUserIdAndCbiNameAndCbiBillCreatedAtBetween(Long cbiUserId, String cbiName, LocalDateTime startDate, LocalDateTime endDate);
 }
