@@ -290,10 +290,10 @@ return null; // temp
 			reportMap.put("Lowest Billed Amount", getHighestOrLowestBilledAmount(reportsDTO, false));
 			break;
 		case "Highest Billed Amount Custom Date Ranged":
-			reportMap.put("Highest Billed Amount", getHighestOrLowestBilledAmountDateRanged(reportsDTO, true));
+			reportMap.put("Highest Billed Amount Custom Date Ranged", getHighestOrLowestBilledAmountDateRanged(reportsDTO, true));
 			break;
 		case "Lowest Billed Amount Custom Date Ranged":
-			reportMap.put("Lowest Billed Amount", getHighestOrLowestBilledAmountDateRanged(reportsDTO, false));
+			reportMap.put("Lowest Billed Amount Custom Date Ranged", getHighestOrLowestBilledAmountDateRanged(reportsDTO, false));
 			break;
 		case "Total Items":
 			reportMap.put("Total Items", getTotalItems(reportsDTO));
@@ -304,6 +304,22 @@ return null; // temp
 		case "Most Expensive Item":
 			reportMap.put("Most Expensive Item", getMostOrLeastExpensiveItem(reportsDTO, true));
 			break;
+		case "All":
+			reportMap.put("Total Income", getTotalIncome(reportsDTO));
+			reportMap.put("Custom Date Ranged Income", getTotalDateRangedIncome(reportsDTO));
+			reportMap.put("Itemwise Total Income", getItemwiseTotalIncome(reportsDTO));
+			reportMap.put("Itemwise Custom Date Ranged Income", getItemwiseTotalDateRangedIncome(reportsDTO));
+			reportMap.put("Most Sold Item", getMostOrLeastSoldItem(reportsDTO, true));
+			reportMap.put("Most Sold Item Custom Date Ranged", getMostOrLeastSoldItemDateRanged(reportsDTO, true));
+			reportMap.put("Least Sold Item", getMostOrLeastSoldItem(reportsDTO, false));
+			reportMap.put("Least Sold Item Custom Date Ranged", getMostOrLeastSoldItemDateRanged(reportsDTO, false));
+			reportMap.put("Highest Billed Amount", getHighestOrLowestBilledAmount(reportsDTO, true));
+			reportMap.put("Highest Billed Amount Custom Date Ranged", getHighestOrLowestBilledAmountDateRanged(reportsDTO, true));
+			reportMap.put("Lowest Billed Amount", getHighestOrLowestBilledAmount(reportsDTO, false));
+			reportMap.put("Lowest Billed Amount Custom Date Ranged", getHighestOrLowestBilledAmountDateRanged(reportsDTO, false));
+			reportMap.put("Total Items", getTotalItems(reportsDTO));
+			reportMap.put("Least Expensive Item", getMostOrLeastExpensiveItem(reportsDTO, false));
+			reportMap.put("Most Expensive Item", getMostOrLeastExpensiveItem(reportsDTO, true));
 		}
 
 		listOfMap.add(reportMap);
