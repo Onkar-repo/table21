@@ -132,6 +132,8 @@ public class TablesService {
 	public String completeBill(String billNumber) {
 		try {
 			Long bid = Long.parseLong(billNumber);
+			if (tablesRepository.existsByTableBillId(bid)) {
+			
 			Bills btc = billsRepository.findById(bid).get();
 			btc.setBillStatus("Paid");
 			billsRepository.save(btc);
@@ -145,6 +147,13 @@ public class TablesService {
 			}
 			tablesRepository.deleteByTableBillId(bid);
 			return "done";
+			
+			}
+			else {
+				throw new Exception("bill already closed");
+			}
+			
+			
 		} catch (Exception e) {
 			return "failed"; // temp
 		}

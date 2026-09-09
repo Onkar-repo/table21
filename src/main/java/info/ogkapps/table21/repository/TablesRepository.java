@@ -17,6 +17,7 @@ public interface TablesRepository extends JpaRepository<Tables, Long> {
  Optional<Tables> findTableBillIdByTableUserAndTableNumberAndTableStatus(Long tableUser,Short tableNumber,String tableStatus);
  @Transactional
  void deleteByTableBillId(Long tableBillId);
+ boolean existsByTableBillId(Long tableBillId);
 //Custom query methods begins here...
 
 }

@@ -193,6 +193,66 @@ return null; // temp
 	
 	
 
+	public String getHighestOrLowestBilledAmount(ReportsDTO reportsDTO, boolean most) {
+		try {
+			Long uid = usersRepository.findByUserEmail(reportsDTO.billUser).get().getUserId();
+			List<CompletedBilledItems> cbiList = completedBilledItemsRepository.findByCbiUserId(uid);
+			Map<Long, Integer> map = cbiList.stream()
+			.collect(Collectors.toMap((a)->a.getCbiBillId(), (b)->b.getCbiCost()*b.getCbiQuantity() + b.getCbiQuantity()* b.getCbiCost()* b.getCbiGst(), (oldV,newV)-> oldV+newV));
+			int smal=Integer.MAX_VALUE,larg=Integer.MIN_VALUE;
+			long smali=0, largi=0;
+			for (Map.Entry<Long, Integer> mapl : map.entrySet()) {
+				Long key = mapl.getKey();
+				Integer val = mapl.getValue();
+				System.out.println("K:" + key + " | V:" + val);
+				if (val > larg) {
+					larg = val;
+					largi = key;
+				}
+				if (val < smal) {
+					smal = val;
+					smali = key;
+				}
+			}
+			return   most ? largi + ":" + larg : smali + ":" + smal;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; // temp
+		}
+	}
+	
+	
+	public String getHighestOrLowestBilledAmountDateRanged(ReportsDTO reportsDTO, boolean most) {
+		try {
+			Long uid = usersRepository.findByUserEmail(reportsDTO.billUser).get().getUserId();
+			LocalDateTime from = LocalDateTime.parse(reportsDTO.from, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			LocalDateTime to = LocalDateTime.parse(reportsDTO.to, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			List<CompletedBilledItems> cbiList = completedBilledItemsRepository.findByCbiUserIdAndCbiBillCreatedAtBetween(uid, from, to);
+			Map<Long, Integer> map = cbiList.stream()
+			.collect(Collectors.toMap((a)->a.getCbiBillId(), (b)->b.getCbiCost()*b.getCbiQuantity() + b.getCbiQuantity()* b.getCbiCost()* b.getCbiGst(), (oldV,newV)-> oldV+newV));
+			int smal=Integer.MAX_VALUE,larg=Integer.MIN_VALUE;
+			long smali=0, largi=0;
+			for (Map.Entry<Long, Integer> mapl : map.entrySet()) {
+				Long key = mapl.getKey();
+				Integer val = mapl.getValue();
+				System.out.println("K:" + key + " | V:" + val);
+				if (val > larg) {
+					larg = val;
+					largi = key;
+				}
+				if (val < smal) {
+					smal = val;
+					smali = key;
+				}
+			}
+			return   most ? largi + ":" + larg : smali + ":" + smal;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null; // temp
+		}
+	}
+	
+	
 	public List<Map<String, String>> getReports(ReportsDTO reportsDTO) {
 		Map<String, String> reportMap = new LinkedHashMap<>();
 		List<Map<String, String>> listOfMap = new ArrayList<>();
@@ -223,7 +283,18 @@ return null; // temp
 		case "Least Sold Item Custom Date Ranged":
 			reportMap.put("Least Sold Item Custom Date Ranged", getMostOrLeastSoldItemDateRanged(reportsDTO, false));
 			break;
-			
+		case "Highest Billed Amount":
+			reportMap.put("Highest Billed Amount", getHighestOrLowestBilledAmount(reportsDTO, true));
+			break;
+		case "Lowest Billed Amount":
+			reportMap.put("Lowest Billed Amount", getHighestOrLowestBilledAmount(reportsDTO, false));
+			break;
+		case "Highest Billed Amount Custom Date Ranged":
+			reportMap.put("Highest Billed Amount", getHighestOrLowestBilledAmountDateRanged(reportsDTO, true));
+			break;
+		case "Lowest Billed Amount Custom Date Ranged":
+			reportMap.put("Lowest Billed Amount", getHighestOrLowestBilledAmountDateRanged(reportsDTO, false));
+			break;
 		case "Total Items":
 			reportMap.put("Total Items", getTotalItems(reportsDTO));
 			break;
@@ -232,9 +303,7 @@ return null; // temp
 			break;	
 		case "Most Expensive Item":
 			reportMap.put("Most Expensive Item", getMostOrLeastExpensiveItem(reportsDTO, true));
-			break;	
-			
-
+			break;
 		}
 
 		listOfMap.add(reportMap);
