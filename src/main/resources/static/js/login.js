@@ -61,6 +61,11 @@ function validateLogIn() {
 }
 
 
+function redirectToSignup(){
+window.location.href="/signup";
+}
+
+
 /* Alert Box Script */
 
 function showAlert(title, message) {

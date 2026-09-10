@@ -3,6 +3,8 @@ package info.ogkapps.table21.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,18 +21,39 @@ import tools.jackson.databind.JsonNode;
 public class UsersController {
 
 	private final UsersService usersService;
+	private JavaMailSender mailSender;
 
-	public UsersController(UsersService usersService) {
+	public UsersController(UsersService usersService, JavaMailSender mailSender) {
 		super();
 		this.usersService = usersService;
+	 this.mailSender = mailSender;
 	}
-
+	
+	public void sendSimpleEmail(String toEmail, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("onkarkulak@gmail.com");
+        message.setTo(toEmail);
+        message.setSubject(subject);
+        message.setText(body);
+        mailSender.send(message);
+    }
 	
 	/*Sign Up Page Section*/
 	
 	@GetMapping("/signup")
 	public String signupGet() {
 		return "signup";
+	}
+	
+	@GetMapping("/recover")
+	public String recoverGet() {
+		
+		sendSimpleEmail(
+		        "onkarkulak@gmail.com", 
+		        "Test Subject from Spring Boot", 
+		        "This is a bulletproof test email body."
+		    );
+		return "recover";
 	}
 
 	@PostMapping("/signup")

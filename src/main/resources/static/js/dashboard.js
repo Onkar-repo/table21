@@ -7,8 +7,8 @@ function loadUserName() {
 
 async function loaduserItems() {
     try {
-		const url = new URL("http://localhost:8080/dashboard/loaditems");
-		url.search = new URLSearchParams({billUser: document.getElementById('ue').innerText }).toString();
+        const url = new URL("http://localhost:8080/dashboard/loaditems");
+        url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
         const itemsListResponse = await fetch(url);
         if (!itemsListResponse.ok) {
             console.log(itemsListResponse.status + ": " + itemsListResponse.statusText);
@@ -21,15 +21,15 @@ async function loaduserItems() {
                 // display custom dialog error
             }
             else {
-				dropdown = document.getElementById("itmlist");
-				dropdown.innerHTML = "<option selected>Select an item...</option>";
+                dropdown = document.getElementById("itmlist");
+                dropdown.innerHTML = "<option selected>Select an item...</option>";
 
-				for(let i=0;i<listOfItems.length;i++){
-				const temp = document.createElement("option");
-					temp.value = listOfItems[i].itemCode + ":" + listOfItems[i].itemName;
-					temp.textContent = listOfItems[i].itemCode + ":" + listOfItems[i].itemName;
-					dropdown.appendChild(temp);					
-				}
+                for (let i = 0;i < listOfItems.length;i++) {
+                    const temp = document.createElement("option");
+                    temp.value = listOfItems[i].itemCode + ":" + listOfItems[i].itemName;
+                    temp.textContent = listOfItems[i].itemCode + ":" + listOfItems[i].itemName;
+                    dropdown.appendChild(temp);
+                }
 
             }
         }
@@ -39,30 +39,64 @@ async function loaduserItems() {
     }
 }
 
-async function createEmptyBill() {
+async function loadTable(tableNumber) {
 
     try {
-        const newEmptyBillRequest = {
+        const loadTablePayload = {
             billUser: document.getElementById('ue').innerText,
-            billTable: document.getElementById("t1").value,
-            billStatus: "Pending"
+            billTable: tableNumber,
+            billStatus: "Pending",
+            requestType: "LoadTable"
         };
         const mhb = {
             method: 'POST',
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
-            body: JSON.stringify(newEmptyBillRequest)
+            body: JSON.stringify(loadTablePayload)
         };
-        newEmptyBillResponse = await fetch("http://localhost:8080/dashboard", mhb);
-        if (!newEmptyBillResponse.ok) {
-            console.log(newEmptyBillResponse.status + ": " + newEmptyBillResponse.statusText);
+        const billWithItemsResponse = await fetch("http://localhost:8080/dashboard/loadtable", mhb);
+        if (!billWithItemsResponse.ok) {
+            console.log(billWithItemsResponse.status + ": " + billWithItemsResponse.statusText);
         }
         else {
-            jsonResponse = await newEmptyBillResponse.JSON();
+            const billWithItems = await billWithItemsResponse.json();
             // retrive table bill and items data and populate on screen	
-
+            if (billWithItems.message === "Requested without authentication.") {
+                // display custom dialog error
+            }
+            else {
+				document.getElementById("dt").innerText = new Date().toISOString().substring(0,10);
+				document.getElementById("num").innerText = billWithItems.billNumber;
+				document.getElementById("tab").innerText = billWithItems.billTable;
+				document.getElementById("stat").innerText = billWithItems.tableStatus;
+				document.getElementById("pmt").innerText = billWithItems.billStatus;
+				document.getElementById("total").innerText = "₹ " + billWithItems.billTotal;
+				const parentList = document.getElementById("itemlist");
+				parentList.replaceChildren();
+				
+				for(let i=0;i<billWithItems.itemList.length;i++){
+					const rowDiv = document.createElement("div");
+					rowDiv.className = "bill-row";
+					rowDiv.id = "3";		
+					const span1 = document.createElement("span");
+					span1.textContent = i+1;
+					const span2 = document.createElement("span");
+					span2.textContent = billWithItems.itemList[i].quantity;
+					const span3 = document.createElement("span");
+					span3.textContent = billWithItems.itemList[i].description;
+					const span4 = document.createElement("span");
+					span4.style.textAlign = "right";
+					span4.textContent = billWithItems.itemList[i].amount;
+					rowDiv.appendChild(span1);
+					rowDiv.appendChild(span2);
+					rowDiv.appendChild(span3);
+					rowDiv.appendChild(span4);
+					parentList.appendChild(rowDiv);
+				}
+				document.getElementById("printButton").hidden = false;
+				document.getElementById("clearButton").hidden = false;
+				document.getElementById("completeButton").hidden = false;
+            }
         }
-
-
     }
     catch (err) {
         console.log(err);

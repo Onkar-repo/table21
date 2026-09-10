@@ -65,7 +65,7 @@ public class DashboardController {
 				&& session.getAttribute(dashboardDTO.billUser).equals(dashboardDTO.billUser)) {
 			return tablesService.loadItems(dashboardDTO.billUser, dashboardDTO.billTable);
 		} else {
-			return new LoadBilledItemsDTO("Requested without authentication."); // temp returning null
+			return new LoadBilledItemsDTO("Requested without authentication.");
 		}
 	}
 
