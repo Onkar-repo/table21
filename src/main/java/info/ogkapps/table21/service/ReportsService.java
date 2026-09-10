@@ -45,7 +45,7 @@ public class ReportsService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "0"; // temp
+			return "0";
 		}
 	}
 	
@@ -57,7 +57,7 @@ public class ReportsService {
 			return "" + i.size();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; //temp
+			return "failed: " + e.getMessage();
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class ReportsService {
 					.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
-return null; // temp
+return "failed: " + e.getMessage();
 		}
 	}
 	
@@ -87,7 +87,7 @@ return null; // temp
 					.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
-return null; // temp
+return "failed: " + e.getMessage();
 		}
 	}
 	
@@ -103,7 +103,7 @@ return null; // temp
 					.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
-return null; // temp
+return "failed: " + e.getMessage();
 		}
 	}
 	
@@ -131,7 +131,7 @@ return null; // temp
 			return   most ? largi + ":" + larg : smali + ":" + smal;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; // temp
+			return "failed: " + e.getMessage();
 		}
 	}
 	
@@ -161,7 +161,7 @@ return null; // temp
 			return   most ? largi + ":" + larg : smali + ":" + smal;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; // temp
+			return "failed: " + e.getMessage();
 		}
 	}
 	
@@ -187,7 +187,7 @@ return null; // temp
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; // temp
+			return "failed: " + e.getMessage();
 		}
 	}
 	
@@ -217,7 +217,7 @@ return null; // temp
 			return   most ? largi + ":" + larg : smali + ":" + smal;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; // temp
+			return "failed: " + e.getMessage();
 		}
 	}
 	
@@ -248,7 +248,7 @@ return null; // temp
 			return   most ? largi + ":" + larg : smali + ":" + smal;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; // temp
+			return "failed: " + e.getMessage();
 		}
 	}
 	

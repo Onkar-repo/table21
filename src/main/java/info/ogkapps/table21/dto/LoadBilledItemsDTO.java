@@ -12,5 +12,14 @@ public class LoadBilledItemsDTO {
 	public String tableStatus;
 	public String billTotal;
 	public List<BilledItemsDTO> itemList;
+	public String message;
+	public LoadBilledItemsDTO(String message) {
+		super();
+		this.message = message;
+	}
+	public LoadBilledItemsDTO() {
+		super();
+	}
+	
 
 }

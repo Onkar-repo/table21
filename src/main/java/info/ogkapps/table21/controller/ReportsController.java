@@ -1,5 +1,7 @@
 package info.ogkapps.table21.controller;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +31,11 @@ public class ReportsController {
 			
 		}
 		else {
-			return null; //temp;
+			Map<String, String> em = new HashMap<>(1);
+			em.put("message", "Requested without authentication.");
+			List<Map<String, String>> ed = new LinkedList<>();
+			ed.add(em);
+			return ed;
 		}
 	}
 }

@@ -112,20 +112,12 @@ public class TablesService {
 				}
 
 			}
-
-		} catch (NullPointerException npe) {
-			System.out.println("entered inside  null pointer exception");
-			npe.printStackTrace();
-
-		} catch (NumberFormatException nfe) {
-			System.out.println("entered inside  number format exception");
-			nfe.printStackTrace();
-
+			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			
 		}
-		System.out.println("reached eom");
-		return null;
+		return new LoadBilledItemsDTO("Loading failed due to invalid user email id.");
 	}
 
 	@Transactional
@@ -155,7 +147,7 @@ public class TablesService {
 			
 			
 		} catch (Exception e) {
-			return "failed"; // temp
+			return "failed: " + e.getMessage();
 		}
 	}
 	
@@ -174,7 +166,9 @@ public class TablesService {
 			
 			return lpi;
 		} catch (Exception e) {
-return null; // temp
+			List<PrintDTO> ed = new LinkedList<>();
+			ed.add(new PrintDTO(e.getMessage()));
+			return ed;
 		}
 	}
 }

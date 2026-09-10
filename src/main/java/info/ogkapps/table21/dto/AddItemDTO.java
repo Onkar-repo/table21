@@ -1,6 +1,6 @@
 package info.ogkapps.table21.dto;
 
-public class AddItemDTO {
+public class AddItemDTO{
 
 	public String billUser;
 	public String billTable;

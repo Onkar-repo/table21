@@ -1,6 +1,7 @@
 package info.ogkapps.table21.controller;
 
 import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,7 +65,7 @@ public class DashboardController {
 				&& session.getAttribute(dashboardDTO.billUser).equals(dashboardDTO.billUser)) {
 			return tablesService.loadItems(dashboardDTO.billUser, dashboardDTO.billTable);
 		} else {
-			return null; // temp returning null
+			return new LoadBilledItemsDTO("Requested without authentication."); // temp returning null
 		}
 	}
 
@@ -77,7 +78,7 @@ public class DashboardController {
 			System.out.println("entered session checking if succss");
 			return itemsService.registerItems(registerItemsDTO);
 		} else {
-			return null; // temp
+			return "Requested without authentication."; 
 		}
 	}
 
@@ -88,7 +89,7 @@ public class DashboardController {
 				&& session.getAttribute(registerItemsDTO.billUser).equals(registerItemsDTO.billUser)) {
 			return itemsService.editItems(registerItemsDTO);
 		} else {
-			return null; // temp
+			return "Requested without authentication.";
 		}
 	}
 
@@ -100,7 +101,9 @@ public class DashboardController {
 
 			return itemsService.getAllItems(billUser);
 		} else {
-			return null;// temp
+			List<ItemsDTO> ed = new LinkedList<>();
+			ed.add(new ItemsDTO("Requested without authentication."));
+			return ed;
 		}
 
 	}
@@ -114,7 +117,9 @@ public class DashboardController {
 
 			return itemsService.addItemAndReturnAll(addItemDTO);
 		} else {
-			return null;// temp
+			List<BilledItemsDTO> ed = new LinkedList<>();
+			ed.add(new BilledItemsDTO("Requested without authentication."));
+			return ed;
 		}
 	}
 
@@ -128,7 +133,9 @@ public class DashboardController {
 
 			return itemsService.removeItemAndReturnAll(removeItemDTO);
 		} else {
-			return null; // temp
+			List<BilledItemsDTO> ed = new LinkedList<>();
+			ed.add(new BilledItemsDTO("Requested without authentication."));
+			return ed;
 		}
 	}
 
@@ -141,7 +148,7 @@ public class DashboardController {
 
 			return itemsService.clearItems(clearItemsDTO);
 		} else {
-			return null; // temp
+			return "Requested without authentication.";
 		}
 	}
 
@@ -153,7 +160,7 @@ public class DashboardController {
 
 			return tablesService.completeBill(billNumber);
 		} else {
-			return null;// temp
+			return "Requested without authentication.";
 		}
 
 	}

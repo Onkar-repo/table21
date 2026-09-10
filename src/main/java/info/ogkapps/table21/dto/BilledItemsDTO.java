@@ -6,6 +6,13 @@ public class BilledItemsDTO {
 	public String quantity;
 	public String description;
 	public String amount;
+	public String message;
+	
+	public BilledItemsDTO(String message) {
+		super();
+		this.message = message;
+	}
+
 	public BilledItemsDTO(String serial, String quantity, String description, String amount) {
 		super();
 		this.serial = serial;

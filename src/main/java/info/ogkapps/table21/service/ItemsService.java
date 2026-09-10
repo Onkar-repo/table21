@@ -53,7 +53,7 @@ public class ItemsService {
 			}
 			return "saved";
 		} catch (Exception e) {
-			return "failed";
+			return "failed: " + e.getMessage();
 		}
 	}
 
@@ -96,7 +96,7 @@ public class ItemsService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "failed";
+			return "failed: " + e.getMessage();
 		}
 	}
 
@@ -110,7 +110,9 @@ public class ItemsService {
 			}
 			return itsdto;
 		} catch (Exception e) {
-			return null; // temp
+			List<ItemsDTO> ed = new LinkedList<>();
+			ed.add(new ItemsDTO(e.getMessage()));
+			return ed;
 		}
 	}
 
@@ -138,7 +140,9 @@ public class ItemsService {
 
 		} catch (Exception e) {
 
-			return null; // temp
+			List<BilledItemsDTO> ed = new LinkedList<>();
+			ed.add(new BilledItemsDTO(e.getMessage()));
+			return ed;
 		}
 
 	}
@@ -166,7 +170,9 @@ public class ItemsService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null; // temp
+			List<BilledItemsDTO> ed = new LinkedList<>();
+			ed.add(new BilledItemsDTO(e.getMessage()));
+			return ed;
 		}
 
 	}
@@ -179,7 +185,7 @@ public class ItemsService {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "failed"; // temp
+			return "failed: " + e.getMessage(); // temp
 		}
 	}
 }
