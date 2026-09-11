@@ -6,7 +6,7 @@
     <title>Log In</title>
 	<link rel="stylesheet" href="/css/alert.css">
 	<link rel="stylesheet" href="/css/login.css">
-	
+	<link rel="stylesheet" href="/css/yesno.css">
 </head>
 <body onLoad="document.getElementById('reg_email').focus()">
 
@@ -26,6 +26,22 @@
 			</div>
 		</div>
 
+		<!-- Custom Dialog Modal Container -->
+		    <div class="dialog-overlay" id="customDialogOverlay">
+		        <div class="dialog-card">
+		            <div class="dialog-icon-container">
+		                <div class="dialog-icon-badge">?</div>
+		            </div>
+
+		            <h2 class="dialog-title">Confirmation</h2>
+		            <p class="dialog-subtitle">You will receive the password on the registered email. It may take couple of seconds delay. Proceed ?</p>
+
+		            <div class="dialog-actions">
+		                <button class="btn-dialog btn-secondary" onclick="handleResponse(false)">No</button>
+		                <button class="btn-dialog btn-primary" id="dialogYesBtn" onclick="handleResponse(true)">Yes</button>
+		            </div>
+		        </div>
+		    </div>
 	
     <div class="login-card">
         <div class="logo-container">
@@ -48,7 +64,7 @@
         <button type="button" class="btn-secondary" onclick="redirectToSignup();">Sign Up</button>
 
         <div>
-            <a class="forgot-password" id="label_7019960e" href="/recover">Forgot Password?</a>
+            <a class="forgot-password" id="label_7019960e" onclick="showDialog();">Forgot Password?</a>
         </div>
     </div>
 

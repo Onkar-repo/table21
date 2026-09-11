@@ -81,3 +81,44 @@ function closeAlert() {
     overlay.classList.remove('active');
             document.getElementById('reg_email').focus();
 }
+
+
+/* Yesno box script */
+
+function showDialog() {
+      const overlay = document.getElementById('customDialogOverlay');
+      overlay.classList.add('active');
+      // Auto-focus primary action for accessibility
+      document.getElementById('dialogYesBtn').focus();
+  }
+
+  function closeDialog() {
+      const overlay = document.getElementById('customDialogOverlay');
+      overlay.classList.remove('active');
+  }
+
+async function handleResponse(isYes) {
+      closeDialog();
+      if (isYes) {
+		
+		if (!(document.getElementById('reg_email').checkValidity() && document.getElementById('reg_email').value.split("@")[1].includes("."))){
+			showAlert("Validation", "Email id format is incorrect.");
+			return;
+		}
+		const url = new URL("http://localhost:8080/recover");
+		url.search = new URLSearchParams({ billUser: document.getElementById('reg_email').value }).toString();
+		const recoverResponse = await fetch(url);
+		if (!recoverResponse.ok) {
+		            console.log(recoverResponse.status + ": " + recoverResponse.statusText);
+		            // display custom dialog error
+		        }
+		else{
+			const msgResponse = await recoverResponse.text();
+			showAlert("Information", msgResponse);
+		}
+		
+		      
+      } else {
+		document.getElementById('reg_email').focus();
+      }
+  }

@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import info.ogkapps.table21.service.UsersService;
 import jakarta.servlet.http.HttpSession;
 import tools.jackson.databind.JsonNode;
 
-//  Class Definition begins here...
 @Controller
 public class UsersController {
 
@@ -45,15 +45,24 @@ public class UsersController {
 		return "signup";
 	}
 	
+	@ResponseBody
 	@GetMapping("/recover")
-	public String recoverGet() {
-		
-		sendSimpleEmail(
-		        "onkarkulak@gmail.com", 
-		        "Test Subject from Spring Boot", 
-		        "This is a bulletproof test email body."
-		    );
-		return "recover";
+	public String recoverGet(@RequestParam String billUser) {	
+		try {
+			
+			String up = usersService.getPasswordByEmail(billUser);
+			
+			if (up==null) {
+				return "Failed: User does not exists.";
+			}
+			if(up.equals("err")) {
+				return "Failed: Exception";
+			}
+			sendSimpleEmail(billUser,"Table21", "This is your password: " + up);
+			return "Password shared on the registered email.";
+		} catch (Exception e) {
+			return "Failed: " + e.getMessage();
+		}
 	}
 
 	@PostMapping("/signup")

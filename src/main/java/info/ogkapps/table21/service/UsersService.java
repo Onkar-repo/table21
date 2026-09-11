@@ -1,5 +1,7 @@
 package info.ogkapps.table21.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import info.ogkapps.table21.entity.Users;
@@ -45,6 +47,16 @@ public class UsersService {
 
 		}
 
+	}
+	
+	public String getPasswordByEmail(String billUser) {
+		try {
+			Optional<Users> t =  usersRepository.findByUserEmail(billUser);
+			return t.isPresent() ? t.get().getUserPassword() : null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "err";
+		}
 	}
 
 }
