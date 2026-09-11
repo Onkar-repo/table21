@@ -1,10 +1,28 @@
 console.log("hello");
+let errNum;
 function loadUserName() {
     const querryString = window.location.search;
     const querryParams = new URLSearchParams(querryString);
     document.getElementById('ue').innerText = querryParams.get('userEmail');
 }
 
+function getItemCodeFromName(){
+	if(document.getElementById("itmcode").value!=="Select an item..."){
+	document.getElementById("itmcode").value = document.getElementById("itmlist").value.split(":")[0];
+	document.getElementById("qty").focus();
+	}
+}
+
+function selectItemNameFromCode(event){
+	if(event.key ==="Enter"){
+		document.getElementById("itmlist").value = document.getElementById("itmcode").value;
+		if(document.getElementById("itmlist").value !== document.getElementById("itmcode").value){
+			document.getElementById("itmlist").value="Select an item...";
+			showAlert("Validation","Item code does not exist.");
+			errNum = 1;
+		}
+	}
+}
 async function loaduserItems() {
     try {
         const url = new URL("http://localhost:8080/dashboard/loaditems");
@@ -22,17 +40,16 @@ async function loaduserItems() {
             }
             else {
                 dropdown = document.getElementById("itmlist");
-                dropdown.innerHTML = "<option selected>Select an item...</option>";
+                dropdown.innerHTML = "<option value='' selected>Select an item...</option>";
 
                 for (let i = 0;i < listOfItems.length;i++) {
                     const temp = document.createElement("option");
-                    temp.value = listOfItems[i].itemCode + ":" + listOfItems[i].itemName;
+                    temp.value = listOfItems[i].itemCode/* + ":" + listOfItems[i].itemName*/;
                     temp.textContent = listOfItems[i].itemCode + ":" + listOfItems[i].itemName;
                     dropdown.appendChild(temp);
                 }
-
             }
-        }
+        }	
     }
     catch (err) {
         console.log(err);
@@ -97,6 +114,7 @@ async function loadTable(tableNumber) {
 				document.getElementById("completeButton").hidden = false;
             }
         }
+		document.getElementById("itmcode").focus();
     }
     catch (err) {
         console.log(err);
@@ -137,3 +155,42 @@ function saveItem() {
         toggleModal();
     }
 }
+
+
+
+
+
+/* Alert Box Script */
+
+function showAlert(title, message) {
+    if (title) document.getElementById('alertTitle').innerText = title;
+    if (message) document.getElementById('alertMessage').innerText = message;
+    const overlay = document.getElementById('customAlertOverlay');
+    overlay.classList.add('active');
+	document.getElementById("alertOkBtn").focus();
+}
+
+function closeAlert() {
+    const overlay = document.getElementById('customAlertOverlay');
+    overlay.classList.remove('active');
+	switch(errNum){
+			case 1:
+				document.getElementById("itmcode").focus();
+				break;
+		}
+}
+
+
+/* Yesno box script */
+
+function showDialog() {
+      const overlay = document.getElementById('customDialogOverlay');
+      overlay.classList.add('active');
+      // Auto-focus primary action for accessibility
+      document.getElementById('dialogYesBtn').focus();
+  }
+
+  function closeDialog() {
+      const overlay = document.getElementById('customDialogOverlay');
+      overlay.classList.remove('active');
+  }

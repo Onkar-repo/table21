@@ -6,9 +6,43 @@
     <title>Table21</title>
 	<link rel="stylesheet" href="/css/newitem.css">
 	<link rel="stylesheet" href="/css/dashboard.css">
+	<link rel="stylesheet" href="/css/alert.css">
+	<link rel="stylesheet" href="/css/yesno.css">
     <script type="text/javascript" src="/js/dashboard.js"></script>
 </head>
 <body onload="loadUserName();closeTable();loaduserItems();">
+	<!-- Custom Alert Modal Container -->
+			<div class="dialog-overlay" id="customAlertOverlay">
+				<div class="dialog-card">
+					<div class="dialog-icon-container">
+						<div class="dialog-icon-badge">!</div>
+					</div>
+
+					<h2 class="dialog-title" id="alertTitle">Alert Title</h2>
+					<p class="dialog-subtitle" id="alertMessage">This is an important alert notification message.</p>
+
+					<div class="dialog-actions">
+						<button class="btn-dialog btn-primary" id="alertOkBtn" onclick="closeAlert()">OK</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Custom Dialog Modal Container -->
+			    <div class="dialog-overlay" id="customDialogOverlay">
+			        <div class="dialog-card">
+			            <div class="dialog-icon-container">
+			                <div class="dialog-icon-badge">?</div>
+			            </div>
+
+			            <h2 class="dialog-title">Confirmation</h2>
+			            <p class="dialog-subtitle">You will receive the password on the registered email. It may take couple of seconds delay. Proceed ?</p>
+
+			            <div class="dialog-actions">
+			                <button class="btn-dialog btn-secondary" onclick="handleResponse(false)">No</button>
+			                <button class="btn-dialog btn-primary" id="dialogYesBtn" onclick="handleResponse(true)">Yes</button>
+			            </div>
+			        </div>
+			    </div>
 
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -73,11 +107,11 @@
         <section class="input-section">
             <div class="form-group">
                 <label>Item Code</label>
-                <input type="text" placeholder="Type & Tab" id="itmcode">
+                <input type="text" placeholder="Type & Tab" id="itmcode" onkeydown="selectItemNameFromCode(event);" onblur="getItemCodeFromName();">
             </div>
             <div class="form-group" style="grid-column: span 2;">
                 <label>Item Name</label>
-                <select  id="itmlist">
+                <select  id="itmlist" onchange="getItemCodeFromName();">
                     <option>Select an item...</option>
                     <option selected>Paneer Tikka Butter Masala</option>
                     <option>Butter Naan</option>
