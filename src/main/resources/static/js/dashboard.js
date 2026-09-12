@@ -56,6 +56,7 @@ async function addItemAndUpdate(event) {
                     parentList.appendChild(rowDiv);
                 }
 				document.getElementById("total").innerText = "₹ " + tot;
+				document.getElementById("itmcode").focus();
             }
 
         }
@@ -218,7 +219,29 @@ function saveItem() {
 }
 
 
+async function doLogout(){
+	const mhb = {
+	               method: 'POST',
+	               headers: { 'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*' },
+	               body: document.getElementById('ue').innerText
+	           };
+			console.log(mhb);
+	           const logOutResponse = await fetch("http://localhost:8080/logout", mhb);
+	           if (!logOutResponse.ok) {
+	               console.log(logOutResponse.status + ": " + logOutResponse.statusText);
+	           }
+	           else {
+	               const logStatus = await logOutResponse.text();
+				   if(logStatus==="done"){
+					window.location.href = "/login";
+				   }
+				   else
+					{
+						showAlert("Information",logStatus);
+					}
+				   }
 
+}
 
 
 /* Alert Box Script */

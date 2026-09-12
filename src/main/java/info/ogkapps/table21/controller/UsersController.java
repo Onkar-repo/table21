@@ -26,39 +26,39 @@ public class UsersController {
 	public UsersController(UsersService usersService, JavaMailSender mailSender) {
 		super();
 		this.usersService = usersService;
-	 this.mailSender = mailSender;
+		this.mailSender = mailSender;
 	}
-	
+
 	public void sendSimpleEmail(String toEmail, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("onkarkulak@gmail.com");
-        message.setTo(toEmail);
-        message.setSubject(subject);
-        message.setText(body);
-        mailSender.send(message);
-    }
-	
-	/*Sign Up Page Section*/
-	
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("onkarkulak@gmail.com");
+		message.setTo(toEmail);
+		message.setSubject(subject);
+		message.setText(body);
+		mailSender.send(message);
+	}
+
+	/* Sign Up Page Section */
+
 	@GetMapping("/signup")
 	public String signupGet() {
 		return "signup";
 	}
-	
+
 	@ResponseBody
 	@GetMapping("/recover")
-	public String recoverGet(@RequestParam String billUser) {	
+	public String recoverGet(@RequestParam String billUser) {
 		try {
-			
+
 			String up = usersService.getPasswordByEmail(billUser);
-			
-			if (up==null) {
+
+			if (up == null) {
 				return "Failed: User does not exists.";
 			}
-			if(up.equals("err")) {
+			if (up.equals("err")) {
 				return "Failed: Exception";
 			}
-			sendSimpleEmail(billUser,"Table21", "This is your password: " + up);
+			sendSimpleEmail(billUser, "Table21", "This is your password: " + up);
 			return "Password shared on the registered email.";
 		} catch (Exception e) {
 			return "Failed: " + e.getMessage();
@@ -78,56 +78,58 @@ public class UsersController {
 			return "error";
 		}
 	}
-	
-	/*Log In Page Section*/
-	
+
+	/* Log In Page Section */
+
 	@GetMapping("/login")
 	public String loginGet() {
 		return "login";
 	}
-	
+
 	@PostMapping("/login")
 	@ResponseBody
-	public String loginPost(@RequestBody JsonNode jsonNode, HttpSession session){
+	public String loginPost(@RequestBody JsonNode jsonNode, HttpSession session) {
 		try {
 			System.out.println("entered loginPost()");
-			
+
 			String userEmail = jsonNode.get("userEmail").stringValue();
 			String userPassword = jsonNode.get("userPassword").stringValue();
-			
+
 			if (usersService.userAuthenticated(userEmail, userPassword)) {
 				session.setAttribute(userEmail, userEmail);
 				session.setMaxInactiveInterval(1200);
 				System.out.println("entered true auth");
 				return "sessionStarted";
-			}
-			else {
+			} else {
 				System.out.println("entered false auth");
 				return "wrongCred";
 			}
-			
+
 		} catch (Exception e) {
 			System.out.println("entered error");
 			return "error";
 		}
 	}
-	
+
+	@ResponseBody
 	@PostMapping("/logout")
 	public String logoutPost(@RequestBody String billUser, HttpSession session) {
 		try {
-			
-			if (session!=null && session.getAttribute(billUser) != null && session.getAttribute(billUser).equals(billUser)) {
+
+			if (session != null && session.getAttribute(billUser) != null
+					&& session.getAttribute(billUser).equals(billUser)) {
 				session.invalidate();
+				return "done";
+			} else {
+				return "Requested without authentication.";
 			}
-			
-			return "login";
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "login";
+			return "Failed: " + e.getMessage();
 		}
 	}
-	
+
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<String> handleInvalidJson(HttpMessageNotReadableException ex) {
 
