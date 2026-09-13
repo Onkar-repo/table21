@@ -13,8 +13,46 @@ function clearButtonHit() {
 
 }
 
-async function clearItemsAndUpdate(){
-	
+async function clearItemsAndUpdate() {
+    try {
+        const clearItemsPayload = {
+            billUser: document.getElementById('ue').innerText,
+            billTable: document.getElementById('tab').innerText,
+            billNumber: document.getElementById('num').innerText,
+            requestType: "ClearItems"
+        };
+        console.log(clearItemsPayload);
+        const mhb = {
+            method: 'POST',
+            headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
+            body: JSON.stringify(clearItemsPayload)
+        };
+        const updatedItemsResponse = await fetch("http://localhost:8080/dashboard/clearitems", mhb);
+        if (!updatedItemsResponse.ok) {
+            console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
+        }
+        else {
+            const result = await updatedItemsResponse.text();
+            console.log(result);
+            if (result === "done") {
+
+                const parentList = document.getElementById("itemlist");
+                parentList.replaceChildren();
+                document.getElementById("total").innerText = "₹ 0";
+                document.getElementById("itmcode").focus();
+                noOrderYet = true;
+
+            }
+            else {
+                showAlert("Information", result);
+                errNum = 5;
+            }
+        }
+
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 function removeByRefHit(event) {
@@ -373,7 +411,9 @@ function closeAlert() {
         case 4:
             document.getElementById("itmcode").focus();
             break;
-
+        case 5:
+            document.getElementById("itmcode").focus();
+            break;
     }
 }
 
@@ -400,7 +440,7 @@ function handleResponse(isYes) {
                 removeItemAndUpdate();
                 break;
             case 2:
-                ();
+                clearItemsAndUpdate();
                 break;
         }
     }

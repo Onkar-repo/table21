@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import info.ogkapps.table21.entity.BilledItems;
 
@@ -13,6 +14,7 @@ public interface BilledItemsRepository extends JpaRepository<BilledItems, Long>{
 
 //Derived query methods begins here...
 List<BilledItems> findByBilledItemParent(Long billedItemParent);
+@Transactional
 void deleteByBilledItemParent(Long billedItemParent);
 
 //Custom query methods begins here...

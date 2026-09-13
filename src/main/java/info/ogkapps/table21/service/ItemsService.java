@@ -176,7 +176,7 @@ public class ItemsService {
 		}
 
 	}
-
+	
 	public String clearItems(ClearItemsDTO clearItemsDTO) {
 		try {
 			Long bid = Long.valueOf(clearItemsDTO.billNumber);
