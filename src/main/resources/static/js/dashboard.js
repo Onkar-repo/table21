@@ -1,40 +1,61 @@
 console.log("hello");
-let errNum;
+let errNum, actNum, noOrderYet;
 function loadUserName() {
     const querryString = window.location.search;
     const querryParams = new URLSearchParams(querryString);
     document.getElementById('ue').innerText = querryParams.get('userEmail');
 }
 
-async function addItemAndUpdate(event) {
-    if (event.key === "Enter") {
-        try {
-			console.log("entered in addItem method");
-            const addItemPayload = {
-                billUser: document.getElementById('ue').innerText,
-                billTable: document.getElementById('tab').innerText,
-                itemCode: document.getElementById('itmcode').value,
-                itemName: document.getElementById('itmlist').options[document.getElementById('itmlist').selectedIndex].text.split(":")[1],
-                itemQuantity: document.getElementById('qty').value,
-                requestType: "AddItem"
-            };
-			console.log(addItemPayload);
-            const mhb = {
-                method: 'POST',
-                headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
-                body: JSON.stringify(addItemPayload)
-            };
-			console.log(mhb);
-            const updatedItemsResponse = await fetch("http://localhost:8080/dashboard/additem", mhb);
-            if (!updatedItemsResponse.ok) {
-                console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
-            }
-            else {
-                const itemList = await updatedItemsResponse.json();
+function clearButtonHit() {
 
+    actNum = 2;
+    showDialog("Sure to clear all items ?");
+
+}
+
+async function clearItemsAndUpdate(){
+	
+}
+
+function removeByRefHit(event) {
+    if (event.key === "Enter") {
+        if (document.getElementById('srno').value === "") {
+            showAlert("Validation", "Ref can not be blank.");
+            errNum = 3;
+        }
+        else {
+            actNum = 1;
+            showDialog("Sure to remove item by refrence: " + document.getElementById('srno').value + " ?");
+        }
+    }
+}
+
+async function removeItemAndUpdate() {
+    try {
+
+        const removeItemPayload = {
+            billUser: document.getElementById('ue').innerText,
+            billTable: document.getElementById('tab').innerText,
+            itemPk: document.getElementById('srno').value,
+            requestType: "RemoveItem"
+        };
+        console.log(removeItemPayload);
+        const mhb = {
+            method: 'POST',
+            headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
+            body: JSON.stringify(removeItemPayload)
+        };
+        const updatedItemsResponse = await fetch("http://localhost:8080/dashboard/removeitem", mhb);
+        if (!updatedItemsResponse.ok) {
+            console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
+        }
+        else {
+            const itemList = await updatedItemsResponse.json();
+            console.log(itemList);
+            if (itemList[0].message == null) {
                 const parentList = document.getElementById("itemlist");
                 parentList.replaceChildren();
-				let tot = 0;
+                let tot = 0;
                 for (let i = 0;i < itemList.length;i++) {
                     const rowDiv = document.createElement("div");
                     rowDiv.className = "bill-row";
@@ -48,17 +69,87 @@ async function addItemAndUpdate(event) {
                     const span4 = document.createElement("span");
                     span4.style.textAlign = "right";
                     span4.textContent = itemList[i].amount;
-					tot+=Number(itemList[i].amount);
+                    tot += Number(itemList[i].amount);
                     rowDiv.appendChild(span1);
                     rowDiv.appendChild(span2);
                     rowDiv.appendChild(span3);
                     rowDiv.appendChild(span4);
                     parentList.appendChild(rowDiv);
                 }
-				document.getElementById("total").innerText = "₹ " + tot;
-				document.getElementById("itmcode").focus();
+                document.getElementById("total").innerText = "₹ " + tot;
+                document.getElementById("itmcode").focus();
+                if (tot === 0) noOrderYet = true;
+            }
+            else {
+                errNum = 2;
+                showAlert("Information", itemList[0].message);
             }
 
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+async function addItemAndUpdate(event) {
+    if (event.key === "Enter") {
+        try {
+            console.log("entered in addItem method");
+            const addItemPayload = {
+                billUser: document.getElementById('ue').innerText,
+                billTable: document.getElementById('tab').innerText,
+                itemCode: document.getElementById('itmcode').value,
+                itemName: document.getElementById('itmlist').options[document.getElementById('itmlist').selectedIndex].text.split(":")[1],
+                itemQuantity: document.getElementById('qty').value,
+                requestType: "AddItem"
+            };
+            console.log(addItemPayload);
+            const mhb = {
+                method: 'POST',
+                headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify(addItemPayload)
+            };
+            console.log(mhb);
+            const updatedItemsResponse = await fetch("http://localhost:8080/dashboard/additem", mhb);
+            if (!updatedItemsResponse.ok) {
+                console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
+            }
+            else {
+                const itemList = await updatedItemsResponse.json();
+                if (itemList[0].message == null) {
+                    const parentList = document.getElementById("itemlist");
+                    parentList.replaceChildren();
+                    let tot = 0;
+                    for (let i = 0;i < itemList.length;i++) {
+                        const rowDiv = document.createElement("div");
+                        rowDiv.className = "bill-row";
+                        //rowDiv.id = itemList[i].;
+                        const span1 = document.createElement("span");
+                        span1.textContent = itemList[i].serial;
+                        const span2 = document.createElement("span");
+                        span2.textContent = itemList[i].quantity;
+                        const span3 = document.createElement("span");
+                        span3.textContent = itemList[i].description;
+                        const span4 = document.createElement("span");
+                        span4.style.textAlign = "right";
+                        span4.textContent = itemList[i].amount;
+                        tot += Number(itemList[i].amount);
+                        rowDiv.appendChild(span1);
+                        rowDiv.appendChild(span2);
+                        rowDiv.appendChild(span3);
+                        rowDiv.appendChild(span4);
+                        parentList.appendChild(rowDiv);
+                    }
+                    document.getElementById("total").innerText = "₹ " + tot;
+                    document.getElementById("itmcode").focus();
+                    noOrderYet = false;
+                }
+                else {
+                    errNum = 4;
+                    showAlert("Information", itemList[0].message);
+                }
+            }
         }
         catch (err) {
             console.log(err);
@@ -141,7 +232,7 @@ async function loadTable(tableNumber) {
                 // display custom dialog error
             }
             else {
-				console.log(billWithItems);
+                console.log(billWithItems);
                 document.getElementById("dt").innerText = new Date().toISOString().substring(0, 10);
                 document.getElementById("num").innerText = billWithItems.billNumber;
                 document.getElementById("tab").innerText = billWithItems.billTable;
@@ -150,9 +241,9 @@ async function loadTable(tableNumber) {
                 document.getElementById("total").innerText = "₹ " + billWithItems.billTotal;
                 const parentList = document.getElementById("itemlist");
                 parentList.replaceChildren();
-				console.log("b4 entering loop");
+                console.log("b4 entering loop");
                 for (let i = 0;i < billWithItems.itemList.length;i++) {
-					console.log("entered in loop");
+                    console.log("entered in loop");
                     const rowDiv = document.createElement("div");
                     rowDiv.className = "bill-row";
                     //rowDiv.id = "3";
@@ -174,6 +265,14 @@ async function loadTable(tableNumber) {
                 document.getElementById("printButton").hidden = false;
                 document.getElementById("clearButton").hidden = false;
                 document.getElementById("completeButton").hidden = false;
+                document.getElementById("itmcode").disabled = false;
+                document.getElementById("itmlist").disabled = false;
+                document.getElementById("qty").disabled = false;
+                document.getElementById("srno").disabled = false;
+                if (Number(billWithItems.billTotal) === 0)
+                    noOrderYet = true;
+                else
+                    noOrderYet = false;
             }
         }
         document.getElementById("itmcode").focus();
@@ -203,6 +302,11 @@ function closeTable() {
     document.getElementById("clearButton").hidden = true;
     document.getElementById("completeButton").hidden = true;
     document.getElementById("t1").focus();
+    document.getElementById("itmcode").disabled = true;
+    document.getElementById("itmlist").disabled = true;
+    document.getElementById("qty").disabled = true;
+    document.getElementById("srno").disabled = true;
+
 }
 
 function toggleModal() {
@@ -219,27 +323,26 @@ function saveItem() {
 }
 
 
-async function doLogout(){
-	const mhb = {
-	               method: 'POST',
-	               headers: { 'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*' },
-	               body: document.getElementById('ue').innerText
-	           };
-			console.log(mhb);
-	           const logOutResponse = await fetch("http://localhost:8080/logout", mhb);
-	           if (!logOutResponse.ok) {
-	               console.log(logOutResponse.status + ": " + logOutResponse.statusText);
-	           }
-	           else {
-	               const logStatus = await logOutResponse.text();
-				   if(logStatus==="done"){
-					window.location.href = "/login";
-				   }
-				   else
-					{
-						showAlert("Information",logStatus);
-					}
-				   }
+async function doLogout() {
+    const mhb = {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain', 'Access-Control-Allow-Origin': '*' },
+        body: document.getElementById('ue').innerText
+    };
+    console.log(mhb);
+    const logOutResponse = await fetch("http://localhost:8080/logout", mhb);
+    if (!logOutResponse.ok) {
+        console.log(logOutResponse.status + ": " + logOutResponse.statusText);
+    }
+    else {
+        const logStatus = await logOutResponse.text();
+        if (logStatus === "done") {
+            window.location.href = "/login";
+        }
+        else {
+            showAlert("Information", logStatus);
+        }
+    }
 
 }
 
@@ -261,20 +364,44 @@ function closeAlert() {
         case 1:
             document.getElementById("itmcode").focus();
             break;
+        case 2:
+            document.getElementById("srno").focus();
+            break;
+        case 3:
+            document.getElementById("srno").focus();
+            break;
+        case 4:
+            document.getElementById("itmcode").focus();
+            break;
+
     }
 }
 
 
 /* Yesno box script */
 
-function showDialog() {
+function showDialog(question) {
+    if (question) document.getElementById('question').innerText = question;
     const overlay = document.getElementById('customDialogOverlay');
     overlay.classList.add('active');
-    // Auto-focus primary action for accessibility
-    document.getElementById('dialogYesBtn').focus();
+    setTimeout(() => { document.getElementById('dialogYesBtn').focus(); }, 50);
 }
 
 function closeDialog() {
     const overlay = document.getElementById('customDialogOverlay');
     overlay.classList.remove('active');
+}
+
+function handleResponse(isYes) {
+    closeDialog();
+    if (isYes) {
+        switch (actNum) {
+            case 1:
+                removeItemAndUpdate();
+                break;
+            case 2:
+                ();
+                break;
+        }
+    }
 }
