@@ -5,21 +5,74 @@ function loadUserName() {
     const querryParams = new URLSearchParams(querryString);
     document.getElementById('ue').innerText = querryParams.get('userEmail');
 }
+
+function completeButtonHit() {
+    
+	if(noOrderYet){
+	showAlert("Validation","Empty list. Can not complete the bill.");
+	errNum = 1;	
+	}
+	else{
+		actNum = 4;
+		showDialog("Sure to complete current bill ?");
+		
+	}	
+}
+
+async function completeBillAndUpdate() {
+    try {
+        const url = new URL("http://localhost:8080/dashboard/completebill");
+        url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
+        console.log(url);
+
+
+        const resultResponse = await fetch(url);
+        if (!resultResponse.ok) {
+            console.log(resultResponse.status + ": " + resultResponse.statusText);
+            // display custom dialog error
+        }
+        else {
+            const result = await resultResponse.text();
+            // retrive items list and populate in combo box
+            if (result === "done") {
+                closeTable();
+                showAlert("Information", "Completed! Now it is accessible from reports.");
+                errNum = 6;
+            }
+            else {
+                // display custom dialog error
+                showAlert("Information", result);
+                errNum = 7;
+            }
+        }
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 function printButtonHit() {
     actNum = 3;
     showDialog("Sure to generate bill page ?");
 }
 
 function loadPrintPage() {
-	const url = new URL("http://localhost:8080/dashboard/printbill");
-	url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
-	console.log(url);
-	window.location.href = url;
+    const url = new URL("http://localhost:8080/dashboard/printbill");
+    url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
+    console.log(url);
+    window.location.href = url;
 }
 
 function clearButtonHit() {
-    actNum = 2;
-    showDialog("Sure to clear all items ?");
+	if(noOrderYet){
+		showAlert("Validation", "No items added yet.");
+		                errNum = 7;
+	}
+	else{
+		actNum = 2;
+		   showDialog("Sure to clear all items ?");	
+	}
 }
 
 async function clearItemsAndUpdate() {
@@ -124,6 +177,7 @@ async function removeItemAndUpdate() {
                     parentList.appendChild(rowDiv);
                 }
                 document.getElementById("total").innerText = "₹ " + tot;
+				document.getElementById("srno").value = "";
                 document.getElementById("itmcode").focus();
                 if (tot === 0) noOrderYet = true;
             }
@@ -253,6 +307,7 @@ async function loaduserItems() {
         console.log(err);
     }
 }
+
 
 async function loadTable(tableNumber) {
 
@@ -423,6 +478,13 @@ function closeAlert() {
         case 5:
             document.getElementById("itmcode").focus();
             break;
+        case 6:
+            document.getElementById("t1").focus();
+            break;
+        case 7:
+            document.getElementById("itmcode").focus();
+            break;
+
     }
 }
 
@@ -454,6 +516,9 @@ function handleResponse(isYes) {
             case 3:
                 loadPrintPage();
                 break;
+            case 4:
+                completeBillAndUpdate();
+                break;		
         }
     }
 }
