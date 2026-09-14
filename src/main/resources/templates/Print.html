@@ -103,9 +103,27 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="/css/alert.css">
 </head>
-<body>
+<body onload="showAlert('Information','Ctrl + P to print\nRequired Width  : min 80 mm, max 100 mm\nRequired Margin : 0.1 inches from all sides');">
+	<!-- Custom Alert Modal Container -->
+				<div class="dialog-overlay" id="customAlertOverlay">
+					<div class="dialog-card">
+						<div class="dialog-icon-container">
+							<div class="dialog-icon-badge">!</div>
+						</div>
 
+						<h2 class="dialog-title" id="alertTitle">Alert Title</h2>
+						<p class="dialog-subtitle" id="alertMessage">This is an important alert notification message.</p>
+
+						<div class="dialog-actions">
+							<button class="btn-dialog btn-primary" id="alertOkBtn" onclick="closeAlert()">OK</button>
+						</div>
+					</div>
+				</div>
+
+	
+	
   <div class="header text-center">
     <h2>TABLE21</h2>
     <div>Pune - 411041</div>
@@ -156,6 +174,22 @@
   <div class="footer text-center">
     <p class="bold">THANK YOU FOR YOUR VISIT!</p>
   </div>
+<script>
+	/* Alert Box Script */
 
+	function showAlert(title, message) {
+	    if (title) document.getElementById('alertTitle').innerText = title;
+	    if (message) document.getElementById('alertMessage').innerText = message;
+	    const overlay = document.getElementById('customAlertOverlay');
+	    overlay.classList.add('active');
+	    setTimeout(() => { document.getElementById("alertOkBtn").focus(); }, 50);
+	}
+
+	function closeAlert() {
+	    const overlay = document.getElementById('customAlertOverlay');
+	    overlay.classList.remove('active');	  
+	}
+
+</script> 
 </body>
 </html>

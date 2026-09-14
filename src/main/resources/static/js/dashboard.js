@@ -5,12 +5,21 @@ function loadUserName() {
     const querryParams = new URLSearchParams(querryString);
     document.getElementById('ue').innerText = querryParams.get('userEmail');
 }
+function printButtonHit() {
+    actNum = 3;
+    showDialog("Sure to generate bill page ?");
+}
+
+function loadPrintPage() {
+	const url = new URL("http://localhost:8080/dashboard/printbill");
+	url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
+	console.log(url);
+	window.location.href = url;
+}
 
 function clearButtonHit() {
-
     actNum = 2;
     showDialog("Sure to clear all items ?");
-
 }
 
 async function clearItemsAndUpdate() {
@@ -441,6 +450,9 @@ function handleResponse(isYes) {
                 break;
             case 2:
                 clearItemsAndUpdate();
+                break;
+            case 3:
+                loadPrintPage();
                 break;
         }
     }
