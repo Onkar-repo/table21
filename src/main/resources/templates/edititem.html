@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Edit Items</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+			background-color: #f4f4f7;
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+			/* Stack vertically on small screens */
+			min-height: 100vh;
+			color: #2d2d2d;
+		}
+
+
+		/* Demo Trigger Button Styling */
+		.btn-trigger {
+			padding: 14px 28px;
+			background: #65407D;
+			color: #ffffff;
+			border: none;
+			border-radius: 8px;
+			font-size: 16px;
+			font-weight: 600;
+			cursor: pointer;
+			box-shadow: 0 4px 12px rgba(101, 64, 125, 0.3);
+			transition: background 0.2s ease, transform 0.1s ease;
+		}
+
+		.btn-trigger:hover {
+			background: #523366;
+		}
+
+		.btn-trigger:active {
+			transform: scale(0.98);
+		}
+
+		/* Modal Overlay */
+		.dialog-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(31, 41, 55, 0.5);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 20px;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.25s ease, visibility 0.25s ease;
+			z-index: 1000;
+		}
+
+		.dialog-overlay.active {
+			opacity: 1;
+			visibility: visible;
+		}
+
+		/* Responsive Dialog Container */
+		.dialog-card {
+			background: #ffffff;
+			width: 100%;
+			max-width: 420px;
+			padding: 32px 24px;
+			border-radius: 12px;
+			box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+			text-align: center;
+			transform: scale(0.92);
+			transition: transform 0.25s ease;
+		}
+
+		.dialog-overlay.active .dialog-card {
+			transform: scale(1);
+		}
+
+		/* Logo Badge Icon */
+		.dialog-icon-container {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 20px;
+		}
+
+		.dialog-icon-badge {
+			background: #65407D;
+			color: #ffffff;
+			width: 56px;
+			height: 56px;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 24px;
+			font-weight: bold;
+			box-shadow: 0 4px 12px rgba(101, 64, 125, 0.3);
+		}
+
+		/* Dialog Header Text */
+		.dialog-title {
+			font-size: 20px;
+			font-weight: 700;
+			color: #1f2937;
+			margin-bottom: 8px;
+		}
+
+		.dialog-subtitle {
+			font-size: 14px;
+			color: #6b7280;
+			line-height: 1.5;
+			margin-bottom: 20px;
+		}
+
+
+		.dialog-input-slot {
+			margin-bottom: 24px;
+			/* Space below the entire input container */
+			text-align: left;
+		}
+
+		/* 1. Universal Input Field & Dropdown Base */
+		.dialog-input-slot input[type="text"],
+		.dialog-input-slot input[type="email"],
+		.dialog-input-slot input[type="password"],
+		.dialog-input-slot input[type="number"],
+		.dialog-input-slot select {
+			width: 100%;
+			padding: 12px 16px;
+			font-size: 15px;
+			border: 1px solid #d1d5db;
+			border-radius: 8px;
+			background-color: #f9fafb;
+			color: #1f2937;
+			transition: all 0.2s ease;
+			outline: none;
+			appearance: none;
+			margin-bottom: 14px;
+			/* Adds space BETWEEN the input fields */
+		}
+
+		/* Remove margin from the last input so it doesn't add unwanted gap at the bottom */
+		.dialog-input-slot input:last-child {
+			margin-bottom: 0;
+		}
+
+		/* Custom Dropdown Arrow */
+		.dialog-input-slot select {
+			background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%3c6b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+			background-repeat: no-repeat;
+			background-position: right 14px center;
+			background-size: 16px;
+			padding-right: 40px;
+			cursor: pointer;
+		}
+
+		.dialog-input-slot input:focus,
+		.dialog-input-slot select:focus {
+			border-color: #65407D;
+			background-color: #ffffff;
+			box-shadow: 0 0 0 4px rgba(101, 64, 125, 0.1);
+		}
+
+		/* Button Group (Side-by-side) */
+		.dialog-actions {
+			display: flex;
+			gap: 12px;
+		}
+
+		.btn-dialog {
+			flex: 1;
+			padding: 12px;
+			border-radius: 8px;
+			font-size: 15px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			outline: none;
+		}
+
+		.btn-secondary {
+			background: #f3f4f6;
+			color: #4b5563;
+			border: 1px solid #d1d5db;
+		}
+
+		.btn-secondary:hover {
+			background: #e5e7eb;
+			color: #1f2937;
+		}
+
+		.btn-primary {
+			background: #65407D;
+			color: #ffffff;
+			border: 1px solid #65407D;
+		}
+
+		.btn-primary:hover {
+			background: #523366;
+			border-color: #65407D;
+		}
+
+		@media (max-width: 480px) {
+			.dialog-card {
+				padding: 24px 18px;
+			}
+		}
+	</style>
+
+</head>
+
+<body onload="showInputDialog();">
+	<!-- Custom Dialog Modal Container -->
+	<div class="dialog-overlay" id="inputDialogOverlay">
+		<div class="dialog-card">
+			<div class="dialog-icon-container">
+				<div class="dialog-icon-badge">✍️</div>
+			</div>
+
+			<h2 class="dialog-title" id="dialogTitle">Item Details</h2>
+			<p class="dialog-subtitle" id="dialogSubtitle">Please note that this will be ignored if item name and item
+				cost both are completely new.</p>
+
+			<!-- INPUT SLOT -->
+			<div class="dialog-input-slot" id="dialogInputSlot">
+				<input type="text" id="itemName" placeholder="Item Name" autocomplete="off">
+				<input type="text" id="itemCode" placeholder="Item Code" autocomplete="off">
+				<input type="number" id="itemCost" placeholder="Item Cost" min="1" max="999999" autocomplete="off">
+			</div>
+
+			<div class="dialog-actions">
+				<button type="button" class="btn-dialog btn-secondary" onclick="closeInputDialog()">Cancel</button>
+				<button type="button" class="btn-dialog btn-primary" id="dialogSubmitBtn"
+					onclick="handleSubmit()">Submit</button>
+			</div>
+		</div>
+	</div>
+	<script>
+		function showInputDialog() {
+			const overlay = document.getElementById('inputDialogOverlay');
+			overlay.classList.add('active');
+
+			setTimeout(() => document.getElementById('itemName').focus(), 50);
+		}
+
+		function closeInputDialog() {
+			const overlay = document.getElementById('inputDialogOverlay');
+			overlay.classList.remove('active');
+			window.history.back();
+		}
+
+		async function handleSubmit() {
+			const iitemName = document.getElementById('itemName').value;
+			const iitemCode = document.getElementById('itemCode').value;
+			const iitemCost = document.getElementById('itemCost').value;
+			if (iitemName === "" || iitemCode === "" || iitemCost === "") {
+				alert("All fields are compulsory.");
+				document.getElementById('itemName').focus();
+			}
+			else {
+
+				try {
+					
+					
+					const querryString = window.location.search;
+					    const querryParams = new URLSearchParams(querryString);
+					    const billUserr = querryParams.get('billUser');
+					
+					
+					
+					const edtItemsPayload = {
+						billUser: billUserr,
+						requestType: "EditTable",
+						items: [{itemCode: iitemCode, itemName:iitemName,itemCost:iitemCost }],
+					};
+					const mhb = {
+						method: 'POST',
+						headers: {'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*'},
+						body: JSON.stringify(edtItemsPayload)
+					};
+					console.log(JSON.stringify(edtItemsPayload, null, 2));
+					const edtItemsResponse = await fetch("http://localhost:8080/dashboard/edititems", mhb);
+					if (!edtItemsResponse.ok) {
+						console.log(edtItemsResponse.status + ": " + edtItemsResponse.statusText);
+						//custom dialog box 
+					}
+					else {
+						const result = await edtItemsResponse.text();
+						errNum = 10;
+						if (result === "saved") {
+							alert("done.");
+						}
+						else
+							alert(result);
+					}
+
+				}
+				catch (er) {
+					console.log(er);
+				}
+			}
+		}
+	</script>
+</body>
+
+</html>

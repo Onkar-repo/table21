@@ -11,6 +11,7 @@
     <script type="text/javascript" src="/js/dashboard.js"></script>
 </head>
 <body onload="loadUserName();closeTable();loaduserItems();">
+	
 	<!-- Custom Alert Modal Container -->
 			<div class="dialog-overlay" id="customAlertOverlay">
 				<div class="dialog-card">
@@ -78,7 +79,7 @@
         <div class="admin-actions">
             <button type="button" class="action-btn" onclick="closeTable();toggleModal();">Register Items</button>
             <button type="button" class="action-btn">Delete Items</button>
-            <button type="button" class="action-btn">Edit Items</button>
+            <button type="button" class="action-btn" onclick="gotoEditItemPage();">Edit Items</button>
             <button type="button" class="action-btn">Enlist Items</button>
             <button type="button" class="action-btn">Show Reports</button>
             <button type="button" class="action-btn" onclick="closeTable();">Close</button>

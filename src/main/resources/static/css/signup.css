@@ -46,7 +46,7 @@ body {
 	align-items: center;
 	font-size: 28px;
 	font-weight: bold;
-	box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+	box-shadow: 0 4px 12px rgba(101, 64, 125, 0.1);
 }
 
 /* Form Header Text */
@@ -88,7 +88,7 @@ input[type="email"]:focus,
 input[type="password"]:focus {
 	border-color: #65407D;
 	background-color: #ffffff;
-	box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+	box-shadow: 0 0 0 4px rgba(101, 64, 125, 0.1);
 }
 
 /* Primary Action Button (Sign Up) */

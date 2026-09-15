@@ -43,7 +43,16 @@ public class DashboardController {
 		}
 
 	}
-
+	
+	@GetMapping("/dashboard/edititempage")
+	public String editItemsPage(@RequestParam("billUser") String billUser, HttpSession session) {
+		if (session.getAttribute(billUser) != null && session.getAttribute(billUser).equals(billUser)) {
+			return "edititem";
+		} else {
+			return "login";
+		}
+		
+	}
 	@GetMapping("/dashboard/printbill")
 	public String dashboardGetForPrintBill(@RequestParam("billNumber") String billNumber,
 			@RequestParam("billUser") String billUser, Model model, HttpSession session) {

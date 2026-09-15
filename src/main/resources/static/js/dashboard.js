@@ -20,6 +20,14 @@ function completeButtonHit() {
     }
 }
 
+
+async function gotoEditItemPage(){	
+		const url = new URL("http://localhost:8080/dashboard/edititempage");
+		     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
+				 window.location.href = url;
+}
+
+
 async function completeBillAndUpdate() {
     try {
         const url = new URL("http://localhost:8080/dashboard/completebill");

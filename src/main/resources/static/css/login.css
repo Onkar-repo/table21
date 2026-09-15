@@ -60,7 +60,7 @@
            align-items: center;
            font-size: 28px;
            font-weight: bold;
-           box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+           box-shadow: 0 4px 12px rgba(101, 64, 125, 0.1);
        }
 
        /* Form Controls */
@@ -131,7 +131,7 @@
        }
 
        .btn-secondary:hover {
-           background: rgba(79, 70, 229, 0.05);
+           background: rgba(101, 64, 125, 0.1);
        }
 
        /* Links and Footer Elements */
