@@ -28,6 +28,13 @@ async function gotoEditItemPage(){
 }
 
 
+async function gotoEnlistPage(){
+	const url = new URL("http://localhost:8080/dashboard/enlistpage");
+			     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
+					 window.location.href = url;
+}
+
+
 async function completeBillAndUpdate() {
     try {
         const url = new URL("http://localhost:8080/dashboard/completebill");
@@ -419,7 +426,6 @@ function closeTable() {
     document.getElementById("srno").disabled = true;
 
 }
-
 
 function addToCart() {
 

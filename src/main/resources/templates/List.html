@@ -183,23 +183,23 @@
         }
     </style>
 </head>
-<body>
+<body onload="enlistItems();">
 
     <div class="list-card">
         <div class="logo-container">
             <div class="logo-badge">T</div>
         </div>
 
-        <h1 class="form-title">Inventory Items</h1>
-        <p class="form-subtitle">Overview of managed items and timestamps</p>
+        <h1 class="form-title">Item List</h1>
+        <p class="form-subtitle"></p>
 
         <!-- Owner Header Line Above Table -->
         <div class="owner-banner">
             <div>
-                <div class="label">List Owner</div>
-                <div class="user-name" id="owner_name">Alex Morgan</div>
+                <div class="label">User</div>
+                <div class="user-name" id="billUser">Alex Morgan</div>
             </div>
-            <span class="code-tag">ID: #USR-1042</span>
+            <span class="code-tag" id="itemCount">ID: #USR-1042</span>
         </div>
 
         <!-- Table View Component -->
@@ -207,12 +207,12 @@
             <table class="custom-table">
                 <thead>
                     <tr>
-                        <th>Item Name</th>
                         <th>Item Code</th>
-                        <th>Updated At</th>
+                        <th>Item Name</th>
+                        <th>Item Cost</th>
                     </tr>
                 </thead>
-                <tbody id="item_table_body">
+                <tbody id="itemList">
                     <tr>
                         <td>Enterprise License</td>
                         <td><span class="code-tag">ITM-001</span></td>
@@ -237,10 +237,65 @@
             </table>
         </div>
 
-        <div class="login-redirect">
-            Need to manage permissions? <a href="#">Go to Dashboard</a>
+        <div class="login-redirect" id="todaysDate">
+            Need to manage permissions?
         </div>
     </div>
-
+<script>
+	async function enlistItems(){
+		try {
+				const querryString = window.location.search;
+									    const querryParams = new URLSearchParams(querryString);
+									    const billUserr = querryParams.get('billUser');
+									
+									
+			     const url = new URL("http://localhost:8080/dashboard/loaditems");
+			     url.search = new URLSearchParams({ billUser: billUserr }).toString();
+			     const itemsListResponse = await fetch(url);
+			     if (!itemsListResponse.ok) {
+			         console.log(itemsListResponse.status + ": " + itemsListResponse.statusText);
+			         // display custom dialog error
+			     }
+			     else {
+			         const listOfItems = await itemsListResponse.json();
+			         // retrive items list and populate in combo box
+			         if (listOfItems.message === "Requested without authentication.") {
+			             // display custom dialog error
+			         }
+			         else {
+						console.log(listOfItems);
+						const parentList = document.getElementById("itemList");
+						 parentList.replaceChildren();
+						              
+						
+			             for (let i = 0;i < listOfItems.length;i++) {
+							const rowTr = document.createElement("tr");
+							                    
+							                   
+							                    const td1 = document.createElement("td");
+							                    td1.textContent = listOfItems[i].itemCode;
+							                    const td2 = document.createElement("td");
+							                   
+												td2.textContent = listOfItems[i].itemName;
+							                   
+												 const td3 = document.createElement("td");
+							                   td3.textContent=listOfItems[i].itemCost;
+											   
+							                    rowTr.appendChild(td1);
+							                    rowTr.appendChild(td2);
+							                    rowTr.appendChild(td3);
+							                    parentList.appendChild(rowTr);
+			             }
+						 document.getElementById("todaysDate").innerText = new Date();
+						 document.getElementById("billUser").innerText = billUserr;
+						document.getElementById("itemCount").innerText = "Total Count: " + listOfItems.length;
+			         }
+			     }
+			 }
+			 catch (err) {
+			     console.log(err);
+			 }
+	}
+	</script>
 </body>
 </html>

@@ -106,7 +106,7 @@ public class ItemsService {
 			List<Items> items = itemsRepository.findByItemUser(uid);
 			List<ItemsDTO> itsdto = new LinkedList<>();
 			for (Items i : items) {
-				itsdto.add(new ItemsDTO(i.getItemCode(), i.getItemName(), ""));
+				itsdto.add(new ItemsDTO(i.getItemCode(), i.getItemName(), String.valueOf((i.getItemCost()+i.getItemCost()*i.getItemGST()))));
 			}
 			return itsdto;
 		} catch (Exception e) {
