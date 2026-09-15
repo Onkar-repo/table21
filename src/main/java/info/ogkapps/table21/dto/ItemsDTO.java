@@ -18,6 +18,8 @@ public class ItemsDTO {
 		super();
 		this.message = message;
 	}
-	
-	
+
+	public ItemsDTO() {
+		super();
+	}
 }

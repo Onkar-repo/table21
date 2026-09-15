@@ -76,7 +76,7 @@
         </div>
 
         <div class="admin-actions">
-            <button type="button" class="action-btn" onclick="toggleModal();">Register Items</button>
+            <button type="button" class="action-btn" onclick="closeTable();toggleModal();">Register Items</button>
             <button type="button" class="action-btn">Delete Items</button>
             <button type="button" class="action-btn">Edit Items</button>
             <button type="button" class="action-btn">Enlist Items</button>
@@ -174,9 +174,11 @@
         <div class="modal-form">
             <div class="modal-header">
                 <span>Register New Item</span>
-                <button style="background:none; border:none; color:white; cursor:pointer; font-size:1.2rem;" onclick="toggleModal()">&times;</button>
+                <button style="background:none; border:none; color:white; cursor:pointer; font-size:1.2rem;" onclick="regItemsCart=[]; toggleModal();">&times;</button>
             </div>
             <div class="modal-body">
+				
+				
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label>Item Name</label>
                     <input type="text" id="newItemName">
@@ -188,14 +190,15 @@
                     </div>
                     <div class="form-group" style="flex:1">
                         <label>Price</label>
-                        <input type="number" id="newItemPrice">
+                        <input type="number" min="1" max="999999" id="newItemPrice">
                     </div>
+					
+		
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="action-btn" style="background:#7f8c8d; padding: 8px 15px;" onclick="toggleModal()">Cancel</button>
-				<button type="button" class="action-btn" style="background:#7f8c8d; padding: 8px 15px;" onclick="toggleModal()">Add To Cart (0)</button>
-				<button type="button" class="action-btn" style="background:var(--success); padding: 8px 15px;" onclick="saveItem()">Send</button>
+				<button id="atc" type="button" class="action-btn" style="background:#7f8c8d; padding: 8px 15px;" onclick="addToCart();">Add To Cart (0)</button>
+				<button  id="sendCartButton" type="button" class="action-btn" style="background:var(--success); padding: 8px 15px;" onclick="sendCart();">Send</button>
             </div>
         </div>
     </div>

@@ -1,5 +1,6 @@
 console.log("hello");
 let errNum, actNum, noOrderYet;
+let regItemsCart = [];
 function loadUserName() {
     const querryString = window.location.search;
     const querryParams = new URLSearchParams(querryString);
@@ -7,16 +8,16 @@ function loadUserName() {
 }
 
 function completeButtonHit() {
-    
-	if(noOrderYet){
-	showAlert("Validation","Empty list. Can not complete the bill.");
-	errNum = 1;	
-	}
-	else{
-		actNum = 4;
-		showDialog("Sure to complete current bill ?");
-		
-	}	
+
+    if (noOrderYet) {
+        showAlert("Validation", "Empty list. Can not complete the bill.");
+        errNum = 1;
+    }
+    else {
+        actNum = 4;
+        showDialog("Sure to complete current bill ?");
+
+    }
 }
 
 async function completeBillAndUpdate() {
@@ -65,14 +66,14 @@ function loadPrintPage() {
 }
 
 function clearButtonHit() {
-	if(noOrderYet){
-		showAlert("Validation", "No items added yet.");
-		                errNum = 7;
-	}
-	else{
-		actNum = 2;
-		   showDialog("Sure to clear all items ?");	
-	}
+    if (noOrderYet) {
+        showAlert("Validation", "No items added yet.");
+        errNum = 7;
+    }
+    else {
+        actNum = 2;
+        showDialog("Sure to clear all items ?");
+    }
 }
 
 async function clearItemsAndUpdate() {
@@ -177,7 +178,7 @@ async function removeItemAndUpdate() {
                     parentList.appendChild(rowDiv);
                 }
                 document.getElementById("total").innerText = "₹ " + tot;
-				document.getElementById("srno").value = "";
+                document.getElementById("srno").value = "";
                 document.getElementById("itmcode").focus();
                 if (tot === 0) noOrderYet = true;
             }
@@ -411,9 +412,83 @@ function closeTable() {
 
 }
 
+
+function addToCart() {
+
+    const iitemName = document.getElementById('newItemName').value
+    const iitemCode = document.getElementById('newItemCode').value
+    const iitemCost = document.getElementById('newItemPrice').value
+
+    if (iitemName === "" || iitemCode === "" || iitemCost === "") {
+		alert("All fields are compulsory.");
+		document.getElementById('newItemName').focus(); 
+    }
+    else {
+        if (regItemsCart.length < 51) {
+            regItemsCart.push({ itemCode: iitemCode, itemName: iitemName, itemCost: iitemCost });
+			document.getElementById('atc').innerText = "Add To Cart (" + regItemsCart.length + ")";
+			  document.getElementById('newItemName').value ="";
+			 document.getElementById('newItemCode').value="";
+			   document.getElementById('newItemPrice').value="";
+			   document.getElementById('newItemName').focus();
+			alert("Added to cart.");
+        }
+        else {
+            document.getElementById('sendCartButton').focus();
+			alert("Max 25 items at a time.");
+        }
+    }
+}
+
+
+async function sendCart(){
+	
+	if(regItemsCart.length === 0){
+		alert("Min 1 item in cart needed before sending.");
+		document.getElementById('newItemName').focus();
+	}
+	else{
+	try{
+		toggleModal();
+		const regItemsPayload = {
+		            billUser: document.getElementById('ue').innerText,
+		            requestType: "LoadTable",
+					items: regItemsCart
+		        };
+		const mhb = {
+		           method: 'POST',
+		           headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
+		           body: JSON.stringify(regItemsPayload)
+		       };
+			   console.log(JSON.stringify(regItemsPayload,null,2));
+			   const regItemsResponse = await fetch("http://localhost:8080/dashboard/registeritems", mhb);
+			           if (!regItemsResponse.ok) {
+			               console.log(regItemsResponse.status + ": " + regItemsResponse.statusText);
+						   //custom dialog box 
+			           }
+			           else {
+			               const result = await regItemsResponse.text();
+						   errNum = 10;
+						   if(result==="saved")
+							{
+								showAlert("Information","Items Registered! Those which are duplicate or not unique will be automatically ignored.");
+								regItemsCart=[];
+							}
+						   else
+							showAlert("Information",result);
+			           }
+	}
+	catch(error){
+		console.log(error);
+	}
+	}
+}
+
 function toggleModal() {
     const modal = document.getElementById('registerModal');
     modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+	if(modal.style.display === 'flex') document.getElementById('newItemName').focus();
+	else document.getElementById("t1").focus();
 }
 
 function saveItem() {
@@ -484,7 +559,16 @@ function closeAlert() {
         case 7:
             document.getElementById("itmcode").focus();
             break;
-
+        case 8:
+            document.getElementById('newItemName').focus();
+            break;
+        case 9:
+            document.getElementById('sendCartButton').focus();
+            break;
+		case 10:
+			toggleModal();
+			document.getElementById("t1").focus();
+			break;	
     }
 }
 
@@ -518,7 +602,7 @@ function handleResponse(isYes) {
                 break;
             case 4:
                 completeBillAndUpdate();
-                break;		
+                break;
         }
     }
 }
