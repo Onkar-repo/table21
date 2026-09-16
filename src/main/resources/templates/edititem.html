@@ -279,7 +279,7 @@
 					const edtItemsPayload = {
 						billUser: billUserr,
 						requestType: "EditTable",
-						items: [{itemCode: iitemCode, itemName:iitemName,itemCost:iitemCost }],
+						items: [{itemCode: iitemCode.toUpperCase(), itemName:iitemName.toUpperCase(),itemCost:iitemCost }],
 					};
 					const mhb = {
 						method: 'POST',
@@ -302,7 +302,10 @@
 						else
 							alert(result);
 					}
-
+					document.getElementById('itemName').value="";
+					 document.getElementById('itemCode').value="";
+						 document.getElementById('itemCost').value="";
+						 document.getElementById('itemName').focus();
 				}
 				catch (er) {
 					console.log(er);

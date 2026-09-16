@@ -21,6 +21,16 @@ function completeButtonHit() {
 }
 
 
+/*
+onst url = new URL("/table21/dashboard/reportspage", window.location.origin);
+url.search = new URLSearchParams({ 
+    billUser: document.getElementById('ue').innerText 
+}).toString();
+
+window.location.href = url.toString();
+*/
+
+
 function gotoReportsPage(){
 	const url = new URL("http://localhost:8080/dashboard/reportspage");
 //	const url = new URL("http://localhost:8080/table21/dashboard/reportspage");
@@ -181,7 +191,7 @@ async function removeItemAndUpdate() {
         else {
             const itemList = await updatedItemsResponse.json();
             console.log(itemList);
-            if (itemList[0].message == null) {
+            if (itemList[0].message === null) {
                 const parentList = document.getElementById("itemlist");
                 parentList.replaceChildren();
                 let tot = 0;
@@ -454,8 +464,8 @@ function addToCart() {
 		document.getElementById('newItemName').focus(); 
     }
     else {
-        if (regItemsCart.length < 51) {
-            regItemsCart.push({ itemCode: iitemCode, itemName: iitemName, itemCost: iitemCost });
+        if (regItemsCart.length < 26) {
+            regItemsCart.push({ itemCode: iitemCode.toUpperCase(), itemName: iitemName.toUpperCase(), itemCost: iitemCost });
 			document.getElementById('atc').innerText = "Add To Cart (" + regItemsCart.length + ")";
 			  document.getElementById('newItemName').value ="";
 			 document.getElementById('newItemCode').value="";
@@ -472,14 +482,13 @@ function addToCart() {
 
 
 async function sendCart(){
-	
 	if(regItemsCart.length === 0){
 		alert("Min 1 item in cart needed before sending.");
 		document.getElementById('newItemName').focus();
 	}
 	else{
 	try{
-		toggleModal();
+		
 		const regItemsPayload = {
 		            billUser: document.getElementById('ue').innerText,
 		            requestType: "LoadTable",
@@ -500,13 +509,20 @@ async function sendCart(){
 			           else {
 			               const result = await regItemsResponse.text();
 						   errNum = 10;
+						   
 						   if(result==="saved")
 							{
+								
 								showAlert("Information","Items Registered! Those which are duplicate or not unique will be automatically ignored.");
-								regItemsCart=[];
+								
+								
 							}
 						   else
-							showAlert("Information",result);
+							{showAlert("Information",result);}
+						   regItemsCart=[];
+						   document.getElementById('atc').innerText = "Add To Cart (0)";
+						   toggleModal();
+						   
 			           }
 	}
 	catch(error){
@@ -520,14 +536,6 @@ function toggleModal() {
     modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
 	if(modal.style.display === 'flex') document.getElementById('newItemName').focus();
 	else document.getElementById("t1").focus();
-}
-
-function saveItem() {
-    const name = document.getElementById('newItemName').value;
-    if (name) {
-        alert(name + " added!");
-        toggleModal();
-    }
 }
 
 
@@ -598,7 +606,6 @@ function closeAlert() {
             document.getElementById('sendCartButton').focus();
             break;
 		case 10:
-			toggleModal();
 			document.getElementById("t1").focus();
 			break;	
     }
