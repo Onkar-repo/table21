@@ -11,8 +11,8 @@ async function SendData() {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: userObjectJSON
         };
-        const loginResponse = await fetch("http://localhost:8080/login", mhb);
-	//	const loginResponse = await fetch("http://localhost:8080/table21/login", mhb);
+        const loginResponse = await fetch("/login", mhb);
+	//	const loginResponse = await fetch("/table21/login", mhb);
 		        
 		if (!loginResponse.ok){
 			console.log(loginResponse.status + " : " + loginResponse.statusText); // temporary message
@@ -107,8 +107,8 @@ async function handleResponse(isYes) {
 			showAlert("Validation", "Email id format is incorrect.");
 			return;
 		}
-		const url = new URL("http://localhost:8080/recover");
-	//	const url = new URL("http://localhost:8080/table21/recover");
+		const url = new URL("/recover", window.location.origin);
+	//	const url = new URL("/table21/recover", window.location.origin);
 		url.search = new URLSearchParams({ billUser: document.getElementById('reg_email').value }).toString();
 		const recoverResponse = await fetch(url);
 		if (!recoverResponse.ok) {

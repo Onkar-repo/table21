@@ -21,34 +21,24 @@ function completeButtonHit() {
 }
 
 
-/*
-onst url = new URL("/table21/dashboard/reportspage", window.location.origin);
-url.search = new URLSearchParams({ 
-    billUser: document.getElementById('ue').innerText 
-}).toString();
-
-window.location.href = url.toString();
-*/
-
-
 function gotoReportsPage(){
-	const url = new URL("http://localhost:8080/dashboard/reportspage");
-//	const url = new URL("http://localhost:8080/table21/dashboard/reportspage");
+	const url = new URL("/dashboard/reportspage", window.location.origin);
+//	const url = new URL("/table21/dashboard/reportspage", window.location.origin);
 		     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
 			 window.location.href = url;
 	
 }
 
 function gotoEditItemPage(){	
-		const url = new URL("http://localhost:8080/dashboard/edititempage");
-//		const url = new URL("http://localhost:8080/table21/dashboard/edititempage");
+		const url = new URL("/dashboard/edititempage", window.location.origin);
+//		const url = new URL("/table21/dashboard/edititempage", window.location.origin);
 		     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
 				 window.location.href = url;
 }
 
 function gotoEnlistPage(){
-	const url = new URL("http://localhost:8080/dashboard/enlistpage");
-//	const url = new URL("http://localhost:8080/table21/dashboard/enlistpage");
+	const url = new URL("/dashboard/enlistpage", window.location.origin);
+//	const url = new URL("/table21/dashboard/enlistpage", window.location.origin);
 			     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
 					 window.location.href = url;
 }
@@ -56,8 +46,8 @@ function gotoEnlistPage(){
 
 async function completeBillAndUpdate() {
     try {
-        const url = new URL("http://localhost:8080/dashboard/completebill");
-//		const url = new URL("http://localhost:8080/table21/dashboard/completebill");
+        const url = new URL("/dashboard/completebill", window.location.origin);
+//		const url = new URL("/table21/dashboard/completebill", window.location.origin);
         url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
         console.log(url);
 
@@ -94,8 +84,8 @@ function printButtonHit() {
 }
 
 function loadPrintPage() {
-    const url = new URL("http://localhost:8080/dashboard/printbill");
-//	const url = new URL("http://localhost:8080/table21/dashboard/printbill");
+    const url = new URL("/dashboard/printbill", window.location.origin);
+//	const url = new URL("/table21/dashboard/printbill", window.location.origin);
     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
     console.log(url);
     window.location.href = url;
@@ -126,8 +116,8 @@ async function clearItemsAndUpdate() {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify(clearItemsPayload)
         };
-        const updatedItemsResponse = await fetch("http://localhost:8080/dashboard/clearitems", mhb);
-//		const updatedItemsResponse = await fetch("http://localhost:8080/table21/dashboard/clearitems", mhb);
+        const updatedItemsResponse = await fetch("/dashboard/clearitems", mhb);
+//		const updatedItemsResponse = await fetch("/table21/dashboard/clearitems", mhb);
         if (!updatedItemsResponse.ok) {
             console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
         }
@@ -183,8 +173,8 @@ async function removeItemAndUpdate() {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify(removeItemPayload)
         };
-        const updatedItemsResponse = await fetch("http://localhost:8080/dashboard/removeitem", mhb);
-//		const updatedItemsResponse = await fetch("http://localhost:8080/table21/dashboard/removeitem", mhb);
+        const updatedItemsResponse = await fetch("/dashboard/removeitem", mhb);
+//		const updatedItemsResponse = await fetch("/table21/dashboard/removeitem", mhb);
         if (!updatedItemsResponse.ok) {
             console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
         }
@@ -251,8 +241,8 @@ async function addItemAndUpdate(event) {
                 body: JSON.stringify(addItemPayload)
             };
             console.log(mhb);
-            const updatedItemsResponse = await fetch("http://localhost:8080/dashboard/additem", mhb);
-//			const updatedItemsResponse = await fetch("http://localhost:8080/table21/dashboard/additem", mhb);
+            const updatedItemsResponse = await fetch("/dashboard/additem", mhb);
+//			const updatedItemsResponse = await fetch("/table21/dashboard/additem", mhb);
             if (!updatedItemsResponse.ok) {
                 console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
             }
@@ -317,8 +307,8 @@ function selectItemNameFromCode(event) {
 }
 async function loaduserItems() {
     try {
-        const url = new URL("http://localhost:8080/dashboard/loaditems");
-//		const url = new URL("http://localhost:8080/table21/dashboard/loaditems");
+        const url = new URL("/dashboard/loaditems", window.location.origin);
+//		const url = new URL("/table21/dashboard/loaditems", window.location.origin);
         url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
         const itemsListResponse = await fetch(url);
         if (!itemsListResponse.ok) {
@@ -364,8 +354,8 @@ async function loadTable(tableNumber) {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify(loadTablePayload)
         };
-        const billWithItemsResponse = await fetch("http://localhost:8080/dashboard/loadtable", mhb);
-//		const billWithItemsResponse = await fetch("http://localhost:8080/table21/dashboard/loadtable", mhb);
+        const billWithItemsResponse = await fetch("/dashboard/loadtable", mhb);
+//		const billWithItemsResponse = await fetch("/table21/dashboard/loadtable", mhb);
         if (!billWithItemsResponse.ok) {
             console.log(billWithItemsResponse.status + ": " + billWithItemsResponse.statusText);
         }
@@ -500,8 +490,8 @@ async function sendCart(){
 		           body: JSON.stringify(regItemsPayload)
 		       };
 			   console.log(JSON.stringify(regItemsPayload,null,2));
-			   const regItemsResponse = await fetch("http://localhost:8080/dashboard/registeritems", mhb);
-//			   const regItemsResponse = await fetch("http://localhost:8080/table21/dashboard/registeritems", mhb);
+			   const regItemsResponse = await fetch("/dashboard/registeritems", mhb);
+//			   const regItemsResponse = await fetch("/table21/dashboard/registeritems", mhb);
 			           if (!regItemsResponse.ok) {
 			               console.log(regItemsResponse.status + ": " + regItemsResponse.statusText);
 						   //custom dialog box 
@@ -546,8 +536,8 @@ async function doLogout() {
         body: document.getElementById('ue').innerText
     };
     console.log(mhb);
-    const logOutResponse = await fetch("http://localhost:8080/logout", mhb);
-//	const logOutResponse = await fetch("http://localhost:8080/table21/logout", mhb);
+    const logOutResponse = await fetch("/logout", mhb);
+//	const logOutResponse = await fetch("/table21/logout", mhb);
     if (!logOutResponse.ok) {
         console.log(logOutResponse.status + ": " + logOutResponse.statusText);
     }
