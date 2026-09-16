@@ -1,269 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Reports</title>
-    <style type="text/css">
-        /* Color Palette mapped directly from the login page */
-        :root {
-            --bg-body: #f4f4f7;
-            --bg-card: #ffffff;
-            --bg-container: #ffffff;
-            --text-primary: #1f2937;
-            --text-secondary: #6b7280;
-            --border-color: #d1d5db;
-            --primary-accent: #65407D;
-            --primary-hover: #523366;
-            --focus-ring: rgba(101, 64, 125, 0.1);
-            --shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
-        }
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Reports</title>
+	<style type="text/css">
+		/* Color Palette mapped directly from the login page */
+		:root {
+			--bg-body: #f4f4f7;
+			--bg-card: #ffffff;
+			--bg-container: #ffffff;
+			--text-primary: #1f2937;
+			--text-secondary: #6b7280;
+			--border-color: #d1d5db;
+			--primary-accent: #65407D;
+			--primary-hover: #523366;
+			--focus-ring: rgba(101, 64, 125, 0.1);
+			--shadow: 0 8px 24px rgba(149, 157, 165, 0.2);
+		}
 
-        /* Base Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
+		/* Base Styles */
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+		}
 
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-primary);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+		body {
+			background-color: var(--bg-body);
+			color: var(--text-primary);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			padding: 20px;
+		}
 
-        a { 
-            color: var(--text-secondary); 
-            text-decoration: none; 
-            transition: color 0.2s ease;
-        }
-        a:hover { 
-            color: var(--primary-accent); 
-            text-decoration: underline; 
-        }
+		a {
+			color: var(--text-secondary);
+			text-decoration: none;
+			transition: color 0.2s ease;
+		}
 
-        /* Main Container Card */
-        .reports-card {
-            width: 100%;
-            max-width: 400px;
-            background-color: var(--bg-container);
-            border-radius: 12px;
-            padding: 40px 30px;
-            box-shadow: var(--shadow);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+		a:hover {
+			color: var(--primary-accent);
+			text-decoration: underline;
+		}
 
-        /* Header Section */
-        .header-section {
-            text-align: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 16px;
-        }
+		/* Main Container Card */
+		.reports-card {
+			width: 100%;
+			max-width: 400px;
+			background-color: var(--bg-container);
+			border-radius: 12px;
+			padding: 40px 30px;
+			box-shadow: var(--shadow);
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+		}
 
-        .header-section h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
+		/* Header Section */
+		.header-section {
+			text-align: center;
+			border-bottom: 1px solid var(--border-color);
+			padding-bottom: 16px;
+		}
 
-        .header-section h2 {
-            font-size: 14px;
-            font-weight: normal;
-            color: var(--text-secondary);
-        }
+		.header-section h1 {
+			font-size: 22px;
+			font-weight: 700;
+			color: var(--text-primary);
+			margin-bottom: 4px;
+		}
 
-        /* Profile/Email Section */
-        .user-section {
-            text-align: center;
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
+		.header-section h2 {
+			font-size: 14px;
+			font-weight: normal;
+			color: var(--text-secondary);
+		}
 
-        /* Form Controls */
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+		/* Profile/Email Section */
+		.user-section {
+			text-align: center;
+			font-size: 14px;
+			color: var(--text-secondary);
+			font-weight: 500;
+		}
 
-        label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
+		/* Form Controls */
+		.form-group {
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+		}
 
-        select, input[type="date"] {
-            width: 100%;
-            padding: 12px 14px;
-            background-color: #f9fafb;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 15px;
-            color: var(--text-primary);
-            outline: none;
-            transition: all 0.3s ease;
-        }
+		label {
+			font-size: 14px;
+			font-weight: 600;
+			color: var(--text-primary);
+		}
 
-        select:focus, input[type="date"]:focus {
-            border-color: var(--primary-accent);
-            background-color: var(--bg-card);
-            box-shadow: 0 0 0 4px var(--focus-ring);
-        }
+		select,
+		input[type="date"] {
+			width: 100%;
+			padding: 12px 14px;
+			background-color: #f9fafb;
+			border: 1px solid var(--border-color);
+			border-radius: 8px;
+			font-size: 15px;
+			color: var(--text-primary);
+			outline: none;
+			transition: all 0.3s ease;
+		}
 
-        /* Date Picker Range Layout */
-        .date-range {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
+		select:focus,
+		input[type="date"]:focus {
+			border-color: var(--primary-accent);
+			background-color: var(--bg-card);
+			box-shadow: 0 0 0 4px var(--focus-ring);
+		}
 
-        .date-field {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+		/* Date Picker Range Layout */
+		.date-range {
+			display: flex;
+			gap: 12px;
+			align-items: center;
+		}
 
-        .date-field span {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
+		.date-field {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+		}
 
-        /* Action Button */
-        .btn-fetch {
-            width: 100%;
-            padding: 14px;
-            background-color: var(--primary-accent);
-            color: #ffffff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.1s ease;
-            margin-top: 10px;
-        }
+		.date-field span {
+			font-size: 12px;
+			font-weight: 600;
+			color: var(--text-secondary);
+		}
 
-        .btn-fetch:hover {
-            background-color: var(--primary-hover);
-        }
+		/* Action Button */
+		.btn-fetch {
+			width: 100%;
+			padding: 14px;
+			background-color: var(--primary-accent);
+			color: #ffffff;
+			border: none;
+			border-radius: 8px;
+			font-size: 16px;
+			font-weight: 600;
+			cursor: pointer;
+			transition: background 0.2s ease, transform 0.1s ease;
+			margin-top: 10px;
+		}
 
-        .btn-fetch:active {
-            transform: scale(0.98);
-        }
+		.btn-fetch:hover {
+			background-color: var(--primary-hover);
+		}
 
-        /* Output Display Box */
-        .output-box {
-            background-color: #f9fafb;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            min-height: 100px;
-            padding: 16px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 8px;
-        }
+		.btn-fetch:active {
+			transform: scale(0.98);
+		}
 
-        .output-title {
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--text-secondary);
-        }
+		/* Output Display Box */
+		.output-box {
+			background-color: #f9fafb;
+			border: 1px solid var(--border-color);
+			border-radius: 8px;
+			min-height: 100px;
+			padding: 16px;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			gap: 8px;
+		}
 
-        .output-content {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary-accent);
-        }
+		.output-title {
+			font-weight: 600;
+			font-size: 13px;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+			color: var(--text-secondary);
+		}
 
-        /* Mobile specific adjustments */
-        @media (max-width: 480px) {
-            body {
-                padding: 15px;
-                background: var(--bg-card);
-            }
-            .reports-card {
-                box-shadow: none;
-                padding: 20px 10px;
-            }
-        }
-    </style>
+		.output-content {
+			font-size: 18px;
+			font-weight: 700;
+			color: var(--primary-accent);
+		}
+
+		/* Mobile specific adjustments */
+		@media (max-width: 480px) {
+			body {
+				padding: 15px;
+				background: var(--bg-card);
+			}
+
+			.reports-card {
+				box-shadow: none;
+				padding: 20px 10px;
+			}
+		}
+	</style>
 </head>
-<body>
 
-    <main class="reports-card">
-        <header class="header-section">
-            <h1>Table21</h1>
-            <h2>Reports</h2>
-        </header>
+<body
+	onload="enlistItems();">
 
-        <section class="user-section">
-            <span id="billUser">email@id.com</span>
-        </section>
+	<main class="reports-card">
+		<header class="header-section">
+			<h1>Table21</h1>
+			<h2>Reports</h2>
+		</header>
 
-        <form id="report-form" onsubmit="event.preventDefault();">
-            <div class="form-group" style="margin-bottom: 15px;">
-                <label for="item-select">Item Name</label>
-                <select id="itemList" name="itemName">
-                    <option selected>Select an item...</option>
-                </select>
-            </div>
+		<section class="user-section">
+			<span id="billUser">email@id.com</span>
+		</section>
 
-            <div class="date-range" style="margin-bottom: 15px;">
-                <div class="date-field">
-                    <span>From</span>
-                    <input type="date" id="date-from" name="dateFrom">
-                </div>
-                <div class="date-field">
-                    <span>To</span>
-                    <input type="date" id="date-to" name="dateTo">
-                </div>
-            </div>
+		<form id="report-form" onsubmit="event.preventDefault();">
+			<div class="form-group" style="margin-bottom: 15px;">
+				<label for="item-select">Item Name</label>
+				<select id="itemList" name="itemName">
+					<!-- <option selected>Select an item...</option> -->
+				</select>
+			</div>
 
-            <div class="form-group" style="margin-bottom: 15px;">
-                <label for="report-select">Report</label>
-                <select id="report-select" name="reportType">
-                    <option selected>Select report type</option>
-								<option>Total Income</option>
-								<option>Custom Date Ranged Income</option>
-								<option>Itemwise Total Income</option>
-								<option>Itemwise Custom Date Ranged Income</option>
-								<option>Most Sold Item</option>
-								<option>Most Sold Item Custom Date Ranged</option>
-								<option>Least Sold Item</option>
-								<option>Least Sold Item Custom Date Ranged</option>
-								<option>Highest Billed Amount</option>
-								<option>Highest Billed Amount Custom Date Ranged</option>
-								<option>Lowest Billed Amount</option>
-								<option>Lowest Billed Amount Custom Date Ranged</option>
-								<option>Total Items</option>
-								<option>Least Expensive Item</option>
-								<option>Most Expensive Item</option>
-                </select>
-            </div>
+			<div class="date-range" style="margin-bottom: 15px;">
+				<div class="date-field">
+					<span>From</span>
+					<input type="date" id="dateFrom" name="dateFrom">
+				</div>
+				<div class="date-field">
+					<span>To</span>
+					<input type="date" id="dateTo" name="dateTo">
+				</div>
+			</div>
 
-            <button type="button" class="btn-fetch">Fetch</button>
-        </form>
+			<div class="form-group" style="margin-bottom: 15px;">
+				<label for="report-select">Report</label>
+				<select id="report-select" name="reportType">
+					<option selected>Total Income</option>
+					<option>Custom Date Ranged Income</option>
+					<option>Itemwise Total Income</option>
+					<option>Itemwise Custom Date Ranged Income</option>
+					<option>Most Sold Item</option>
+					<option>Most Sold Item Custom Date Ranged</option>
+					<option>Least Sold Item</option>
+					<option>Least Sold Item Custom Date Ranged</option>
+					<option>Highest Billed Amount</option>
+					<option>Highest Billed Amount Custom Date Ranged</option>
+					<option>Lowest Billed Amount</option>
+					<option>Lowest Billed Amount Custom Date Ranged</option>
+					<option>Total Items</option>
+					<option>Least Expensive Item</option>
+					<option>Most Expensive Item</option>
+				</select>
+			</div>
 
-        <section class="output-box">
-            <span class="output-title" id="reportName">Output</span>
-            <div class="output-content" id="reportValue">Number/Text</div>
-        </section>
-    </main>
+			<button type="button" class="btn-fetch" onclick="fetchReport();">Fetch</button>
+		</form>
 
+		<section class="output-box">
+			<span class="output-title" id="reportName">Output</span>
+			<div class="output-content" id="reportValue">Number/Text</div>
+		</section>
+	</main>
+
+
+	<script>
+		const querryString = window.location.search;
+		const querryParams = new URLSearchParams(querryString);
+		const billUserr = querryParams.get('billUser');
+		async function enlistItems() {
+			try {
+
+				const today = new Date().toISOString().split('T')[0];
+				document.getElementById('dateFrom').value = today;
+				document.getElementById('dateTo').value = today;
+				
+				const url = new URL("http://localhost:8080/dashboard/loaditems");
+				url.search = new URLSearchParams({billUser: billUserr}).toString();
+				const itemsListResponse = await fetch(url);
+				if (!itemsListResponse.ok) {
+					console.log(itemsListResponse.status + ": " + itemsListResponse.statusText);
+					// display custom dialog error
+				}
+				else {
+					const listOfItems = await itemsListResponse.json();
+					// retrive items list and populate in combo box
+					if (listOfItems.message === "Requested without authentication.") {
+						// display custom dialog error
+					}
+					else {
+						console.log(listOfItems);
+						dropdown = document.getElementById("itemList");
+						for (let i = 0; i < listOfItems.length; i++) {
+
+							const temp = document.createElement("option");
+							temp.value = listOfItems[i].itemName;
+							temp.textContent = listOfItems[i].itemName;
+							dropdown.appendChild(temp);
+
+						}
+
+						document.getElementById("billUser").innerText = billUserr;
+						document.getElementById("itemList").focus();
+
+					}
+				}
+			}
+			catch (err) {
+				console.log(err);
+			}
+		}
+
+		async function fetchReport() {
+
+			if (document.getElementById('dateTo').value === "" || document.getElementById('dateFrom').value === "") {
+				alert("All fields are compulsory");
+				document.getElementById('dateFrom').focus();
+			}
+			else {
+				try {
+
+					const getReportPayload = {
+						billUser: billUserr,
+						itemName: document.getElementById("itemList").value,
+						from: document.getElementById('dateFrom').value + " 00:00:00",
+						to: document.getElementById('dateTo').value + " 23:59:59",
+						report: document.getElementById("report-select").value
+					};
+					console.log(getReportPayload);
+					const mhb = {
+						method: 'POST',
+						headers: {'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*'},
+						body: JSON.stringify(getReportPayload)
+					};
+					console.log(mhb);
+					const reportResponse = await fetch("http://localhost:8080/reports", mhb);
+					if (!reportResponse.ok) {
+						console.log(reportResponse.status + ": " + reportResponse.statusText);
+					}
+					else {
+						const rd = await reportResponse.json();
+						document.getElementById("reportValue").innerText = rd[0][document.getElementById("report-select").value];
+						document.getElementById("reportName").innerText = document.getElementById("report-select").value;
+					}
+
+				}
+				catch (er) {
+					console.log(er);
+				}
+
+			}
+
+		}
+	</script>
 </body>
+
 </html>
