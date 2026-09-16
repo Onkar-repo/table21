@@ -212,14 +212,14 @@
         </header>
 
         <section class="user-section">
-            <span>email@id.com</span>
+            <span id="billUser">email@id.com</span>
         </section>
 
         <form id="report-form" onsubmit="event.preventDefault();">
             <div class="form-group" style="margin-bottom: 15px;">
                 <label for="item-select">Item Name</label>
-                <select id="item-select" name="itemName">
-                    <option value="" disabled selected>Select an item</option>
+                <select id="itemList" name="itemName">
+                    <option selected>Select an item...</option>
                 </select>
             </div>
 
@@ -238,17 +238,30 @@
                 <label for="report-select">Report</label>
                 <select id="report-select" name="reportType">
                     <option selected>Select report type</option>
-					<option>Total Income</option>
-					<option>Lowest Bill Custom Date Range</option>
+								<option>Total Income</option>
+								<option>Custom Date Ranged Income</option>
+								<option>Itemwise Total Income</option>
+								<option>Itemwise Custom Date Ranged Income</option>
+								<option>Most Sold Item</option>
+								<option>Most Sold Item Custom Date Ranged</option>
+								<option>Least Sold Item</option>
+								<option>Least Sold Item Custom Date Ranged</option>
+								<option>Highest Billed Amount</option>
+								<option>Highest Billed Amount Custom Date Ranged</option>
+								<option>Lowest Billed Amount</option>
+								<option>Lowest Billed Amount Custom Date Ranged</option>
+								<option>Total Items</option>
+								<option>Least Expensive Item</option>
+								<option>Most Expensive Item</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn-fetch">Fetch</button>
+            <button type="button" class="btn-fetch">Fetch</button>
         </form>
 
         <section class="output-box">
-            <span class="output-title">Output</span>
-            <div class="output-content">Number/Text</div>
+            <span class="output-title" id="reportName">Output</span>
+            <div class="output-content" id="reportValue">Number/Text</div>
         </section>
     </main>
 

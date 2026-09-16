@@ -21,14 +21,20 @@ function completeButtonHit() {
 }
 
 
-async function gotoEditItemPage(){	
+function gotoReportsPage(){
+	const url = new URL("http://localhost:8080/dashboard/reportspage");
+	     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
+			 window.location.href = url;
+	
+}
+
+function gotoEditItemPage(){	
 		const url = new URL("http://localhost:8080/dashboard/edititempage");
 		     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
 				 window.location.href = url;
 }
 
-
-async function gotoEnlistPage(){
+function gotoEnlistPage(){
 	const url = new URL("http://localhost:8080/dashboard/enlistpage");
 			     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
 					 window.location.href = url;
