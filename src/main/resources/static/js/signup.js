@@ -22,6 +22,7 @@ async function SendData() {
             body: userObjectJSON
         };
         const signupResponse = await fetch("http://localhost:8080/signup", mhb);
+	//	const signupResponse = await fetch("http://localhost:8080/table21/signup", mhb);
         if (!signupResponse.ok)
             throw new Error(signupResponse.status + " occured.");
         const textResponse = await signupResponse.text();

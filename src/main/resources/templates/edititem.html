@@ -288,6 +288,7 @@
 					};
 					console.log(JSON.stringify(edtItemsPayload, null, 2));
 					const edtItemsResponse = await fetch("http://localhost:8080/dashboard/edititems", mhb);
+	//				const edtItemsResponse = await fetch("http://localhost:8080/table21/dashboard/edititems", mhb);
 					if (!edtItemsResponse.ok) {
 						console.log(edtItemsResponse.status + ": " + edtItemsResponse.statusText);
 						//custom dialog box 

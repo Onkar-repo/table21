@@ -12,7 +12,9 @@ async function SendData() {
             body: userObjectJSON
         };
         const loginResponse = await fetch("http://localhost:8080/login", mhb);
-        if (!loginResponse.ok){
+	//	const loginResponse = await fetch("http://localhost:8080/table21/login", mhb);
+		        
+		if (!loginResponse.ok){
 			console.log(loginResponse.status + " : " + loginResponse.statusText); // temporary message
 		}
 		else{
@@ -106,6 +108,7 @@ async function handleResponse(isYes) {
 			return;
 		}
 		const url = new URL("http://localhost:8080/recover");
+	//	const url = new URL("http://localhost:8080/table21/recover");
 		url.search = new URLSearchParams({ billUser: document.getElementById('reg_email').value }).toString();
 		const recoverResponse = await fetch(url);
 		if (!recoverResponse.ok) {

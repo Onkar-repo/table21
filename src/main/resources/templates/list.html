@@ -250,6 +250,7 @@
 									
 									
 			     const url = new URL("http://localhost:8080/dashboard/loaditems");
+	//			 const url = new URL("http://localhost:8080/table21/dashboard/loaditems");
 			     url.search = new URLSearchParams({ billUser: billUserr }).toString();
 			     const itemsListResponse = await fetch(url);
 			     if (!itemsListResponse.ok) {

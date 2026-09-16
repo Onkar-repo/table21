@@ -284,6 +284,7 @@
 				document.getElementById('dateTo').value = today;
 				
 				const url = new URL("http://localhost:8080/dashboard/loaditems");
+	//			const url = new URL("http://localhost:8080/table21/dashboard/loaditems");
 				url.search = new URLSearchParams({billUser: billUserr}).toString();
 				const itemsListResponse = await fetch(url);
 				if (!itemsListResponse.ok) {
@@ -343,6 +344,7 @@
 					};
 					console.log(mhb);
 					const reportResponse = await fetch("http://localhost:8080/reports", mhb);
+	//				const reportResponse = await fetch("http://localhost:8080/table21/reports", mhb);
 					if (!reportResponse.ok) {
 						console.log(reportResponse.status + ": " + reportResponse.statusText);
 					}
