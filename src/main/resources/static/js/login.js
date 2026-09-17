@@ -27,6 +27,7 @@ async function SendData() {
 				case "sessionStarted":
 					console.log("/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString());
 					window.location.href = "/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString();
+	//				window.location.href = "/table21/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString();
 					break;
 				case "error":
 					showAlert("Error","Could not authenticate right now. Try after some time.");
@@ -64,7 +65,8 @@ function validateLogIn() {
 
 
 function redirectToSignup(){
-window.location.href="/signup";
+		window.location.href="/signup";
+   //	window.location.href="/table21/signup";
 }
 
 
