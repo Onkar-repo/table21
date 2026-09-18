@@ -249,8 +249,8 @@
 									    const billUserr = querryParams.get('billUser');
 									
 									
-			     const url = new URL("/dashboard/loaditems", window.location.origin);
-	//			 const url = new URL("/table21/dashboard/loaditems", window.location.origin);
+	//		     const url = new URL("/dashboard/loaditems", window.location.origin);
+				 const url = new URL("/table21/dashboard/loaditems", window.location.origin);
 			     url.search = new URLSearchParams({ billUser: billUserr }).toString();
 			     const itemsListResponse = await fetch(url);
 			     if (!itemsListResponse.ok) {

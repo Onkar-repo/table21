@@ -11,8 +11,8 @@ async function SendData() {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: userObjectJSON
         };
-        const loginResponse = await fetch("/login", mhb);
-	//	const loginResponse = await fetch("/table21/login", mhb);
+     // const loginResponse = await fetch("/login", mhb);
+		const loginResponse = await fetch("/table21/login", mhb);
 		        
 		if (!loginResponse.ok){
 			console.log(loginResponse.status + " : " + loginResponse.statusText); // temporary message
@@ -26,8 +26,8 @@ async function SendData() {
 					break;
 				case "sessionStarted":
 					console.log("/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString());
-					window.location.href = "/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString();
-	//				window.location.href = "/table21/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString();
+	//				window.location.href = "/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString();
+					window.location.href = "/table21/dashboard?"+ new URLSearchParams({userEmail:document.getElementById('reg_email').value}).toString();
 					break;
 				case "error":
 					showAlert("Error","Could not authenticate right now. Try after some time.");
@@ -65,8 +65,8 @@ function validateLogIn() {
 
 
 function redirectToSignup(){
-		window.location.href="/signup";
-   //	window.location.href="/table21/signup";
+//		window.location.href="/signup";
+  	window.location.href="/table21/signup";
 }
 
 
@@ -109,8 +109,8 @@ async function handleResponse(isYes) {
 			showAlert("Validation", "Email id format is incorrect.");
 			return;
 		}
-		const url = new URL("/recover", window.location.origin);
-	//	const url = new URL("/table21/recover", window.location.origin);
+	//	const url = new URL("/recover", window.location.origin);
+		const url = new URL("/table21/recover", window.location.origin);
 		url.search = new URLSearchParams({ billUser: document.getElementById('reg_email').value }).toString();
 		const recoverResponse = await fetch(url);
 		if (!recoverResponse.ok) {

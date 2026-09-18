@@ -1,6 +1,7 @@
 console.log("hello");
 let errNum, actNum, noOrderYet;
 let regItemsCart = [];
+let liveOpenTables = [];
 function loadUserName() {
     const querryString = window.location.search;
     const querryParams = new URLSearchParams(querryString);
@@ -22,23 +23,23 @@ function completeButtonHit() {
 
 
 function gotoReportsPage(){
-	const url = new URL("/dashboard/reportspage", window.location.origin);
-//	const url = new URL("/table21/dashboard/reportspage", window.location.origin);
+//	const url = new URL("/dashboard/reportspage", window.location.origin);
+	const url = new URL("/table21/dashboard/reportspage", window.location.origin);
 		     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
 			 window.location.href = url;
 	
 }
 
 function gotoEditItemPage(){	
-		const url = new URL("/dashboard/edititempage", window.location.origin);
-//		const url = new URL("/table21/dashboard/edititempage", window.location.origin);
+//		const url = new URL("/dashboard/edititempage", window.location.origin);
+		const url = new URL("/table21/dashboard/edititempage", window.location.origin);
 		     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
 				 window.location.href = url;
 }
 
 function gotoEnlistPage(){
-	const url = new URL("/dashboard/enlistpage", window.location.origin);
-//	const url = new URL("/table21/dashboard/enlistpage", window.location.origin);
+//	const url = new URL("/dashboard/enlistpage", window.location.origin);
+	const url = new URL("/table21/dashboard/enlistpage", window.location.origin);
 			     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
 					 window.location.href = url;
 }
@@ -46,8 +47,8 @@ function gotoEnlistPage(){
 
 async function completeBillAndUpdate() {
     try {
-        const url = new URL("/dashboard/completebill", window.location.origin);
-//		const url = new URL("/table21/dashboard/completebill", window.location.origin);
+ //       const url = new URL("/dashboard/completebill", window.location.origin);
+	const url = new URL("/table21/dashboard/completebill", window.location.origin);
         url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
         console.log(url);
 
@@ -61,9 +62,11 @@ async function completeBillAndUpdate() {
             const result = await resultResponse.text();
             // retrive items list and populate in combo box
             if (result === "done") {
-                closeTable();
+				document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
+				closeTable();
                 showAlert("Information", "Completed! Now it is accessible from reports.");
                 errNum = 6;
+				
             }
             else {
                 // display custom dialog error
@@ -84,8 +87,8 @@ function printButtonHit() {
 }
 
 function loadPrintPage() {
-    const url = new URL("/dashboard/printbill", window.location.origin);
-//	const url = new URL("/table21/dashboard/printbill", window.location.origin);
+ //   const url = new URL("/dashboard/printbill", window.location.origin);
+	const url = new URL("/table21/dashboard/printbill", window.location.origin);
     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
     console.log(url);
     window.location.href = url;
@@ -116,8 +119,8 @@ async function clearItemsAndUpdate() {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify(clearItemsPayload)
         };
-        const updatedItemsResponse = await fetch("/dashboard/clearitems", mhb);
-//		const updatedItemsResponse = await fetch("/table21/dashboard/clearitems", mhb);
+//        const updatedItemsResponse = await fetch("/dashboard/clearitems", mhb);
+		const updatedItemsResponse = await fetch("/table21/dashboard/clearitems", mhb);
         if (!updatedItemsResponse.ok) {
             console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
         }
@@ -131,7 +134,8 @@ async function clearItemsAndUpdate() {
                 document.getElementById("total").innerText = "₹ 0";
                 document.getElementById("itmcode").focus();
                 noOrderYet = true;
-
+				document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
+				closeTable();
             }
             else {
                 showAlert("Information", result);
@@ -159,6 +163,14 @@ function removeByRefHit(event) {
 }
 
 async function removeItemAndUpdate() {
+	
+const ref =	document.getElementById('srno').value;
+if(ref==="" || Math.abs(ref)===NaN || Math.trunc(ref)===NaN){
+	showAlert("Validation","Incorrect ref value entered.");
+			errNum = 2;
+			return;
+}
+	
     try {
 
         const removeItemPayload = {
@@ -173,17 +185,28 @@ async function removeItemAndUpdate() {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify(removeItemPayload)
         };
-        const updatedItemsResponse = await fetch("/dashboard/removeitem", mhb);
-//		const updatedItemsResponse = await fetch("/table21/dashboard/removeitem", mhb);
+//        const updatedItemsResponse = await fetch("/dashboard/removeitem", mhb);
+		const updatedItemsResponse = await fetch("/table21/dashboard/removeitem", mhb);
         if (!updatedItemsResponse.ok) {
             console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
         }
         else {
             const itemList = await updatedItemsResponse.json();
             console.log(itemList);
+			const parentList = document.getElementById("itemlist");
+			                
+			if(itemList.length===0){
+				parentList.replaceChildren();
+				document.getElementById("total").innerText = "₹ 0";
+				                document.getElementById("srno").value = "";
+				                document.getElementById("itmcode").focus();
+				                noOrderYet = true;
+document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
+closeTable();
+				return;
+			} 
+				
             if (itemList[0].message === null) {
-                const parentList = document.getElementById("itemlist");
-                parentList.replaceChildren();
                 let tot = 0;
                 for (let i = 0;i < itemList.length;i++) {
                     const rowDiv = document.createElement("div");
@@ -224,14 +247,31 @@ async function removeItemAndUpdate() {
 
 async function addItemAndUpdate(event) {
     if (event.key === "Enter") {
+	
+	const icode = document.getElementById('itmcode').value;	
+	if(icode===""){
+			showAlert("Validation","Item code can not be blank..");
+			errNum = 7;
+			return;
+		}
+			
+	
+	const qty =	document.getElementById('qty').value;
+	if(qty==="" || Math.abs(qty)===NaN || Math.trunc(qty)===NaN){
+		showAlert("Validation","Incorrect quantity value entered.");
+		errNum = 11;
+		return;
+	}
+		
+		
         try {
             console.log("entered in addItem method");
             const addItemPayload = {
                 billUser: document.getElementById('ue').innerText,
                 billTable: document.getElementById('tab').innerText,
-                itemCode: document.getElementById('itmcode').value,
+                itemCode: icode,
                 itemName: document.getElementById('itmlist').options[document.getElementById('itmlist').selectedIndex].text.split(":")[1],
-                itemQuantity: document.getElementById('qty').value,
+                itemQuantity: Math.trunc(Math.abs(qty)),
                 requestType: "AddItem"
             };
             console.log(addItemPayload);
@@ -241,13 +281,17 @@ async function addItemAndUpdate(event) {
                 body: JSON.stringify(addItemPayload)
             };
             console.log(mhb);
-            const updatedItemsResponse = await fetch("/dashboard/additem", mhb);
-//			const updatedItemsResponse = await fetch("/table21/dashboard/additem", mhb);
+//            const updatedItemsResponse = await fetch("/dashboard/additem", mhb);
+			const updatedItemsResponse = await fetch("/table21/dashboard/additem", mhb);
             if (!updatedItemsResponse.ok) {
                 console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
             }
             else {
                 const itemList = await updatedItemsResponse.json();
+				
+				if(itemList.length===1 && itemList[0].message === null){
+					document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#c0392b";
+				}
                 if (itemList[0].message == null) {
                     const parentList = document.getElementById("itemlist");
                     parentList.replaceChildren();
@@ -307,8 +351,8 @@ function selectItemNameFromCode(event) {
 }
 async function loaduserItems() {
     try {
-        const url = new URL("/dashboard/loaditems", window.location.origin);
-//		const url = new URL("/table21/dashboard/loaditems", window.location.origin);
+//        const url = new URL("/dashboard/loaditems", window.location.origin);
+		const url = new URL("/table21/dashboard/loaditems", window.location.origin);
         url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
         const itemsListResponse = await fetch(url);
         if (!itemsListResponse.ok) {
@@ -341,7 +385,6 @@ async function loaduserItems() {
 
 
 async function loadTable(tableNumber) {
-
     try {
         const loadTablePayload = {
             billUser: document.getElementById('ue').innerText,
@@ -354,8 +397,8 @@ async function loadTable(tableNumber) {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify(loadTablePayload)
         };
-        const billWithItemsResponse = await fetch("/dashboard/loadtable", mhb);
-//		const billWithItemsResponse = await fetch("/table21/dashboard/loadtable", mhb);
+//        const billWithItemsResponse = await fetch("/dashboard/loadtable", mhb);
+		const billWithItemsResponse = await fetch("/table21/dashboard/loadtable", mhb);
         if (!billWithItemsResponse.ok) {
             console.log(billWithItemsResponse.status + ": " + billWithItemsResponse.statusText);
         }
@@ -490,8 +533,8 @@ async function sendCart(){
 		           body: JSON.stringify(regItemsPayload)
 		       };
 			   console.log(JSON.stringify(regItemsPayload,null,2));
-			   const regItemsResponse = await fetch("/dashboard/registeritems", mhb);
-//			   const regItemsResponse = await fetch("/table21/dashboard/registeritems", mhb);
+//			   const regItemsResponse = await fetch("/dashboard/registeritems", mhb);
+			   const regItemsResponse = await fetch("/table21/dashboard/registeritems", mhb);
 			           if (!regItemsResponse.ok) {
 			               console.log(regItemsResponse.status + ": " + regItemsResponse.statusText);
 						   //custom dialog box 
@@ -536,15 +579,15 @@ async function doLogout() {
         body: document.getElementById('ue').innerText
     };
     console.log(mhb);
-    const logOutResponse = await fetch("/logout", mhb);
-//	const logOutResponse = await fetch("/table21/logout", mhb);
+//    const logOutResponse = await fetch("/logout", mhb);
+	const logOutResponse = await fetch("/table21/logout", mhb);
     if (!logOutResponse.ok) {
         console.log(logOutResponse.status + ": " + logOutResponse.statusText);
     }
     else {
         const logStatus = await logOutResponse.text();
         if (logStatus === "done") {
-            window.location.href = "/login";
+            window.location.href = "/table21/login";
         }
         else {
             showAlert("Information", logStatus);
@@ -597,7 +640,10 @@ function closeAlert() {
             break;
 		case 10:
 			document.getElementById("t1").focus();
-			break;	
+			break;
+			case 11:
+			document.getElementById("qty").focus();
+			break;
     }
 }
 

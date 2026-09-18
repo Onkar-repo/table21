@@ -283,8 +283,8 @@
 				document.getElementById('dateFrom').value = today;
 				document.getElementById('dateTo').value = today;
 				
-				const url = new URL("/dashboard/loaditems", window.location.origin);
-	//			const url = new URL("/table21/dashboard/loaditems", window.location.origin);
+	//			const url = new URL("/dashboard/loaditems", window.location.origin);
+				const url = new URL("/table21/dashboard/loaditems", window.location.origin);
 				url.search = new URLSearchParams({billUser: billUserr}).toString();
 				const itemsListResponse = await fetch(url);
 				if (!itemsListResponse.ok) {
@@ -343,8 +343,8 @@
 						body: JSON.stringify(getReportPayload)
 					};
 					console.log(mhb);
-					const reportResponse = await fetch("/reports", mhb);
-	//				const reportResponse = await fetch("/table21/reports", mhb);
+	//				const reportResponse = await fetch("/reports", mhb);
+					const reportResponse = await fetch("/table21/reports", mhb);
 					if (!reportResponse.ok) {
 						console.log(reportResponse.status + ": " + reportResponse.statusText);
 					}
