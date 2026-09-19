@@ -78,7 +78,7 @@ function showAlert(title, message) {
     if (message) document.getElementById('alertMessage').innerText = message;
     const overlay = document.getElementById('customAlertOverlay');
     overlay.classList.add('active');
-    document.getElementById('alertOkBtn').focus();
+   setTimeout(()=>{document.getElementById("customAlertOverlay").focus();document.getElementById("alertOkBtn").focus();},50);
 }
 
 function closeAlert() {

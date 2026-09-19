@@ -1,11 +1,27 @@
 console.log("hello");
-let errNum, actNum, noOrderYet;
+let errNum, actNum, noOrderYet, isMobile;
 let regItemsCart = [];
-let liveOpenTables = [];
+
 function loadUserName() {
     const querryString = window.location.search;
     const querryParams = new URLSearchParams(querryString);
     document.getElementById('ue').innerText = querryParams.get('userEmail');
+	
+	const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+
+	if (isTouchDevice) {
+		document.getElementById("tapitmcode").hidden = false;	
+			document.getElementById("tapqty").hidden = false;	
+			document.getElementById("tapsrno").hidden = false;	
+			isMobile = true;
+	  console.log("Touchscreen device detected");
+	} else {
+		document.getElementById("tapitmcode").hidden = true;	
+			document.getElementById("tapqty").hidden = true;	
+			document.getElementById("tapsrno").hidden = true;
+			isMobile = false;
+	  console.log("Mouse/Desktop device detected");
+	}
 }
 
 function completeButtonHit() {
@@ -208,6 +224,7 @@ closeTable();
 				
             if (itemList[0].message === null) {
                 let tot = 0;
+				parentList.replaceChildren();
                 for (let i = 0;i < itemList.length;i++) {
                     const rowDiv = document.createElement("div");
                     rowDiv.className = "bill-row";
@@ -332,6 +349,11 @@ async function addItemAndUpdate(event) {
     }
 }
 
+
+
+
+
+
 function getItemCodeFromName() {
     if (document.getElementById("itmcode").value !== "Select an item...") {
         document.getElementById("itmcode").value = document.getElementById("itmlist").value.split(":")[0];
@@ -349,6 +371,7 @@ function selectItemNameFromCode(event) {
         }
     }
 }
+
 async function loaduserItems() {
     try {
 //        const url = new URL("/dashboard/loaditems", window.location.origin);
@@ -604,7 +627,7 @@ function showAlert(title, message) {
     if (message) document.getElementById('alertMessage').innerText = message;
     const overlay = document.getElementById('customAlertOverlay');
     overlay.classList.add('active');
-    setTimeout(() => { document.getElementById("alertOkBtn").focus(); }, 50);
+    setTimeout(() => {document.getElementById('customAlertOverlay').focus(); document.getElementById("alertOkBtn").focus(); }, 50);
 }
 
 function closeAlert() {
@@ -654,7 +677,7 @@ function showDialog(question) {
     if (question) document.getElementById('question').innerText = question;
     const overlay = document.getElementById('customDialogOverlay');
     overlay.classList.add('active');
-    setTimeout(() => { document.getElementById('dialogYesBtn').focus(); }, 50);
+    setTimeout(() => {document.getElementById('customDialogOverlay').focus(); document.getElementById('dialogYesBtn').focus(); }, 50);
 }
 
 function closeDialog() {
@@ -681,3 +704,12 @@ function handleResponse(isYes) {
         }
     }
 }
+
+/* Custom Loading Dialog script  */ 
+  function showLoading() {
+	
+    document.getElementById('customLoadingOverlay').style.display = 'flex';
+  } 
+  function hideLoading() {
+    document.getElementById('customLoadingOverlay').style.display = 'none';
+  }

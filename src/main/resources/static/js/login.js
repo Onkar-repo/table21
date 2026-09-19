@@ -1,4 +1,6 @@
+let errNum;
 async function SendData() {
+	showLoading();
     try {
         const userObject = {
 
@@ -13,7 +15,7 @@ async function SendData() {
         };
      // const loginResponse = await fetch("/login", mhb);
 		const loginResponse = await fetch("/table21/login", mhb);
-		        
+		hideLoading();        
 		if (!loginResponse.ok){
 			console.log(loginResponse.status + " : " + loginResponse.statusText); // temporary message
 		}
@@ -93,20 +95,27 @@ function showDialog() {
       const overlay = document.getElementById('customDialogOverlay');
       overlay.classList.add('active');
       // Auto-focus primary action for accessibility
-      document.getElementById('dialogYesBtn').focus();
+     setTimeout(()=> {document.getElementById('customDialogOverlay').focus();document.getElementById('dialogYesBtn').focus()},100);
   }
 
   function closeDialog() {
       const overlay = document.getElementById('customDialogOverlay');
       overlay.classList.remove('active');
+	  document.getElementById('reg_email').focus();
   }
 
 async function handleResponse(isYes) {
       closeDialog();
       if (isYes) {
 		
+		if(document.getElementById('reg_email').value===""){
+			showAlert("Validation", "Email id required.");
+			errNum = 1;
+			return;
+		}
 		if (!(document.getElementById('reg_email').checkValidity() && document.getElementById('reg_email').value.split("@")[1].includes("."))){
 			showAlert("Validation", "Email id format is incorrect.");
+			errNum = 1;
 			return;
 		}
 	//	const url = new URL("/recover", window.location.origin);
@@ -126,4 +135,20 @@ async function handleResponse(isYes) {
       } else {
 		document.getElementById('reg_email').focus();
       }
+  }
+  
+  
+  
+  
+  
+  
+ 
+
+ /* Custom Loading Dialog script  */ 
+  function showLoading() {
+	
+    document.getElementById('customLoadingOverlay').style.display = 'flex';
+  } 
+  function hideLoading() {
+    document.getElementById('customLoadingOverlay').style.display = 'none';
   }
