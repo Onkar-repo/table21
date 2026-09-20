@@ -10,15 +10,21 @@ function loadUserName() {
 	const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
 
 	if (isTouchDevice) {
-		document.getElementById("tapitmcode").hidden = false;	
+		//document.getElementById("tapitmcode").hidden = false;	
 			document.getElementById("tapqty").hidden = false;	
-			document.getElementById("tapsrno").hidden = false;	
+			document.getElementById("tapsrno").hidden = false;
+			document.getElementById("itmcode").hidden = true;	
+			document.getElementById("labelitmcode").hidden = true;
 			isMobile = true;
 	  console.log("Touchscreen device detected");
 	} else {
-		document.getElementById("tapitmcode").hidden = true;	
+		//document.getElementById("tapitmcode").hidden = true;	
 			document.getElementById("tapqty").hidden = true;	
 			document.getElementById("tapsrno").hidden = true;
+			
+			document.getElementById("itmcode").hidden = false;
+			document.getElementById("labelitmcode").hidden = false;
+			
 			isMobile = false;
 	  console.log("Mouse/Desktop device detected");
 	}
@@ -148,7 +154,7 @@ async function clearItemsAndUpdate() {
                 const parentList = document.getElementById("itemlist");
                 parentList.replaceChildren();
                 document.getElementById("total").innerText = "₹ 0";
-                document.getElementById("itmcode").focus();
+				document.getElementById("itmcode").focus();
                 noOrderYet = true;
 				document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
 				closeTable();
@@ -274,7 +280,7 @@ async function addItemAndUpdate(event) {
 			
 	
 	const qty =	document.getElementById('qty').value;
-	if(qty==="" || Math.abs(qty)===NaN || Math.trunc(qty)===NaN){
+	if(qty==="" || Math.abs(qty)===NaN || Math.trunc(qty)===NaN || Math.trunc(Math.abs(qty))===0){
 		showAlert("Validation","Incorrect quantity value entered.");
 		errNum = 11;
 		return;
@@ -469,10 +475,14 @@ async function loadTable(tableNumber) {
                 document.getElementById("itmlist").disabled = false;
                 document.getElementById("qty").disabled = false;
                 document.getElementById("srno").disabled = false;
-                if (Number(billWithItems.billTotal) === 0)
-                    noOrderYet = true;
-                else
-                    noOrderYet = false;
+                if (Number(billWithItems.billTotal) === 0){
+					noOrderYet = true;
+					document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
+				   }
+                else{
+					noOrderYet = false; 
+					document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#c0392b";
+				}
             }
         }
         document.getElementById("itmcode").focus();

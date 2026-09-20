@@ -21,11 +21,14 @@ async function SendData() {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: userObjectJSON
         };
+		
+		showLoading();
     //    const signupResponse = await fetch("/signup", mhb);
 		const signupResponse = await fetch("/table21/signup", mhb);
         if (!signupResponse.ok)
             throw new Error(signupResponse.status + " occured.");
         const textResponse = await signupResponse.text();
+		hideLoading();
         switch (textResponse) {
             case "saved":
                 showAlert("Success", "User registered successfully. Click login link to begin.");
@@ -102,3 +105,12 @@ function closeAlert() {
     }
     errName = 0;
 }
+
+/* Custom Loading Dialog script  */ 
+ function showLoading() {
+
+   document.getElementById('customLoadingOverlay').style.display = 'flex';
+ } 
+ function hideLoading() {
+   document.getElementById('customLoadingOverlay').style.display = 'none';
+ }

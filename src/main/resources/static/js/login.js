@@ -118,6 +118,8 @@ async function handleResponse(isYes) {
 			errNum = 1;
 			return;
 		}
+		showLoading();
+		
 	//	const url = new URL("/recover", window.location.origin);
 		const url = new URL("/table21/recover", window.location.origin);
 		url.search = new URLSearchParams({ billUser: document.getElementById('reg_email').value }).toString();
@@ -128,6 +130,7 @@ async function handleResponse(isYes) {
 		        }
 		else{
 			const msgResponse = await recoverResponse.text();
+			hideLoading();
 			showAlert("Information", msgResponse);
 		}
 		
