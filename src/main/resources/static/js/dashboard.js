@@ -6,28 +6,28 @@ function loadUserName() {
     const querryString = window.location.search;
     const querryParams = new URLSearchParams(querryString);
     document.getElementById('ue').innerText = querryParams.get('userEmail');
-	
-	const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
 
-	if (isTouchDevice) {
-		//document.getElementById("tapitmcode").hidden = false;	
-			document.getElementById("tapqty").hidden = false;	
-			document.getElementById("tapsrno").hidden = false;
-			document.getElementById("itmcode").hidden = true;	
-			document.getElementById("labelitmcode").hidden = true;
-			isMobile = true;
-	  console.log("Touchscreen device detected");
-	} else {
-		//document.getElementById("tapitmcode").hidden = true;	
-			document.getElementById("tapqty").hidden = true;	
-			document.getElementById("tapsrno").hidden = true;
-			
-			document.getElementById("itmcode").hidden = false;
-			document.getElementById("labelitmcode").hidden = false;
-			
-			isMobile = false;
-	  console.log("Mouse/Desktop device detected");
-	}
+    const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+
+    if (isTouchDevice) {
+        //document.getElementById("tapitmcode").hidden = false;	
+        document.getElementById("tapqty").hidden = false;
+        document.getElementById("tapsrno").hidden = false;
+        document.getElementById("itmcode").hidden = true;
+        document.getElementById("labelitmcode").hidden = true;
+        isMobile = true;
+        console.log("Touchscreen device detected");
+    } else {
+        //document.getElementById("tapitmcode").hidden = true;	
+        document.getElementById("tapqty").hidden = true;
+        document.getElementById("tapsrno").hidden = true;
+
+        document.getElementById("itmcode").hidden = false;
+        document.getElementById("labelitmcode").hidden = false;
+
+        isMobile = false;
+        console.log("Mouse/Desktop device detected");
+    }
 }
 
 function completeButtonHit() {
@@ -44,33 +44,33 @@ function completeButtonHit() {
 }
 
 
-function gotoReportsPage(){
-//	const url = new URL("/dashboard/reportspage", window.location.origin);
-	const url = new URL("/table21/dashboard/reportspage", window.location.origin);
-		     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
-			 window.location.href = url;
-	
+function gotoReportsPage() {
+    //	const url = new URL("/dashboard/reportspage", window.location.origin);
+    const url = new URL("/table21/dashboard/reportspage", window.location.origin);
+    url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
+    window.location.href = url;
+
 }
 
-function gotoEditItemPage(){	
-//		const url = new URL("/dashboard/edititempage", window.location.origin);
-		const url = new URL("/table21/dashboard/edititempage", window.location.origin);
-		     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
-				 window.location.href = url;
+function gotoEditItemPage() {
+    //		const url = new URL("/dashboard/edititempage", window.location.origin);
+    const url = new URL("/table21/dashboard/edititempage", window.location.origin);
+    url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
+    window.location.href = url;
 }
 
-function gotoEnlistPage(){
-//	const url = new URL("/dashboard/enlistpage", window.location.origin);
-	const url = new URL("/table21/dashboard/enlistpage", window.location.origin);
-			     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
-					 window.location.href = url;
+function gotoEnlistPage() {
+    //	const url = new URL("/dashboard/enlistpage", window.location.origin);
+    const url = new URL("/table21/dashboard/enlistpage", window.location.origin);
+    url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
+    window.location.href = url;
 }
 
 
 async function completeBillAndUpdate() {
     try {
- //       const url = new URL("/dashboard/completebill", window.location.origin);
-	const url = new URL("/table21/dashboard/completebill", window.location.origin);
+        //       const url = new URL("/dashboard/completebill", window.location.origin);
+        const url = new URL("/table21/dashboard/completebill", window.location.origin);
         url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
         console.log(url);
 
@@ -84,11 +84,11 @@ async function completeBillAndUpdate() {
             const result = await resultResponse.text();
             // retrive items list and populate in combo box
             if (result === "done") {
-				document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
-				closeTable();
+                document.getElementById("t" + document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
+                closeTable();
                 showAlert("Information", "Completed! Now it is accessible from reports.");
                 errNum = 6;
-				
+
             }
             else {
                 // display custom dialog error
@@ -109,8 +109,8 @@ function printButtonHit() {
 }
 
 function loadPrintPage() {
- //   const url = new URL("/dashboard/printbill", window.location.origin);
-	const url = new URL("/table21/dashboard/printbill", window.location.origin);
+    //   const url = new URL("/dashboard/printbill", window.location.origin);
+    const url = new URL("/table21/dashboard/printbill", window.location.origin);
     url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText, billNumber: document.getElementById('num').innerText }).toString();
     console.log(url);
     window.location.href = url;
@@ -141,8 +141,8 @@ async function clearItemsAndUpdate() {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify(clearItemsPayload)
         };
-//        const updatedItemsResponse = await fetch("/dashboard/clearitems", mhb);
-		const updatedItemsResponse = await fetch("/table21/dashboard/clearitems", mhb);
+        //        const updatedItemsResponse = await fetch("/dashboard/clearitems", mhb);
+        const updatedItemsResponse = await fetch("/table21/dashboard/clearitems", mhb);
         if (!updatedItemsResponse.ok) {
             console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
         }
@@ -154,10 +154,10 @@ async function clearItemsAndUpdate() {
                 const parentList = document.getElementById("itemlist");
                 parentList.replaceChildren();
                 document.getElementById("total").innerText = "₹ 0";
-				document.getElementById("itmcode").focus();
+                document.getElementById("itmcode").focus();
                 noOrderYet = true;
-				document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
-				closeTable();
+                document.getElementById("t" + document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
+                closeTable();
             }
             else {
                 showAlert("Information", result);
@@ -185,14 +185,14 @@ function removeByRefHit(event) {
 }
 
 async function removeItemAndUpdate() {
-	
-const ref =	document.getElementById('srno').value;
-if(ref==="" || Math.abs(ref)===NaN || Math.trunc(ref)===NaN){
-	showAlert("Validation","Incorrect ref value entered.");
-			errNum = 2;
-			return;
-}
-	
+
+    const ref = document.getElementById('srno').value;
+    if (ref === "" || Math.abs(ref) === NaN || Math.trunc(ref) === NaN) {
+        showAlert("Validation", "Incorrect ref value entered.");
+        errNum = 2;
+        return;
+    }
+
     try {
 
         const removeItemPayload = {
@@ -207,30 +207,30 @@ if(ref==="" || Math.abs(ref)===NaN || Math.trunc(ref)===NaN){
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify(removeItemPayload)
         };
-//        const updatedItemsResponse = await fetch("/dashboard/removeitem", mhb);
-		const updatedItemsResponse = await fetch("/table21/dashboard/removeitem", mhb);
+        //        const updatedItemsResponse = await fetch("/dashboard/removeitem", mhb);
+        const updatedItemsResponse = await fetch("/table21/dashboard/removeitem", mhb);
         if (!updatedItemsResponse.ok) {
             console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
         }
         else {
             const itemList = await updatedItemsResponse.json();
             console.log(itemList);
-			const parentList = document.getElementById("itemlist");
-			                
-			if(itemList.length===0){
-				parentList.replaceChildren();
-				document.getElementById("total").innerText = "₹ 0";
-				                document.getElementById("srno").value = "";
-				                document.getElementById("itmcode").focus();
-				                noOrderYet = true;
-document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
-closeTable();
-				return;
-			} 
-				
+            const parentList = document.getElementById("itemlist");
+
+            if (itemList.length === 0) {
+                parentList.replaceChildren();
+                document.getElementById("total").innerText = "₹ 0";
+                document.getElementById("srno").value = "";
+                document.getElementById("itmcode").focus();
+                noOrderYet = true;
+                document.getElementById("t" + document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
+                closeTable();
+                return;
+            }
+
             if (itemList[0].message === null) {
                 let tot = 0;
-				parentList.replaceChildren();
+                parentList.replaceChildren();
                 for (let i = 0;i < itemList.length;i++) {
                     const rowDiv = document.createElement("div");
                     rowDiv.className = "bill-row";
@@ -270,23 +270,23 @@ closeTable();
 
 async function addItemAndUpdate(event) {
     if (event.key === "Enter") {
-	
-	const icode = document.getElementById('itmcode').value;	
-	if(icode===""){
-			showAlert("Validation","Item code can not be blank..");
-			errNum = 7;
-			return;
-		}
-			
-	
-	const qty =	document.getElementById('qty').value;
-	if(qty==="" || Math.abs(qty)===NaN || Math.trunc(qty)===NaN || Math.trunc(Math.abs(qty))===0){
-		showAlert("Validation","Incorrect quantity value entered.");
-		errNum = 11;
-		return;
-	}
-		
-		
+
+        const icode = document.getElementById('itmcode').value;
+        if (icode === "") {
+            showAlert("Validation", "Item code can not be blank..");
+            errNum = 7;
+            return;
+        }
+
+
+        const qty = document.getElementById('qty').value;
+        if (qty === "" || Math.abs(qty) === NaN || Math.trunc(qty) === NaN || Math.trunc(Math.abs(qty)) === 0) {
+            showAlert("Validation", "Incorrect quantity value entered.");
+            errNum = 11;
+            return;
+        }
+
+
         try {
             console.log("entered in addItem method");
             const addItemPayload = {
@@ -304,17 +304,17 @@ async function addItemAndUpdate(event) {
                 body: JSON.stringify(addItemPayload)
             };
             console.log(mhb);
-//            const updatedItemsResponse = await fetch("/dashboard/additem", mhb);
-			const updatedItemsResponse = await fetch("/table21/dashboard/additem", mhb);
+            //            const updatedItemsResponse = await fetch("/dashboard/additem", mhb);
+            const updatedItemsResponse = await fetch("/table21/dashboard/additem", mhb);
             if (!updatedItemsResponse.ok) {
                 console.log(updatedItemsResponse.status + ": " + updatedItemsResponse.statusText);
             }
             else {
                 const itemList = await updatedItemsResponse.json();
-				
-				if(itemList.length===1 && itemList[0].message === null){
-					document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#c0392b";
-				}
+
+                if (itemList.length === 1 && itemList[0].message === null) {
+                    document.getElementById("t" + document.getElementById('tab').innerText).style.backgroundColor = "#c0392b";
+                }
                 if (itemList[0].message == null) {
                     const parentList = document.getElementById("itemlist");
                     parentList.replaceChildren();
@@ -340,8 +340,12 @@ async function addItemAndUpdate(event) {
                         parentList.appendChild(rowDiv);
                     }
                     document.getElementById("total").innerText = "₹ " + tot;
-                    document.getElementById("itmcode").focus();
-                    noOrderYet = false;
+					document.getElementById('itmcode').value ="";
+					document.getElementById('itmlist').selectedIndex = 0;
+					document.getElementById('qty').value ="";
+					document.getElementById('srno').value ="";
+					document.getElementById("itmcode").focus();
+					noOrderYet = false;
                 }
                 else {
                     errNum = 4;
@@ -369,7 +373,8 @@ function getItemCodeFromName() {
 
 function selectItemNameFromCode(event) {
     if (event.key === "Enter") {
-        document.getElementById("itmlist").value = document.getElementById("itmcode").value;
+		document.getElementById("itmcode").value = document.getElementById("itmcode").value.toUpperCase();
+        document.getElementById("itmlist").value = document.getElementById("itmcode").value
         if (document.getElementById("itmlist").value !== document.getElementById("itmcode").value) {
             document.getElementById("itmlist").value = "";
             showAlert("Validation", "Item code does not exist.");
@@ -380,8 +385,8 @@ function selectItemNameFromCode(event) {
 
 async function loaduserItems() {
     try {
-//        const url = new URL("/dashboard/loaditems", window.location.origin);
-		const url = new URL("/table21/dashboard/loaditems", window.location.origin);
+        //        const url = new URL("/dashboard/loaditems", window.location.origin);
+        const url = new URL("/table21/dashboard/loaditems", window.location.origin);
         url.search = new URLSearchParams({ billUser: document.getElementById('ue').innerText }).toString();
         const itemsListResponse = await fetch(url);
         if (!itemsListResponse.ok) {
@@ -396,6 +401,7 @@ async function loaduserItems() {
             }
             else {
                 dropdown = document.getElementById("itmlist");
+				dropdown.replaceChildren();
                 dropdown.innerHTML = "<option value=''>Select an item...</option>";
 
                 for (let i = 0;i < listOfItems.length;i++) {
@@ -426,8 +432,8 @@ async function loadTable(tableNumber) {
             headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
             body: JSON.stringify(loadTablePayload)
         };
-//        const billWithItemsResponse = await fetch("/dashboard/loadtable", mhb);
-		const billWithItemsResponse = await fetch("/table21/dashboard/loadtable", mhb);
+        //        const billWithItemsResponse = await fetch("/dashboard/loadtable", mhb);
+        const billWithItemsResponse = await fetch("/table21/dashboard/loadtable", mhb);
         if (!billWithItemsResponse.ok) {
             console.log(billWithItemsResponse.status + ": " + billWithItemsResponse.statusText);
         }
@@ -475,14 +481,14 @@ async function loadTable(tableNumber) {
                 document.getElementById("itmlist").disabled = false;
                 document.getElementById("qty").disabled = false;
                 document.getElementById("srno").disabled = false;
-                if (Number(billWithItems.billTotal) === 0){
-					noOrderYet = true;
-					document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
-				   }
-                else{
-					noOrderYet = false; 
-					document.getElementById("t"+ document.getElementById('tab').innerText).style.backgroundColor = "#c0392b";
-				}
+                if (Number(billWithItems.billTotal) === 0) {
+                    noOrderYet = true;
+                    document.getElementById("t" + document.getElementById('tab').innerText).style.backgroundColor = "#65407D";
+                }
+                else {
+                    noOrderYet = false;
+                    document.getElementById("t" + document.getElementById('tab').innerText).style.backgroundColor = "#c0392b";
+                }
             }
         }
         document.getElementById("itmcode").focus();
@@ -526,82 +532,97 @@ function addToCart() {
     const iitemCost = document.getElementById('newItemPrice').value
 
     if (iitemName === "" || iitemCode === "" || iitemCost === "") {
-		alert("All fields are compulsory.");
-		document.getElementById('newItemName').focus(); 
+        alert("All fields are compulsory.");
+        document.getElementById('newItemName').focus();
+        return;
+    }
+	
+	if(iitemName.length > 40){
+					alert("Item name can be max of 40 alphanumeric charachters.");
+									document.getElementById('newItemName').focus();
+									return;
+				}
+	if(iitemCode.length > 4){
+		alert("Item code can be max of 4 alphanumeric charachters.");
+		        document.getElementById('newItemCode').focus();
+		        return;
+	}
+	if(Number(iitemCost)===0){
+		alert("Invalid item cost.It should be integer number ahead from 1.");
+		        document.getElementById('newItemPrice').focus();
+		        return;
+	}
+
+    if (regItemsCart.length < 26) {
+        regItemsCart.push({ itemCode: iitemCode.toUpperCase(), itemName: iitemName.toUpperCase(), itemCost: Math.trunc(Math.abs(iitemCost)) });
+        document.getElementById('atc').innerText = "Add To Cart (" + regItemsCart.length + ")";
+        document.getElementById('newItemName').value = "";
+        document.getElementById('newItemCode').value = "";
+        document.getElementById('newItemPrice').value = "";
+        document.getElementById('newItemName').focus();
+        alert("Added to cart.");
     }
     else {
-        if (regItemsCart.length < 26) {
-            regItemsCart.push({ itemCode: iitemCode.toUpperCase(), itemName: iitemName.toUpperCase(), itemCost: iitemCost });
-			document.getElementById('atc').innerText = "Add To Cart (" + regItemsCart.length + ")";
-			  document.getElementById('newItemName').value ="";
-			 document.getElementById('newItemCode').value="";
-			   document.getElementById('newItemPrice').value="";
-			   document.getElementById('newItemName').focus();
-			alert("Added to cart.");
-        }
-        else {
-            document.getElementById('sendCartButton').focus();
-			alert("Max 25 items at a time.");
-        }
+        document.getElementById('sendCartButton').focus();
+        alert("Max 25 items at a time.");
     }
+
 }
 
 
-async function sendCart(){
-	if(regItemsCart.length === 0){
-		alert("Min 1 item in cart needed before sending.");
-		document.getElementById('newItemName').focus();
-	}
-	else{
-	try{
-		
-		const regItemsPayload = {
-		            billUser: document.getElementById('ue').innerText,
-		            requestType: "LoadTable",
-					items: regItemsCart
-		        };
-		const mhb = {
-		           method: 'POST',
-		           headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
-		           body: JSON.stringify(regItemsPayload)
-		       };
-			   console.log(JSON.stringify(regItemsPayload,null,2));
-//			   const regItemsResponse = await fetch("/dashboard/registeritems", mhb);
-			   const regItemsResponse = await fetch("/table21/dashboard/registeritems", mhb);
-			           if (!regItemsResponse.ok) {
-			               console.log(regItemsResponse.status + ": " + regItemsResponse.statusText);
-						   //custom dialog box 
-			           }
-			           else {
-			               const result = await regItemsResponse.text();
-						   errNum = 10;
-						   
-						   if(result==="saved")
-							{
-								
-								showAlert("Information","Items Registered! Those which are duplicate or not unique will be automatically ignored.");
-								
-								
-							}
-						   else
-							{showAlert("Information",result);}
-						   regItemsCart=[];
-						   document.getElementById('atc').innerText = "Add To Cart (0)";
-						   toggleModal();
-						   
-			           }
-	}
-	catch(error){
-		console.log(error);
-	}
-	}
+async function sendCart() {
+    if (regItemsCart.length === 0) {
+        alert("Min 1 item in cart needed before sending.");
+        document.getElementById('newItemName').focus();
+    }
+    else {
+        try {
+
+            const regItemsPayload = {
+                billUser: document.getElementById('ue').innerText,
+                requestType: "LoadTable",
+                items: regItemsCart
+            };
+            const mhb = {
+                method: 'POST',
+                headers: { 'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' },
+                body: JSON.stringify(regItemsPayload)
+            };
+            console.log(JSON.stringify(regItemsPayload, null, 2));
+            //			   const regItemsResponse = await fetch("/dashboard/registeritems", mhb);
+            const regItemsResponse = await fetch("/table21/dashboard/registeritems", mhb);
+            if (!regItemsResponse.ok) {
+                console.log(regItemsResponse.status + ": " + regItemsResponse.statusText);
+                //custom dialog box 
+            }
+            else {
+                const result = await regItemsResponse.text();
+                errNum = 10;
+
+                if (result === "saved") {
+
+                    showAlert("Information", "Items Registered! Those which are duplicate or not unique will be automatically ignored.");
+					loaduserItems();
+
+                }
+                else { showAlert("Information", result); }
+                regItemsCart = [];
+                document.getElementById('atc').innerText = "Add To Cart (0)";
+                toggleModal();
+
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
 }
 
 function toggleModal() {
     const modal = document.getElementById('registerModal');
     modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-	if(modal.style.display === 'flex') document.getElementById('newItemName').focus();
-	else document.getElementById("t1").focus();
+    if (modal.style.display === 'flex') document.getElementById('newItemName').focus();
+    else document.getElementById("t1").focus();
 }
 
 
@@ -612,8 +633,8 @@ async function doLogout() {
         body: document.getElementById('ue').innerText
     };
     console.log(mhb);
-//    const logOutResponse = await fetch("/logout", mhb);
-	const logOutResponse = await fetch("/table21/logout", mhb);
+    //    const logOutResponse = await fetch("/logout", mhb);
+    const logOutResponse = await fetch("/table21/logout", mhb);
     if (!logOutResponse.ok) {
         console.log(logOutResponse.status + ": " + logOutResponse.statusText);
     }
@@ -637,7 +658,7 @@ function showAlert(title, message) {
     if (message) document.getElementById('alertMessage').innerText = message;
     const overlay = document.getElementById('customAlertOverlay');
     overlay.classList.add('active');
-    setTimeout(() => {document.getElementById('customAlertOverlay').focus(); document.getElementById("alertOkBtn").focus(); }, 50);
+    setTimeout(() => { document.getElementById('customAlertOverlay').focus(); document.getElementById("alertOkBtn").focus(); }, 50);
 }
 
 function closeAlert() {
@@ -671,12 +692,12 @@ function closeAlert() {
         case 9:
             document.getElementById('sendCartButton').focus();
             break;
-		case 10:
-			document.getElementById("t1").focus();
-			break;
-			case 11:
-			document.getElementById("qty").focus();
-			break;
+        case 10:
+            document.getElementById("t1").focus();
+            break;
+        case 11:
+            document.getElementById("qty").focus();
+            break;
     }
 }
 
@@ -687,7 +708,7 @@ function showDialog(question) {
     if (question) document.getElementById('question').innerText = question;
     const overlay = document.getElementById('customDialogOverlay');
     overlay.classList.add('active');
-    setTimeout(() => {document.getElementById('customDialogOverlay').focus(); document.getElementById('dialogYesBtn').focus(); }, 50);
+    setTimeout(() => { document.getElementById('customDialogOverlay').focus(); document.getElementById('dialogYesBtn').focus(); }, 50);
 }
 
 function closeDialog() {
@@ -715,11 +736,11 @@ function handleResponse(isYes) {
     }
 }
 
-/* Custom Loading Dialog script  */ 
-  function showLoading() {
-	
+/* Custom Loading Dialog script  */
+function showLoading() {
+
     document.getElementById('customLoadingOverlay').style.display = 'flex';
-  } 
-  function hideLoading() {
+}
+function hideLoading() {
     document.getElementById('customLoadingOverlay').style.display = 'none';
-  }
+}

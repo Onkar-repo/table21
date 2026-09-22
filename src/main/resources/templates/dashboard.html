@@ -119,9 +119,9 @@
         </div>
 
         <div class="admin-actions">
-            <button type="button" class="action-btn" onclick="closeTable();toggleModal();">Register Items</button>
+            <button type="button" class="action-btn" onclick="alert('FYI: Make sure to complete all bills before registering or editing item.'); closeTable();toggleModal();">Register Items</button>
             <button type="button" class="action-btn" onclick="showAlert('Information','Temporarily unavailable.');errNum=6;">Delete Items</button>
-            <button type="button" class="action-btn" onclick="closeTable();gotoEditItemPage();">Edit Items</button>
+            <button type="button" class="action-btn" onclick="alert('FYI: Make sure to complete all bills before registering or editing item.'); closeTable();gotoEditItemPage();">Edit Items</button>
             <button type="button" class="action-btn" onclick="closeTable();gotoEnlistPage();">Enlist Items</button>
             <button type="button" class="action-btn" onclick="closeTable();gotoReportsPage();">Show Reports</button>
             <button type="button" class="action-btn" onclick="closeTable();">Close</button>
@@ -227,16 +227,16 @@
 				
                 <div class="form-group" style="margin-bottom: 12px;">
                     <label>Item Name</label>
-                    <input type="text" id="newItemName">
+                    <input type="text" id="newItemName" placeholder="Max 40 Chars">
                 </div>
                 <div style="display: flex; gap: 12px;">
                     <div class="form-group" style="flex:1">
-                        <label>Code</label>
-                        <input type="text" id="newItemCode">
+                        <label>Item Code</label>
+                        <input type="text" id="newItemCode" placeholder="Max 4 Chars">
                     </div>
                     <div class="form-group" style="flex:1">
-                        <label>Price</label>
-                        <input type="number" min="1" max="999999" id="newItemPrice">
+                        <label>Item Cost</label>
+                        <input type="number" min="1" max="999999" id="newItemPrice" placeholder="Natural Number">
                     </div>
 					
 		

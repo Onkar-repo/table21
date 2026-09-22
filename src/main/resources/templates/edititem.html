@@ -226,14 +226,13 @@
 			</div>
 
 			<h2 class="dialog-title" id="dialogTitle">Item Details</h2>
-			<p class="dialog-subtitle" id="dialogSubtitle">Please note that this will be ignored if item name and item
-				cost both are completely new.</p>
+			<p class="dialog-subtitle" id="dialogSubtitle">Please note, this will be ignored if item name and code both are completely new. Make sure to complete all bills before registering or editing item.</p>
 
 			<!-- INPUT SLOT -->
 			<div class="dialog-input-slot" id="dialogInputSlot">
-				<input type="text" id="itemName" placeholder="Item Name" autocomplete="off">
-				<input type="text" id="itemCode" placeholder="Item Code" autocomplete="off">
-				<input type="number" id="itemCost" placeholder="Item Cost" min="1" max="999999" autocomplete="off">
+				<input type="text" id="itemName" placeholder="Name | Max 40 Chars" autocomplete="off">
+				<input type="text" id="itemCode" placeholder="Code | Max 4 Chars" autocomplete="off">
+				<input type="number" id="itemCost" placeholder="Cost | Natural Number" min="1" max="999999" autocomplete="off">
 			</div>
 
 			<div class="dialog-actions">
@@ -264,53 +263,66 @@
 			if (iitemName === "" || iitemCode === "" || iitemCost === "") {
 				alert("All fields are compulsory.");
 				document.getElementById('itemName').focus();
+				return;
 			}
-			else {
+			
+			if(iitemName.length > 40){
+				alert("Item name can be max of 40 alphanumeric charachters.");
+								document.getElementById('itemName').focus();
+								return;
+			}
 
-				try {
-					
-					
-					const querryString = window.location.search;
-					    const querryParams = new URLSearchParams(querryString);
-					    const billUserr = querryParams.get('billUser');
-					
-					
-					
-					const edtItemsPayload = {
-						billUser: billUserr,
-						requestType: "EditTable",
-						items: [{itemCode: iitemCode.toUpperCase(), itemName:iitemName.toUpperCase(),itemCost:iitemCost }],
-					};
-					const mhb = {
-						method: 'POST',
-						headers: {'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*'},
-						body: JSON.stringify(edtItemsPayload)
-					};
-					console.log(JSON.stringify(edtItemsPayload, null, 2));
-	//				const edtItemsResponse = await fetch("/dashboard/edititems", mhb);
-					const edtItemsResponse = await fetch("/table21/dashboard/edititems", mhb);
-					if (!edtItemsResponse.ok) {
-						console.log(edtItemsResponse.status + ": " + edtItemsResponse.statusText);
-						//custom dialog box 
-					}
-					else {
-						const result = await edtItemsResponse.text();
-						errNum = 10;
-						if (result === "saved") {
-							alert("done.");
-						}
-						else
-							alert(result);
-					}
-					document.getElementById('itemName').value="";
-					 document.getElementById('itemCode').value="";
-						 document.getElementById('itemCost').value="";
-						 document.getElementById('itemName').focus();
-				}
-				catch (er) {
-					console.log(er);
-				}
+			if (iitemCode.length > 4) {
+				alert("Item code can be max of 4 alphanumeric charachters.");
+				document.getElementById('itemCode').focus();
+				return;
 			}
+			if (Number(iitemCost) === 0) {
+				alert("Invalid item cost.It should be integer number ahead from 1.");
+				document.getElementById('itemCost').focus();
+				return;
+			}
+
+			try {
+				const querryString = window.location.search;
+				const querryParams = new URLSearchParams(querryString);
+				const billUserr = querryParams.get('billUser');
+
+				const edtItemsPayload = {
+					billUser: billUserr,
+					requestType: "EditTable",
+					items: [{itemCode: iitemCode.toUpperCase(), itemName: iitemName.toUpperCase(), itemCost: Math.trunc(Math.abs(iitemCost))}],
+				};
+				const mhb = {
+					method: 'POST',
+					headers: {'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*'},
+					body: JSON.stringify(edtItemsPayload)
+				};
+				console.log(JSON.stringify(edtItemsPayload, null, 2));
+				//				const edtItemsResponse = await fetch("/dashboard/edititems", mhb);
+				const edtItemsResponse = await fetch("/table21/dashboard/edititems", mhb);
+				if (!edtItemsResponse.ok) {
+					console.log(edtItemsResponse.status + ": " + edtItemsResponse.statusText);
+					//custom dialog box 
+				}
+				else {
+					const result = await edtItemsResponse.text();
+					errNum = 10;
+					if (result === "saved") {
+						alert("done.Re-login to reflect the changes.");
+					}
+					else
+						alert(result);
+				}
+				document.getElementById('itemName').value = "";
+				document.getElementById('itemCode').value = "";
+				document.getElementById('itemCost').value = "";
+				document.getElementById('itemName').focus();
+			}
+			catch (er) {
+				console.log(er);
+			}
+
 		}
 	</script>
 </body>
